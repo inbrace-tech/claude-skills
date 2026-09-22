@@ -17,7 +17,7 @@ Inside Claude Code:
 Then run a skill by name:
 
 ```text
-/claude-config:audit
+/claude-config:audit-opus-5-5
 ```
 
 From a terminal, the same install is:
@@ -31,9 +31,9 @@ claude plugin install claude-config@inbrace
 
 | Plugin | Skill | Mode | What it does |
 |---|---|---|---|
-| `claude-config` | `/claude-config:audit` | Command only | Audits `CLAUDE.md`, rules, agents, skills and settings for instructions that current Claude models no longer need, and proposes a diff. Each finding cites the official Anthropic prompting guide it comes from. |
+| `claude-config` | `/claude-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Works in context-sized batches, writes a full report, asks what to change, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. |
 
-## Skills run only when you call them
+## Skills load only what they need
 
 Installing a plugin does not load its skills into every conversation. A skill's full instructions load only when it runs, and each skill declares who may start it:
 
@@ -54,16 +54,20 @@ Turn a plugin off without removing it with `/plugin disable claude-config@inbrac
 
 ## Without the plugin system
 
-Each skill is a plain folder with a `SKILL.md`, following the [Agent Skills](https://agentskills.io) standard. To use one without a plugin, copy its folder:
+Each skill is a plain folder with a `SKILL.md`, following the [Agent Skills](https://agentskills.io) standard, so its core instructions also work in other tools that support the standard. To use one without a plugin, copy its folder:
 
 ```bash
 # for you, in every project
-cp -r plugins/claude-config/skills/audit ~/.claude/skills/claude-config-audit
+cp -r plugins/claude-config/skills/audit-opus-5-5 ~/.claude/skills/
 # for one repository, shared with your team
-cp -r plugins/claude-config/skills/audit .claude/skills/claude-config-audit
+cp -r plugins/claude-config/skills/audit-opus-5-5 .claude/skills/
 ```
 
 A copied skill does not receive updates. Installing through the marketplace does.
+
+## How the skills are written
+
+Each rule in a skill is one imperative sentence with a stable id, like `[N07]`. Beside every `SKILL.md`, a `SKILL.norms.json` records why each rule exists and the source behind it. Claude never loads that file on its own, so the history costs no context. CI checks that the two files list the same rules.
 
 ## Security
 

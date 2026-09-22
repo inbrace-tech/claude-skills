@@ -8,10 +8,12 @@ This repository is a public Claude Code plugin marketplace. Read `CONTRIBUTING.m
 - Every skill's invocation mode is a deliberate choice, recorded in the README's Skills table: `disable-model-invocation: true` for side-effecting or occasional skills, unset for skills Claude should start when a task matches.
 - Nothing private: no internal repository names, URLs, credentials or customer data.
 - A new plugin is added to `.claude-plugin/marketplace.json` in the same change.
+- Every skill is written in the norm format described in `CONTRIBUTING.md` › Writing a skill: `- [Nxx]` imperative norms in `SKILL.md`, their history in `SKILL.norms.json`, ids never renumbered or reused.
 
 ## Checks
 
 ```bash
+node scripts/check-norms.mjs
 claude plugin validate --strict .
 claude plugin validate --strict plugins/<plugin>
 claude plugin validate --strict plugins/<plugin>/skills
