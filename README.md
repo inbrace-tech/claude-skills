@@ -29,15 +29,20 @@ claude plugin install claude-config@inbrace
 
 ## Skills
 
-| Plugin | Skill | What it does |
-|---|---|---|
-| `claude-config` | `/claude-config:audit` | Audits `CLAUDE.md`, rules, agents, skills and settings for instructions that current Claude models no longer need, and proposes a diff. Each finding cites the official Anthropic prompting guide it comes from. |
+| Plugin | Skill | Mode | What it does |
+|---|---|---|---|
+| `claude-config` | `/claude-config:audit` | Command only | Audits `CLAUDE.md`, rules, agents, skills and settings for instructions that current Claude models no longer need, and proposes a diff. Each finding cites the official Anthropic prompting guide it comes from. |
 
 ## Skills run only when you call them
 
-Installing a plugin does not load its skills into every conversation. Until a skill runs, Claude Code keeps only its name and one-line description in context.
+Installing a plugin does not load its skills into every conversation. A skill's full instructions load only when it runs, and each skill declares who may start it:
 
-Every skill here also sets `disable-model-invocation: true`, so Claude never starts one on its own. It runs only when you type its slash command.
+| Mode | Who starts it | What sits in context before it runs |
+|---|---|---|
+| Command only | You, by typing its slash command | Nothing |
+| Default | You, or Claude when the task matches | Its one-line description |
+
+The Skills table above says which mode each skill uses. One-shot or side-effecting skills, like the audit, are command only.
 
 You choose where a plugin is active when you install it:
 

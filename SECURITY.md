@@ -25,7 +25,7 @@ A skill is a set of instructions that Claude follows on the user's machine, with
 - **A skill can steer Claude toward any action the user's permissions allow.** A malicious or careless instruction in a `SKILL.md` is the main risk, so every change to a skill is reviewed by a code owner before it merges.
 - **Skills here do not ship executable code by default.** A skill that needs a script or a hook must say so in its README row, and that code goes through the same review.
 - **Skills never ask for credentials, and never send data to a network service** unless the skill's description says so plainly.
-- **Every skill runs only when the user invokes it** (`disable-model-invocation: true`), so installing a plugin does not let a skill start on its own.
+- **A skill with side effects runs only when the user invokes it** (`disable-model-invocation: true`). The README's Skills table lists which skills Claude may also start on its own.
 
 ## How the repository is protected
 
