@@ -1,0 +1,17 @@
+{
+  "name": "inbrace",
+  "owner": {
+    "name": "Inbrace",
+    "url": "https://github.com/inbrace-tech"
+  },
+  "metadata": {
+    "description": "Curated, eval-tested Claude Code skills by Inbrace."
+  },
+  "plugins": [
+    {
+      "name": "claude-config",
+      "source": "./plugins/claude-config",
+      "description": "Audit CLAUDE.md, rules, agents and skills for instructions that current Claude models no longer need, with a proposed diff."
+    }
+  ]
+}

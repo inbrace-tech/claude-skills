@@ -1,0 +1,13 @@
+{
+  "name": "claude-config",
+  "description": "Audit CLAUDE.md, rules, agents and skills for instructions that current Claude models no longer need, with a proposed diff.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Inbrace",
+    "url": "https://github.com/inbrace-tech"
+  },
+  "homepage": "https://github.com/inbrace-tech/claude-skills",
+  "repository": "https://github.com/inbrace-tech/claude-skills",
+  "license": "MIT",
+  "keywords": ["claude-md", "prompt-engineering", "audit", "opus-5-5"]
+}
