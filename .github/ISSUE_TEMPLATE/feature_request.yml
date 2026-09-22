@@ -1,0 +1,21 @@
+name: Skill request
+description: Suggest a new skill or an improvement to an existing one
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: What do you do by hand today that a skill should do?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed skill
+      description: What should it do, and what should its output look like?
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: Official documentation that backs the behavior the skill relies on, if any.

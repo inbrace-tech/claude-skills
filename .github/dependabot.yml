@@ -1,0 +1,28 @@
+# Dependabot keeps the pinned GitHub Actions SHAs fresh. Minors and patches are
+# grouped into one weekly PR; an action major arrives as its own PR, so a renamed
+# input or a new requirement is reviewed on its own.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: America/Sao_Paulo
+    open-pull-requests-limit: 5
+    # Supply-chain quarantine: wait 7 days after a version is published before
+    # proposing it. A compromised release is usually pulled within that window.
+    # Security updates bypass the cooldown.
+    cooldown:
+      default-days: 7
+    groups:
+      actions-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      prefix: chore
+      include: scope
