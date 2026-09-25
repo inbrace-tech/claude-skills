@@ -26,6 +26,7 @@ Skills here follow one format, so every rule can be found, cited and traced to t
 CI runs these on every pull request. Run them locally first:
 
 ```bash
+node --test "scripts/*.test.mjs"
 node scripts/check-norms.mjs
 claude plugin validate --strict .
 claude plugin validate --strict plugins/<plugin>

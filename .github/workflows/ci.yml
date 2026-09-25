@@ -46,6 +46,9 @@ jobs:
             claude plugin validate --strict "$plugin"
             claude plugin validate --strict "${plugin}skills"
           done
+      # The repository's own scripts, on Node's built-in test runner. No install.
+      - name: Test scripts
+        run: node --test "scripts/*.test.mjs"
       # Every norm in a SKILL.md has a SKILL.norms.json entry and vice versa,
       # and every [Nxx] cross-reference resolves. Plain Node, no install.
       - name: Check norms against their sidecars
