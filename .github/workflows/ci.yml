@@ -46,3 +46,7 @@ jobs:
             claude plugin validate --strict "$plugin"
             claude plugin validate --strict "${plugin}skills"
           done
+      # Every norm in a SKILL.md has a SKILL.norms.json entry and vice versa,
+      # and every [Nxx] cross-reference resolves. Plain Node, no install.
+      - name: Check norms against their sidecars
+        run: node scripts/check-norms.mjs

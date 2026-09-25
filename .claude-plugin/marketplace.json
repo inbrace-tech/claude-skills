@@ -5,13 +5,13 @@
     "url": "https://github.com/inbrace-tech"
   },
   "metadata": {
-    "description": "Curated, eval-tested Claude Code skills by Inbrace."
+    "description": "Curated Claude Code skills by Inbrace, grounded in Anthropic's official documentation."
   },
   "plugins": [
     {
       "name": "claude-config",
       "source": "./plugins/claude-config",
-      "description": "Audit CLAUDE.md, rules, agents and skills for instructions that current Claude models no longer need, with a proposed diff."
+      "description": "Audit a Claude Code setup for model transitions, starting with Claude Opus 5 to Opus 5.5: report, ask, then apply only what you approve."
     }
   ]
 }
