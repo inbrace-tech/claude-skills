@@ -12,18 +12,29 @@
 //   - a `[Nxx]` cross-reference names an id the surface does not define;
 //   - a sidecar has no surface beside it, is not a JSON object, or its
 //     `surface` does not name the surface beside it;
-//   - an entry lacks a non-empty `where` or `what`, or `refs` is not an object.
+//   - an entry lacks a non-empty `where` or `what`, its `where` names no
+//     heading of the surface, or `refs` is not an object keyed by `owner/repo`
+//     (arrays of positive integers) or `docs` (arrays of https URLs);
+//   - a `[<skill-or-agent>#N01]` citation, on a surface, in a sidecar's prose
+//     or in any Markdown file, names no single surface or no norm it declares;
+//   - a bare `[N01]` sits in a Markdown file no sidecar serves, outside code.
+// Issue numbers a `what` cites that `refs` does not list, and the reverse, are
+// printed as notes and do not fail the run.
 // A surface with no norm and no sidecar is not in the format and is skipped.
 // It finds `plugins/*/skills/*/SKILL.md` and `plugins/*/agents/*.md`, each
-// with its sidecar. The rules live in check-norms.logic.ts; this file finds
-// the surfaces, prints and sets the exit code: 0 consistent, 1 inconsistent,
+// with its sidecar, and reads every Markdown file under the root. The rules
+// are ported from the norm-provenance checker of Inbrace's internal agent
+// harness; check-norms.logic.ts says what came across and what was left out.
+// The rules live there; this file finds the files, prints and sets the exit
+// code: 0 consistent, 1 inconsistent,
 // 2 not run from the repository root. Node 24 runs it as is, stripping the
 // types, with no build and no runtime dependency: run it from the repository
 // root with `pnpm run check-norms` or `node scripts/check-norms.ts`.
 
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, relative, sep } from "node:path";
-import { agentNames, checkSurface, sidecarPathFor, toRepoPath } from "./check-norms.logic.ts";
+import { agentNames, checkCorpus, checkSurface, sidecarPathFor, toRepoPath } from "./check-norms.logic.ts";
+import type { MarkdownFile, SurfaceInput } from "./check-norms.logic.ts";
 
 const root = process.cwd();
 const plugins = join(root, "plugins");
@@ -67,22 +78,49 @@ function surfaces(): Surface[] {
   return found;
 }
 
+/**
+ * Every Markdown file under the repository root, for the corpus checks.
+ * Skipped: `node_modules`, `.git`, and `.claude/worktrees`, where Claude Code
+ * keeps other checkouts of this same repository. A symbolic link is skipped
+ * too; its target is read under its own name.
+ */
+function markdownFiles(dir: string = root, found: MarkdownFile[] = []): MarkdownFile[] {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const path = join(dir, entry.name);
+    const repoPath = toRepoPath(relative(root, path), sep);
+    if (entry.isDirectory()) {
+      if (entry.name === "node_modules" || entry.name === ".git" || repoPath === ".claude/worktrees") continue;
+      markdownFiles(path, found);
+    } else if (entry.isFile() && entry.name.endsWith(".md")) {
+      found.push({ path: repoPath, source: readFileSync(path, "utf8") });
+    }
+  }
+  return found;
+}
+
 const readIfPresent = (path: string): string | null => (existsSync(path) ? readFileSync(path, "utf8") : null);
 const errors: string[] = [];
 const checked: Record<Kind, number> = { skill: 0, agent: 0 };
+const inputs: SurfaceInput[] = [];
 
 for (const { kind, path: surfacePath } of surfaces()) {
   const sidecarPath = sidecarPathFor(surfacePath);
-  const result = checkSurface({
+  const input: SurfaceInput = {
     surfacePath: toRepoPath(relative(root, surfacePath), sep),
     sidecarPath: toRepoPath(relative(root, sidecarPath), sep),
     surface: readIfPresent(surfacePath),
     sidecarText: readIfPresent(sidecarPath),
-  });
+  };
+  inputs.push(input);
+  const result = checkSurface(input);
   if (!result.inFormat) continue;
   checked[kind] += 1;
   errors.push(...result.errors);
 }
+
+const corpus = checkCorpus({ surfaces: inputs, markdown: markdownFiles() });
+errors.push(...corpus.errors);
+for (const note of corpus.notes) console.log(`note: ${note}`);
 
 const counted = `${checked.skill} skill(s) and ${checked.agent} agent(s)`;
 if (errors.length > 0) {
