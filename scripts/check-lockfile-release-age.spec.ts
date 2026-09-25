@@ -1,12 +1,6 @@
-// End-to-end tests for the lockfile audit: they run the script itself against
-// throwaway git repositories.
-//   pnpm test
-// The rules are tested with strings in `check-lockfile-release-age.logic.spec.ts`.
-//
-// None of these tests reaches the registry. Every run goes through a proxy on
-// a closed local port (`NODE_USE_ENV_PROXY`), so a fetch fails at once with
-// ECONNREFUSED: the cases that must not fetch prove it by passing, and the one
-// that must fetch proves an unreachable registry fails the audit.
+// End-to-end tests: run the lockfile audit against throwaway git repositories (`pnpm test`).
+// Every run goes through a dead proxy (`NODE_USE_ENV_PROXY`), so a registry fetch fails at once: the
+// cases that must not fetch prove it by passing, and one proves an unreachable registry fails the audit.
 
 import { execFileSync, spawnSync } from "node:child_process";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
@@ -25,8 +19,7 @@ describe("check-lockfile-release-age, end to end", () => {
     spawnSync(process.execPath, [script, ...args], {
       cwd,
       encoding: "utf8",
-      // Both spellings, so a proxy variable already in the caller's environment
-      // cannot take precedence over the dead one.
+      // Both spellings, so a proxy already in the caller's environment cannot win.
       env: {
         ...process.env,
         NODE_USE_ENV_PROXY: "1",
@@ -64,9 +57,7 @@ describe("check-lockfile-release-age, end to end", () => {
   });
 
   it("end to end: it diffs against the merge base, not the moved base branch", ({ onTestFinished }) => {
-    // `main` moves 1.4.0 to 1.3.0 after the branch forked. Against `main`
-    // itself, the branch's untouched 1.4.0 would read as an addition; against
-    // the merge base it is nothing.
+    // `main` moves to 1.3.0 after the fork; diffing against `main` itself would report the untouched 1.4.0.
     const { root, git } = repository(onTestFinished);
     git("switch", "--quiet", "-c", "feature");
     git("switch", "--quiet", "main");

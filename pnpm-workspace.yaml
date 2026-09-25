@@ -1,17 +1,11 @@
-# pnpm settings for this repository. pnpm 11 reads them here, not from a
-# `pnpm` field in package.json.
-#
-# No `allowBuilds`: no dependency here needs its install script, so pnpm runs
-# none. A dependency that starts needing one fails the install loudly, and is
-# opted in here by name after review.
+# pnpm 11 reads its settings here, not from package.json.
+# No `allowBuilds`: no dependency runs an install script. One that starts needing it fails the install
+# and is opted in here by name after review.
 
-# Minimum release age, in minutes (4320 = 3 days). pnpm refuses to resolve a
-# version published less than three days ago and falls back to an older one, so
-# a malicious publish has to survive three days undetected before an install
-# here can reach it. Dependabot's patch cooldown uses the same three days.
+# Minutes (4320 = 3 days): pnpm resolves no younger version, falling back to an older one, so a
+# malicious publish must go undetected for three days to reach an install. Dependabot's patch cooldown
+# matches.
 minimumReleaseAge: 4320
-# Off on purpose. Strict mode only decides what happens when no version clears
-# the floor: off, pnpm falls back to an older compliant version; on, the install
-# fails unless a temporary approval is written into this file. Dependabot's pnpm
-# updates cannot write that approval, so strict mode would make its updates fail.
+# Off on purpose: it only matters when no version clears the floor. On, that install needs an approval
+# written here, which Dependabot's pnpm updates cannot write, so they would fail.
 minimumReleaseAgeStrict: false

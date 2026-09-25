@@ -1,32 +1,19 @@
-// Oxlint configuration for the repository scripts: TypeScript run by Node 24
-// as is, tested with Vitest.
-//
-// The shape is one subscribed category, `correctness`, with every rule beyond
-// it adopted by name, because a category is a moving target across releases.
-// Only the rules that apply to Node scripts are carried here: nothing about a
-// framework, a test library other than Vitest, or a domain layering.
-//
-// What gets linted: every file oxlint parses under the repository root, minus
-// `ignorePatterns`. Oxlint refuses to run with two configuration files in one
-// directory, so this is the only one.
+// Oxlint configuration for the Node 24 TypeScript scripts and their Vitest specs.
+// Only the `correctness` category is subscribed; every other rule is adopted by name, since
+// categories change across releases. Keep this the only config: oxlint refuses two in one directory.
 
 import { defineConfig } from "oxlint";
 
 export default defineConfig({
   $schema: "./node_modules/oxlint/configuration_schema.json",
 
-  // `typescript` holds every type-aware rule, and oxlint accepts a rule whose
-  // plugin is off without saying so. `vitest` covers `scripts/**/*.spec.ts`.
-  // `unicorn` and `oxc` contribute rules to the `correctness` category below.
+  // `typescript` must stay on: oxlint silently accepts a rule whose plugin is off.
   plugins: ["typescript", "unicorn", "oxc", "vitest"],
 
   options: {
-    // Type-aware rules, backed by `oxlint-tsgolint`: without that package
-    // installed, oxlint fails with "Failed to find tsgolint executable".
+    // Needs `oxlint-tsgolint` installed, or oxlint fails to find the tsgolint executable.
     typeAware: true,
-    // `typeCheck` stays off: `pnpm run typecheck` is the type gate, over the
-    // program `tsconfig.json` declares. A second checker here would read a
-    // different file set.
+    // `typeCheck` stays off: `pnpm run typecheck` is the type gate, over tsconfig.json's file set.
   },
 
   categories: {
@@ -44,8 +31,7 @@ export default defineConfig({
     "typescript/no-unnecessary-type-constraint": "error",
     "typescript/no-unnecessary-type-conversion": "error",
 
-    // Syntax the scripts avoid. Node's type stripping rejects `namespace`, and
-    // the scripts are ES modules, so `require` has no place in them.
+    // Node's type stripping rejects `namespace`, and the scripts are ES modules.
     "typescript/ban-ts-comment": "error",
     "typescript/no-unsafe-function-type": "error",
     "typescript/no-namespace": "error",

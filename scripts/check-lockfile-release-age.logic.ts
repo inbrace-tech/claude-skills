@@ -1,62 +1,8 @@
-// The pure half of the lockfile audit: two questions about the `name@version`
-// entries `pnpm-lock.yaml` resolves. Is the version still published in the
-// registry, and is it older than `minimumReleaseAge` minutes? Which entries are
-// asked, and which of the two questions, depends on the scope; see below.
-//
-// PORTED from the lockfile release-age gate of Inbrace's internal agent
-// harness, where it runs as a pull-request gate and a daily sweep. What came
-// across, under the harness's own names: the lockfile parser
-// (`parseResolvedVersions`, `splitResolvedKey`, `addedResolvedVersions`,
-// `allResolvedVersions`), the single-package decision (`evaluatePackage`) and
-// its three violation codes, `parseMinimumReleaseAge`, `formatMinutes` and
-// `formatViolations`. What differs, and why:
-//   - `registryFactsFromPackument` reads a packument the harness read inline in
-//     its entry point with a type assertion. Here it narrows `unknown` instead,
-//     since this repository accepts no `as`, and it lives on this side so the
-//     narrowing is tested.
-//   - `auditPackages` is the harness's fan-out loop, moved out of the entry
-//     point with the registry fetch injected, so that "an unreachable registry
-//     fails the audit" is proven by a spec that never touches the network.
-//
-// WHY THIS EXISTS WHEN `minimumReleaseAge` ALREADY DOES
-//
-// `pnpm-workspace.yaml` carries `minimumReleaseAge`, and that setting is the
-// primary control against a poisoned release: pnpm does not merely prefer an
-// aged version, it refuses to resolve one under the floor and falls back to an
-// older compliant version. `minimumReleaseAgeStrict`, off here, decides only
-// what happens when NO version satisfies the floor: fail, or fall back. The
-// file is committed, so every contributor and every CI run already reads it.
-//
-// So the age question here is a BACKSTOP for a narrow residue: a lockfile that
-// floor never saw. A pnpm predating the setting, a hand-resolved merge
-// conflict, or a hand-edited lockfile. It is worth asking because it is nearly
-// free once the registry is being queried anyway, and not worth building for
-// on its own.
-//
-// THE QUESTION THAT EARNS THIS AUDIT ITS PLACE is registry absence, which no
-// local setting can observe at all. A malicious release is taken down rather
-// than aged out, so a lockfile pinning a version that has DISAPPEARED from the
-// registry is reporting a takedown. A takedown can also happen long AFTER a
-// version merged, which no per-PR delta can see: nothing about the lockfile
-// changes when the registry removes something. That is why the scheduled sweep
-// asks this question of the whole lockfile; see `evaluatePackage`'s
-// `minimumReleaseAgeMinutes: null` mode.
-//
-// TWO SCOPES, BECAUSE THE TWO QUESTIONS HAVE DIFFERENT NATURAL ONES
-//
-// On a pull request the audit evaluates only the entries a change ADDS, both
-// questions. An entry already on the base branch was evaluated when it landed
-// and has only aged since, so re-checking it costs one registry round-trip per
-// package to re-derive a known answer.
-//
-// The scheduled sweep evaluates the WHOLE lockfile, takedown question only.
-// Age is not asked again there: every entry passed the floor when it merged,
-// so flagging one again would make a daily job noisy.
-//
-// No `node:fs`, no `fetch` and no `git` here: this file takes lockfile TEXT and
-// a registry fetcher as arguments, so every branch is provable from a spec
-// without a network or a repository. The I/O lives in
-// check-lockfile-release-age.ts.
+// The pure rules of the lockfile audit: lockfile text and a registry fetcher in, violations out.
+// pnpm's `minimumReleaseAge` already refuses too-fresh versions, so the age check is a cheap backstop
+// for a lockfile pnpm never vetted (an old pnpm, a hand-edited or hand-merged lockfile). The check that
+// earns the audit its place is registry absence, the mark of a takedown, which can come long after merge:
+// a pull request asks both questions of what it adds, the scheduled sweep asks absence of the whole lockfile.
 
 /** One resolved dependency, as the lockfile names it. */
 export interface ResolvedPackage {
@@ -82,20 +28,11 @@ export interface Violation {
   readonly detail: string;
 }
 
-// A lockfile entry at the top of the `packages:` / `snapshots:` blocks sits at
-// exactly two spaces of indent and is spelled either `name@version:` or, when
-// peers take part in the resolution, `'name@version(peer@version)':`. Matching
-// the two-space indent is what keeps the `importers:` block, whose `version:`
-// lines sit deeper, out of the result.
+// A top-level `packages:`/`snapshots:` entry, `name@version:` or `'name@version(peer@version)':`.
+// The exact two-space indent keeps the deeper `version:` lines of `importers:` out.
 const LOCKFILE_ENTRY = /^ {2}'?((?:@[^@'\s/]+\/)?[^@'\s/][^@'\s]*)@([0-9][^'():\s]*)'?(?:\(|:)/;
 
-/**
- * Every `name@version` a pnpm lockfile resolves, keyed as `name@version`.
- *
- * Peer-suffixed snapshot keys collapse onto the same identity as their
- * `packages:` entry, which is the intent: `@scope/plugin@2.1.0(core@1.4.0)`
- * and `@scope/plugin@2.1.0` are one published artifact.
- */
+/** Every `name@version` a lockfile resolves; a peer-suffixed snapshot key is the same artifact as its package. */
 export function parseResolvedVersions(lockfileText: string): Set<string> {
   const resolved = new Set<string>();
   for (const line of lockfileText.split("\n")) {
@@ -111,11 +48,7 @@ export function splitResolvedKey(key: string): ResolvedPackage {
   return { name: key.slice(0, separator), version: key.slice(separator + 1) };
 }
 
-/**
- * The entries `headText` resolves that `baseText` did not, sorted for a stable
- * report. An entry removed by the change is not a finding: only additions can
- * introduce an artifact this repository did not already trust.
- */
+/** The entries `headText` resolves that `baseText` did not, sorted; a removal cannot add untrusted code. */
 export function addedResolvedVersions(baseText: string, headText: string): ResolvedPackage[] {
   const base = parseResolvedVersions(baseText);
   return [...parseResolvedVersions(headText)]
@@ -134,20 +67,13 @@ export interface EvaluateInput {
   readonly fact: RegistryFact;
   /** Milliseconds since the epoch, injected so the spec can pin it. */
   readonly now: number;
-  /**
-   * The age floor to enforce, or `null` to ask the takedown question alone:
-   * what the scheduled whole-lockfile sweep passes, since every entry already
-   * on the branch has aged since it merged.
-   */
+  /** The age floor, or `null` to ask only the takedown question, as the whole-lockfile sweep does. */
   readonly minimumReleaseAgeMinutes: number | null;
 }
 
 /**
- * The single-package decision. Returns `undefined` when the package is clean.
- *
- * Absence is reported ahead of age because a taken-down version is the more
- * serious state, and its publish date, if the registry still carries one,
- * would otherwise describe a version nobody can install.
+ * The package's violation, or `undefined` when clean. Absence is checked before age: it is the graver
+ * state, and a surviving publish date would describe a version nobody can install.
  */
 export function evaluatePackage(input: EvaluateInput): Violation | undefined {
   const { pkg, fact, now, minimumReleaseAgeMinutes } = input;
@@ -212,12 +138,8 @@ export function formatMinutes(minutes: number): string {
 }
 
 /**
- * The `minimumReleaseAge` this repository declares, read from the text of
- * `pnpm-workspace.yaml` so the audit and pnpm cannot drift to two floors.
- *
- * Returns `undefined` when the key is absent. The caller decides what that
- * means, because an audit with no floor to enforce is a configuration failure
- * rather than a clean tree.
+ * `minimumReleaseAge` read from pnpm-workspace.yaml, so the audit and pnpm share one floor; `undefined`
+ * when absent, which the caller treats as a failure, not a clean tree.
  */
 export function parseMinimumReleaseAge(workspaceText: string): number | undefined {
   for (const line of workspaceText.split("\n")) {
@@ -238,13 +160,8 @@ type Unchecked = Record<string, unknown>;
 const isUnchecked = (value: unknown): value is Unchecked => typeof value === "object" && value !== null && !Array.isArray(value);
 
 /**
- * The registry facts one packument carries, keyed by version: every version
- * the `time` map dates or the `versions` map lists. A version found only in
- * `time` is one the registry published and no longer lists.
- *
- * Throws when the body is not a JSON object, so the caller counts the package
- * as unreachable rather than as clean. A missing `time` or `versions` map
- * reads as empty, and a `time` entry that is not a string as no date.
+ * Registry facts per version from a packument's `time` and `versions` maps; a version only in `time`
+ * was published and later removed. Throws on a non-object body, so the package counts as unreachable.
  */
 export function registryFactsFromPackument(packument: unknown): Map<string, RegistryFact> {
   if (!isUnchecked(packument)) throw new Error("the packument is not a JSON object");
@@ -280,13 +197,8 @@ export interface AuditResult {
 }
 
 /**
- * Asks the registry about every package and evaluates each version.
- *
- * One packument answers every version of a package, so the fan-out is over
- * distinct NAMES while the evaluation stays per version. A version the
- * packument does not mention at all counts as no longer published. A package
- * whose fetch rejects goes to `unreachable`, never to a clean result: the
- * caller fails the audit on it.
+ * Evaluates every package, fetching one packument per name. A version the packument omits counts as
+ * unpublished, and a rejected fetch goes to `unreachable`, which the caller fails on.
  */
 export async function auditPackages(input: AuditInput): Promise<AuditResult> {
   const { packages, fetchFacts, now, minimumReleaseAgeMinutes, concurrency } = input;

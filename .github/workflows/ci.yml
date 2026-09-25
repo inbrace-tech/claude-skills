@@ -1,8 +1,5 @@
-# CI: validates the marketplace manifest, every plugin manifest, every skill
-# and every agent with `claude plugin validate --strict`, then type-checks,
-# lints and tests the repository scripts and checks every norm against its sidecar, on
-# every PR and push to main.
-# --strict turns warnings (unknown fields, missing metadata) into failures.
+# CI on every PR and push to main: `claude plugin validate --strict` (warnings fail) over the
+# marketplace, plugins, skills and agents, then typecheck, lint, test and check-norms.
 name: CI
 
 on:
@@ -11,8 +8,7 @@ on:
   push:
     branches: [main]
 
-# Abort stale PR runs when a new commit lands on the same branch; never cancel
-# push-to-main runs.
+# Cancel stale PR runs, never push-to-main runs.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -26,17 +22,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      # persist-credentials: false keeps the job token out of .git/config, where
-      # any later step could read it.
+      # persist-credentials: false keeps the job token out of .git/config, where later steps could read it.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      # Node 24, pnpm from `packageManager`, and the dev dependencies from the
-      # lockfile: the type checker, Node's types, oxlint and Vitest.
       - uses: ./.github/actions/setup-node-pnpm
-      # Pinned version: bump it deliberately, so a CLI release never changes
-      # what CI accepts without a reviewed diff. A global CLI, not a dependency
-      # of this repository, so it goes through the npm that ships with Node.
+      # Pinned so a CLI release never changes what CI accepts without a reviewed diff.
       - name: Install Claude Code
         env:
           CLAUDE_CODE_VERSION: 2.1.280
@@ -52,17 +43,12 @@ jobs:
               claude plugin validate --strict "${plugin}agents"
             fi
           done
-      # The repository's scripts are TypeScript that Node 24 runs as is.
       - name: Type-check scripts
         run: pnpm run typecheck
-      # `pnpm run lint` runs `oxlint --fix`; here the check runs without --fix,
-      # so a finding fails the job instead of being rewritten on the runner.
+      # Without the --fix `pnpm run lint` passes, so a finding fails instead of being rewritten.
       - name: Lint scripts
         run: pnpm exec oxlint
-      # The repository's own scripts, on Vitest.
       - name: Test scripts
         run: pnpm test
-      # Every norm in a SKILL.md or an agent's <name>.md has an entry in its
-      # sidecar and vice versa, and every [Nxx] cross-reference resolves.
       - name: Check norms against their sidecars
         run: pnpm run check-norms

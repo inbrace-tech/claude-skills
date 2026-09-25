@@ -1,42 +1,9 @@
 #!/usr/bin/env node
-// Audits `pnpm-lock.yaml` against the npm registry: is every resolved version
-// still published, and past the `minimumReleaseAge` floor that
-// `pnpm-workspace.yaml` sets?
-//
-//   node scripts/check-lockfile-release-age.ts [--base <ref> | --all] [--verbose]
-//
-// Which entries it asks about, and which of the two questions, depends on the
-// mode:
-//   --base <ref>  the pull-request audit, the default. Diffs the lockfile
-//                 against its merge base with `<ref>` (default `origin/main`)
-//                 and asks both questions of what the change ADDS.
-//   --all         the scheduled sweep. Asks the takedown question of the WHOLE
-//                 lockfile: the case a per-PR delta cannot see, since nothing
-//                 about the lockfile changes when the registry removes a
-//                 version.
-// Why each mode asks what it asks is written up in
-// check-lockfile-release-age.logic.ts, which holds the rules and says what was
-// ported from Inbrace's internal agent harness and what differs. This file
-// reads git and the two pnpm files, fetches from the registry, prints and sets
-// the exit code: 0 clean, 1 a violation or an audit that could not run.
-//
-// NOT PART OF `pnpm test` OR ci.yml
-//
-// Every other check in this repository is offline and deterministic. This one
-// talks to registry.npmjs.org, and chaining a network call into those checks
-// would make a red result ambiguous between "a dependency is unsafe" and "the
-// network blipped". It runs in the dependency-audit workflows instead, and
-// locally as `pnpm run audit:lockfile` and `pnpm run audit:lockfile:all`.
-//
-// A REGISTRY IT CANNOT REACH FAILS THE AUDIT
-//
-// A check that reports green when it could not run is indistinguishable from a
-// satisfied one. An unreachable registry, an unparseable packument, an
-// unreadable lockfile or base ref, or a missing `minimumReleaseAge` key all
-// exit 1 and say which.
-//
-// Node 24 runs it as is, stripping the types, with no build and no runtime
-// dependency.
+// Audits pnpm-lock.yaml against the npm registry: every resolved version must still be published
+// and, per pull request, older than `minimumReleaseAge`. It needs the network, so the
+// dependency-audit workflows run it, never `pnpm test` or ci.yml.
+//   node scripts/check-lockfile-release-age.ts [--base <ref> (default origin/main) | --all] [--verbose]
+// Exit codes: 0 clean, 1 a violation or an audit that could not run; an unreachable registry never passes.
 
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -56,7 +23,7 @@ const LOCKFILE = "pnpm-lock.yaml";
 const WORKSPACE_MANIFEST = "pnpm-workspace.yaml";
 const REGISTRY = "https://registry.npmjs.org";
 
-/** How many packuments to have in flight at once. */
+/** Packuments in flight at once. */
 const CONCURRENCY = 8;
 
 /** Per-request ceiling, so a hung socket fails the job instead of its timeout. */
@@ -88,9 +55,8 @@ try {
 }
 
 /**
- * The lockfile at the merge base of HEAD and `baseRef`, not at `baseRef`
- * itself: a base branch that moved on since this branch forked would otherwise
- * count what this branch never picked up as its own additions and removals.
+ * The lockfile at the merge base with `baseRef`, not at `baseRef`: otherwise changes the base made
+ * after this branch forked would count as this branch's.
  */
 function readBaseLockfile(): string {
   try {
@@ -126,9 +92,7 @@ function readMinimumReleaseAge(): number {
     fail(`Lockfile audit could not read ${WORKSPACE_MANIFEST}.`);
   }
 
-  // Not a violation but an audit that cannot run: there is no floor to
-  // enforce, and reporting a clean tree would misdescribe a configuration that
-  // lost its supply-chain quarantine.
+  // A missing floor fails the audit: passing would hide a lost supply-chain quarantine.
   const minutes = parseMinimumReleaseAge(workspaceText);
   if (minutes === undefined) {
     fail(
@@ -155,8 +119,7 @@ async function fetchRegistryFacts(name: string): Promise<Map<string, RegistryFac
 const headText = readHeadLockfile();
 const declaredFloor = readMinimumReleaseAge();
 
-// The sweep asks the takedown question alone: every entry already on the
-// branch passed the floor when it merged, so flagging one again would be noise.
+// The sweep asks only the takedown question: every entry passed the floor when it merged.
 const minimumReleaseAgeMinutes = sweepAll ? null : declaredFloor;
 
 let packages: ResolvedPackage[];
