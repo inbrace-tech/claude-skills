@@ -2,6 +2,10 @@
 
 ## inbrace-config (formerly claude-config)
 
+### 0.4.2
+
+- The plan shows tables by area and by option and asks one question covering scope, run mode and a new quick sweep; the fixed cost counts the project memory; subagents run on an explicit cheaper tier; P01 counts a level saved under `modelSettings`; the close explains why the harness reports more tokens.
+
 ### 0.4.1
 
 - Cost figures read "tokens of context (estimate)" and include verifying and closing; the shared-settings option warns on public repositories; P01 cites its source on the row; post-report approvals join the report's decision section; worktree sessions read the main checkout's memory.

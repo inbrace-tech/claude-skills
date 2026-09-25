@@ -21,6 +21,8 @@ Inside Claude Code, from your project root:
    /plugin install inbrace-config@inbrace
    ```
 
+   The command opens a panel where you pick a scope. Choose **Install for you (user scope)**: the project scope writes `enabledPlugins` into the repository's `.claude/settings.json`, which is versioned, so the tree is dirty before the audit starts.
+
 3. Run one of its skills by typing its command:
 
    ```text
@@ -71,7 +73,7 @@ claude plugin install inbrace-config@inbrace --scope user
 | `project` | Everyone working in this repository | `.claude/settings.json`, which you commit |
 | `local` | You, in this repository only | `.claude/settings.local.json` |
 
-For the audit, `user` is the right choice: you run it once in a while, in whichever project you are auditing.
+For the audit, `user` is the right choice — **Install for you (user scope)** in the panel: you run it once in a while, in whichever project you are auditing. The `project` scope writes `enabledPlugins` into the versioned `.claude/settings.json`, which leaves the tree dirty before the audit starts.
 
 ### 4. Run the audit
 
