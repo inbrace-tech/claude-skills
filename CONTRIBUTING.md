@@ -36,6 +36,8 @@ pnpm run lint
 pnpm test
 pnpm run check-norms
 pnpm audit --audit-level=high
+pnpm run audit:lockfile
+pnpm run audit:lockfile:all
 claude plugin validate --strict .
 claude plugin validate --strict plugins/<plugin>
 claude plugin validate --strict plugins/<plugin>/skills
@@ -43,6 +45,8 @@ claude plugin validate --strict plugins/<plugin>/agents   # when the plugin ship
 ```
 
 The scripts' tests are Vitest specs, `scripts/**/*.spec.ts`; `pnpm run test:watch` reruns them as you edit.
+
+`pnpm run audit:lockfile` asks the npm registry whether every version your change adds to `pnpm-lock.yaml` is still published and past the `minimumReleaseAge` floor in `pnpm-workspace.yaml`, comparing against the merge base with `origin/main`; `pnpm run audit:lockfile:all` asks the whole lockfile whether any version has been taken down. Both need the network and fail, rather than pass, when the registry cannot be reached. The pull-request workflow runs the first, and a daily workflow runs the second.
 
 `check-norms` covers every `plugins/*/skills/*/SKILL.md` and every `plugins/*/agents/*.md`, each with its sidecar.
 

@@ -1,11 +1,20 @@
 # Dependency audit (daily sweep): the scheduled counterpart to the pull-request
 # gate in dependency-audit.yml. It never runs on a pull request.
 #
-# An advisory lands against a dependency at a moment unrelated to any pull
-# request, and nothing about pnpm-lock.yaml changes when it does, so only a
-# periodic run finds it. It does not gate a merge: a red check on a pull request
-# whose diff cannot fix the finding trains everyone to merge past red. It runs
-# on its own clock and reports to whoever opens it.
+# Two questions about the tree already on main: does any resolved version carry
+# a published advisory (`pnpm audit`), and has any of them been WITHDRAWN from
+# the registry since it merged (`pnpm run audit:lockfile:all`)? Neither shows up
+# in a pull request. An advisory lands against a dependency at a moment
+# unrelated to any pull request, and nothing about pnpm-lock.yaml changes when
+# the registry removes a version, so only a periodic full pass finds either.
+#
+# The sweep asks the takedown question alone, never the age question: every
+# entry passed the release-age floor when it merged, so flagging one again
+# would be noise that grows with the lockfile.
+#
+# It does not gate a merge: a red check on a pull request whose diff cannot fix
+# the finding trains everyone to merge past red. It runs on its own clock and
+# reports to whoever opens it.
 name: Dependency audit (daily)
 
 on:
@@ -21,13 +30,18 @@ permissions:
 
 jobs:
   daily-sweep:
-    name: Daily sweep (advisories)
+    name: Daily sweep (advisories + takedowns)
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
+      # No history needed: neither question compares against a base ref.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup-node-pnpm
       - name: Audit the locked dependency tree
         run: pnpm audit --audit-level=high
+      # `!cancelled()` so a red audit above never hides a takedown here.
+      - name: No resolved version has been withdrawn from the registry
+        if: '!cancelled()'
+        run: pnpm run audit:lockfile:all
