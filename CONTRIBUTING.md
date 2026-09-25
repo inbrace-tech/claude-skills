@@ -20,6 +20,8 @@ Skills here follow one format, so every rule can be found, cited and traced to t
 - **The surface states the final behavior.** How a rule changed, and why an alternative was rejected, belongs in the sidecar and the pull request, not in `SKILL.md`.
 - **Wrap content Claude executes verbatim** — a command, a template, a table it checks against — in a structural tag such as `<measure>` or `<patterns>`, so it reads as material to use rather than prose to paraphrase.
 - **Keep the context small.** A skill that reads a user's files states how it bounds what it reads, for example by measuring first and working in batches.
+- **Agents follow the same format.** A plugin agent at `agents/<name>.md` states its behavior as `- [Nxx]` norms under `##` sections, with their history in `<name>.norms.json` beside it, whose `surface` is the agent's path. Its ids are its own: an agent never cites another surface's norms, since the skill or session that starts it is not in its context.
+- **An agent's return contract lives in the agent**, wrapped in its own tag such as `<return_contract>`, with the exact format of what it returns. A skill that starts the agent points to that contract instead of restating it.
 
 ## Checking your change
 
@@ -31,7 +33,10 @@ node scripts/check-norms.mjs
 claude plugin validate --strict .
 claude plugin validate --strict plugins/<plugin>
 claude plugin validate --strict plugins/<plugin>/skills
+claude plugin validate --strict plugins/<plugin>/agents   # when the plugin ships agents
 ```
+
+`check-norms` covers every `plugins/*/skills/*/SKILL.md` and every `plugins/*/agents/*.md`, each with its sidecar.
 
 Then install your branch locally and run the skill on a real project:
 

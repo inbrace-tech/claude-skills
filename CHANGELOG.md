@@ -2,6 +2,10 @@
 
 ## inbrace-config (formerly claude-config)
 
+### 0.4.3
+
+- Audit subagents now run as the plugin's own read-only agent, `inbrace-config:batch-auditor`, on Opus 5.5 at `medium` effort instead of a cheaper tier, and the gate states that tier and its cost.
+
 ### 0.4.2
 
 - The plan shows tables by area and by option and asks one question covering scope, run mode and a new quick sweep; the fixed cost counts the project memory; subagents run on an explicit cheaper tier; P01 counts a level saved under `modelSettings`; the close explains why the harness reports more tokens.

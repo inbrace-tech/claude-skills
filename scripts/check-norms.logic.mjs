@@ -1,10 +1,11 @@
-// The pure half of check-norms: given one skill's SKILL.md text and its
-// SKILL.norms.json text, report every way the two disagree. No file system
-// access here, so every rule can be tested with plain strings; discovery,
-// printing and the exit code live in check-norms.mjs.
+// The pure half of check-norms: given one surface's text — a skill's SKILL.md
+// or an agent's <name>.md — and its sidecar's text, report every way the two
+// disagree. No file system access here, so every rule can be tested with plain
+// strings; reading directories, printing and the exit code live in
+// check-norms.mjs.
 //
 // The parser reads lines, not Markdown: a `- [N01] ` line inside a fenced
-// block defines a norm, and a `[N01]` anywhere is a reference. Skills in this
+// block defines a norm, and a `[N01]` anywhere is a reference. Surfaces in this
 // repository therefore never show a norm id inside an example.
 
 /**
@@ -21,7 +22,7 @@ export const REFERENCE = /\[(N\d{2})\]/g;
 export const ID = /^N\d{2}$/;
 
 /**
- * The norm ids a SKILL.md tries to define, in order, duplicates and malformed
+ * The norm ids a surface tries to define, in order, duplicates and malformed
  * ids included.
  * @param {string} surface
  * @returns {string[]}
@@ -47,18 +48,49 @@ export function toRepoPath(path, separator) {
 }
 
 /**
- * Checks one skill against its sidecar.
- * @param {object} skill
- * @param {string} skill.surfacePath  SKILL.md path relative to the repository root, spelled with `/`
- * @param {string} skill.sidecarPath  SKILL.norms.json path relative to the repository root, spelled with `/`
- * @param {string | null} skill.surface  SKILL.md contents, or null when the file does not exist
- * @param {string | null} skill.sidecarText  SKILL.norms.json contents, or null when the file does not exist
- * @returns {{ inFormat: boolean, errors: string[] }} inFormat is false for a skill with no norm and no sidecar, which is skipped
+ * The sidecar path for a surface: `SKILL.md` → `SKILL.norms.json`,
+ * `agents/<name>.md` → `agents/<name>.norms.json`.
+ * @param {string} surfacePath
+ * @returns {string}
  */
-export function checkSkill({ surfacePath, sidecarPath, surface, sidecarText }) {
+export function sidecarPathFor(surfacePath) {
+  return surfacePath.replace(/\.md$/, ".norms.json");
+}
+
+/**
+ * The agent names an `agents/` directory holds, given its file names: the stem
+ * of every `<name>.md` and every `<name>.norms.json`, so an orphan sidecar is
+ * found too. Other files are skipped. Sorted, each name once.
+ * @param {string[]} fileNames
+ * @returns {string[]}
+ */
+export function agentNames(fileNames) {
+  const names = new Set();
+  for (const file of fileNames) {
+    const match = file.match(/^(.+?)(\.norms\.json|\.md)$/);
+    if (match) names.add(match[1]);
+  }
+  return [...names].sort();
+}
+
+const baseName = (path) => path.slice(path.lastIndexOf("/") + 1);
+
+/**
+ * Checks one surface — a skill's SKILL.md or an agent's <name>.md — against
+ * its sidecar.
+ * @param {object} input
+ * @param {string} input.surfacePath  surface path relative to the repository root, spelled with `/`
+ * @param {string} input.sidecarPath  sidecar path relative to the repository root, spelled with `/`
+ * @param {string | null} input.surface  surface contents, or null when the file does not exist
+ * @param {string | null} input.sidecarText  sidecar contents, or null when the file does not exist
+ * @returns {{ inFormat: boolean, errors: string[] }} inFormat is false for a surface with no norm and no sidecar, which is skipped
+ */
+export function checkSurface({ surfacePath, sidecarPath, surface, sidecarText }) {
+  const surfaceName = baseName(surfacePath);
+  const sidecarName = baseName(sidecarPath);
   if (surface === null) {
     if (sidecarText === null) return { inFormat: false, errors: [] };
-    return { inFormat: true, errors: [`${sidecarPath}: has no SKILL.md beside it`] };
+    return { inFormat: true, errors: [`${sidecarPath}: has no ${surfaceName} beside it`] };
   }
 
   const defined = definedNorms(surface);
@@ -71,7 +103,7 @@ export function checkSkill({ surfacePath, sidecarPath, surface, sidecarText }) {
   const valid = defined.filter((id) => ID.test(id));
 
   if (sidecarText === null) {
-    errors.push(`${surfacePath}: defines norms but has no SKILL.norms.json`);
+    errors.push(`${surfacePath}: defines norms but has no ${sidecarName}`);
     return { inFormat: true, errors };
   }
 
@@ -113,8 +145,8 @@ export function checkSkill({ surfacePath, sidecarPath, surface, sidecarText }) {
     if (typeof entry.refs !== "object" || entry.refs === null || Array.isArray(entry.refs)) errors.push(`${sidecarPath}: ${id} "refs" must be an object`);
   }
 
-  for (const id of seen) if (!recorded.has(id)) errors.push(`${surfacePath}: ${id} has no entry in SKILL.norms.json`);
-  for (const id of recorded) if (!seen.has(id)) errors.push(`${sidecarPath}: ${id} matches no norm in SKILL.md`);
+  for (const id of seen) if (!recorded.has(id)) errors.push(`${surfacePath}: ${id} has no entry in ${sidecarName}`);
+  for (const id of recorded) if (!seen.has(id)) errors.push(`${sidecarPath}: ${id} matches no norm in ${surfaceName}`);
 
   const dangling = new Set();
   for (const match of surface.matchAll(REFERENCE)) {
