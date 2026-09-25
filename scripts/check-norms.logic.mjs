@@ -2,17 +2,27 @@
 // SKILL.norms.json text, report every way the two disagree. No file system
 // access here, so every rule can be tested with plain strings; discovery,
 // printing and the exit code live in check-norms.mjs.
+//
+// The parser reads lines, not Markdown: a `- [N01] ` line inside a fenced
+// block defines a norm, and a `[N01]` anywhere is a reference. Skills in this
+// repository therefore never show a norm id inside an example.
 
-/** A norm definition: a list item led by its id, `- [N01] ...`. */
-export const DEFINITION = /^- \[(N\d{2})\] /;
+/**
+ * A line that tries to define a norm: a list item led by `[N` and digits.
+ * Matching any digit count, not just two, is what lets a malformed id such as
+ * `[N1]` or `[N100]` be reported instead of silently read as prose.
+ */
+export const DEFINITION = /^- \[(N\d+)\] /;
 
 /** Any `[Nxx]` in the text: a definition or a cross-reference. */
 export const REFERENCE = /\[(N\d{2})\]/g;
 
-const ID = /^N\d{2}$/;
+/** A valid norm id: N followed by exactly two digits. */
+export const ID = /^N\d{2}$/;
 
 /**
- * The norm ids a SKILL.md defines, in order, duplicates included.
+ * The norm ids a SKILL.md tries to define, in order, duplicates and malformed
+ * ids included.
  * @param {string} surface
  * @returns {string[]}
  */
@@ -26,19 +36,40 @@ export function definedNorms(surface) {
 }
 
 /**
+ * A relative path spelled with `/`, whatever the platform's separator, so it
+ * compares equal to the `surface` field a sidecar records.
+ * @param {string} path
+ * @param {string} separator  the platform separator, `path.sep`
+ * @returns {string}
+ */
+export function toRepoPath(path, separator) {
+  return path.split(separator).join("/");
+}
+
+/**
  * Checks one skill against its sidecar.
  * @param {object} skill
- * @param {string} skill.surfacePath  SKILL.md path relative to the repository root, as the sidecar's `surface` must spell it
- * @param {string} skill.sidecarPath  SKILL.norms.json path relative to the repository root, used in messages
- * @param {string} skill.surface      SKILL.md contents
+ * @param {string} skill.surfacePath  SKILL.md path relative to the repository root, spelled with `/`
+ * @param {string} skill.sidecarPath  SKILL.norms.json path relative to the repository root, spelled with `/`
+ * @param {string | null} skill.surface  SKILL.md contents, or null when the file does not exist
  * @param {string | null} skill.sidecarText  SKILL.norms.json contents, or null when the file does not exist
  * @returns {{ inFormat: boolean, errors: string[] }} inFormat is false for a skill with no norm and no sidecar, which is skipped
  */
 export function checkSkill({ surfacePath, sidecarPath, surface, sidecarText }) {
+  if (surface === null) {
+    if (sidecarText === null) return { inFormat: false, errors: [] };
+    return { inFormat: true, errors: [`${sidecarPath}: has no SKILL.md beside it`] };
+  }
+
   const defined = definedNorms(surface);
   if (defined.length === 0 && sidecarText === null) return { inFormat: false, errors: [] };
 
   const errors = [];
+  for (const id of defined) {
+    if (!ID.test(id)) errors.push(`${surfacePath}: norm id ${id} is not N followed by two digits`);
+  }
+  const valid = defined.filter((id) => ID.test(id));
+
   if (sidecarText === null) {
     errors.push(`${surfacePath}: defines norms but has no SKILL.norms.json`);
     return { inFormat: true, errors };
@@ -61,7 +92,7 @@ export function checkSkill({ surfacePath, sidecarPath, surface, sidecarText }) {
   }
 
   const seen = new Set();
-  for (const id of defined) {
+  for (const id of valid) {
     if (seen.has(id)) errors.push(`${surfacePath}: norm ${id} is defined more than once`);
     seen.add(id);
   }
@@ -85,9 +116,11 @@ export function checkSkill({ surfacePath, sidecarPath, surface, sidecarText }) {
   for (const id of seen) if (!recorded.has(id)) errors.push(`${surfacePath}: ${id} has no entry in SKILL.norms.json`);
   for (const id of recorded) if (!seen.has(id)) errors.push(`${sidecarPath}: ${id} matches no norm in SKILL.md`);
 
+  const dangling = new Set();
   for (const match of surface.matchAll(REFERENCE)) {
-    if (!seen.has(match[1])) errors.push(`${surfacePath}: cross-reference [${match[1]}] names no norm defined here`);
+    if (!seen.has(match[1])) dangling.add(match[1]);
   }
+  for (const id of dangling) errors.push(`${surfacePath}: cross-reference [${id}] names no norm defined here`);
 
   return { inFormat: true, errors };
 }

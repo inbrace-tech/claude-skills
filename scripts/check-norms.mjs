@@ -7,24 +7,29 @@
 //   - a norm in SKILL.md has no sidecar entry, or a sidecar entry no norm;
 //   - an id is defined twice, or is not N followed by two digits;
 //   - a `[Nxx]` cross-reference names an id the skill does not define;
-//   - the sidecar is not a JSON object, or its `surface` does not name the
-//     SKILL.md beside it;
+//   - a sidecar has no SKILL.md beside it, is not a JSON object, or its
+//     `surface` does not name the SKILL.md beside it;
 //   - an entry lacks a non-empty `where` or `what`, or `refs` is not an object.
 // A SKILL.md with no norm and no sidecar is not in the format and is skipped.
 // The rules live in check-norms.logic.mjs; this file finds the skills, prints
-// and sets the exit code. Plain Node, no dependencies: run it from the
-// repository root with `node scripts/check-norms.mjs`.
+// and sets the exit code: 0 consistent, 1 inconsistent, 2 not run from the
+// repository root. Plain Node, no dependencies: run it from the repository
+// root with `node scripts/check-norms.mjs`.
 
 import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { join, relative } from "node:path";
-import { checkSkill } from "./check-norms.logic.mjs";
+import { join, relative, sep } from "node:path";
+import { checkSkill, toRepoPath } from "./check-norms.logic.mjs";
 
 const root = process.cwd();
+const plugins = join(root, "plugins");
+
+if (!existsSync(plugins)) {
+  console.error("check-norms: no plugins/ directory here; run it from the repository root");
+  process.exit(2);
+}
 
 /** Every `plugins/<plugin>/skills/<skill>/` directory; stray files are skipped. */
 function skillDirs() {
-  const plugins = join(root, "plugins");
-  if (!existsSync(plugins)) return [];
   const dirs = [];
   for (const plugin of readdirSync(plugins, { withFileTypes: true })) {
     if (!plugin.isDirectory()) continue;
@@ -37,18 +42,18 @@ function skillDirs() {
   return dirs;
 }
 
+const readIfPresent = (path) => (existsSync(path) ? readFileSync(path, "utf8") : null);
 const errors = [];
 let checked = 0;
 
 for (const dir of skillDirs()) {
   const surfacePath = join(dir, "SKILL.md");
-  if (!existsSync(surfacePath)) continue;
   const sidecarPath = join(dir, "SKILL.norms.json");
   const result = checkSkill({
-    surfacePath: relative(root, surfacePath),
-    sidecarPath: relative(root, sidecarPath),
-    surface: readFileSync(surfacePath, "utf8"),
-    sidecarText: existsSync(sidecarPath) ? readFileSync(sidecarPath, "utf8") : null,
+    surfacePath: toRepoPath(relative(root, surfacePath), sep),
+    sidecarPath: toRepoPath(relative(root, sidecarPath), sep),
+    surface: readIfPresent(surfacePath),
+    sidecarText: readIfPresent(sidecarPath),
   });
   if (!result.inFormat) continue;
   checked += 1;
