@@ -1,0 +1,23 @@
+# Node 24 and pnpm, then the dev dependencies from the lockfile. Shared by the
+# CI and the dependency-audit workflows.
+name: Setup Node + pnpm
+description: Install pnpm and Node 24, then the dev dependencies from pnpm-lock.yaml.
+
+runs:
+  using: composite
+  steps:
+    # Reads `packageManager` from package.json, so CI runs the exact pnpm, hash
+    # included, that a contributor runs locally.
+    - uses: pnpm/action-setup@d15e628ca66d93ee5f352c71671a7bc6a97af5c9 # v6.0.8
+
+    # After pnpm, so `cache: pnpm` finds it.
+    - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      with:
+        node-version: 24
+        cache: pnpm
+
+    # --frozen-lockfile fails if pnpm-lock.yaml is out of sync with package.json
+    # and never rewrites it. pnpm runs no dependency install script unless
+    # pnpm-workspace.yaml allows it, and it allows none.
+    - shell: bash
+      run: pnpm install --frozen-lockfile

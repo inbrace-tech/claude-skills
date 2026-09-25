@@ -7,7 +7,7 @@ Thanks for your interest in improving these skills. This is a small, curated col
 - **One plugin per theme, under `plugins/<plugin>/`, named `inbrace-<theme>`.** A plugin holds one or more skills in `skills/<skill>/SKILL.md` and is listed in `.claude-plugin/marketplace.json`, whose marketplace is `inbrace`. The shared prefix groups every Inbrace skill under `/inbrace` in the slash-command list.
 - **Choose who starts each skill, and say so in the README's Skills table.** Set `disable-model-invocation: true` for a skill with side effects or one a user runs once in a while, such as an audit: only the user can start it, and nothing about it sits in context until then. Leave it unset for a skill Claude should reach for on its own when a task matches, and write its `description` so Claude can tell when that is.
 - **Ground every claim about model behavior in a source.** Cite the official Anthropic documentation page in the skill's `Sources` section. A tip that only one person has seen work does not belong here.
-- **The repository's scripts are TypeScript, and it accepts no JavaScript.** Node 24 runs them as they are, with no build step, and `npm run typecheck` checks them. The `tsconfig.json` is strict — `strict` plus `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noImplicitReturns`, `noFallthroughCasesInSwitch`, `noUnusedLocals` and `noUnusedParameters` — and a `!` or an `as` that only silences the compiler is not accepted: guard or narrow the value instead.
+- **The repository's scripts are TypeScript, and it accepts no JavaScript.** Node 24 runs them as they are, with no build step; `pnpm run typecheck` checks them and `pnpm run lint` runs oxlint over them. The `tsconfig.json` is strict — `strict` plus `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noImplicitReturns`, `noFallthroughCasesInSwitch`, `noUnusedLocals`, `noUnusedParameters` and `noImplicitOverride` — and a `!` or an `as` that only silences the compiler is not accepted: guard or narrow the value instead.
 - **No executable code without discussion first.** Open an issue before adding a script or a hook to a plugin.
 - **Nothing private.** No internal repository names, URLs, credentials or customer data, including in examples.
 
@@ -29,10 +29,12 @@ Skills here follow one format, so every rule can be found, cited and traced to t
 CI runs these on every pull request. Run them locally first:
 
 ```bash
-npm ci --ignore-scripts
-npm run typecheck
-npm test
-npm run check-norms
+pnpm install --frozen-lockfile
+pnpm run typecheck
+pnpm run lint
+pnpm test
+pnpm run check-norms
+pnpm audit --audit-level=high
 claude plugin validate --strict .
 claude plugin validate --strict plugins/<plugin>
 claude plugin validate --strict plugins/<plugin>/skills

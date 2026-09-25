@@ -137,7 +137,7 @@ export function checkSurface({ surfacePath, sidecarPath, surface, sidecarText }:
   const sidecar = parsed;
 
   if (sidecar.surface !== surfacePath) {
-    errors.push(`${sidecarPath}: surface is "${sidecar.surface}", expected "${surfacePath}"`);
+    errors.push(`${sidecarPath}: surface is "${String(sidecar.surface)}", expected "${surfacePath}"`);
   }
 
   const seen = new Set<string>();

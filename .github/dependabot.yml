@@ -1,5 +1,5 @@
-# Dependabot keeps the pinned GitHub Actions SHAs and the exact npm dev
-# dependency versions fresh. Minors and patches are
+# Dependabot keeps the pinned GitHub Actions SHAs and the exact dev dependency
+# versions in package.json and pnpm-lock.yaml fresh. Minors and patches are
 # grouped into one weekly PR; an action major arrives as its own PR, so a renamed
 # input or a new requirement is reviewed on its own.
 version: 2
@@ -27,8 +27,8 @@ updates:
     commit-message:
       prefix: chore
       include: scope
-  # The type checker and Node's types behind `npm run typecheck`, pinned to
-  # exact versions in package.json and package-lock.json.
+  # The type checker, Node's types and oxlint, pinned to exact versions in
+  # package.json and pnpm-lock.yaml. pnpm uses the `npm` ecosystem.
   - package-ecosystem: npm
     directory: /
     schedule:
@@ -37,9 +37,14 @@ updates:
       time: "06:00"
       timezone: America/Sao_Paulo
     open-pull-requests-limit: 5
-    # Same supply-chain quarantine as the actions above.
+    # Supply-chain quarantine graded by SemVer risk. The patch figure is 3 days
+    # to match `minimumReleaseAge: 4320` in pnpm-workspace.yaml: a shorter one
+    # would propose versions pnpm then refuses to resolve. Security updates
+    # bypass the cooldown.
     cooldown:
-      default-days: 7
+      semver-patch-days: 3
+      semver-minor-days: 7
+      semver-major-days: 30
     versioning-strategy: increase
     groups:
       npm-minor-and-patch:

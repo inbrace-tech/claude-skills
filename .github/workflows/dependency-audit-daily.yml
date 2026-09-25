@@ -1,0 +1,33 @@
+# Dependency audit (daily sweep): the scheduled counterpart to the pull-request
+# gate in dependency-audit.yml. It never runs on a pull request.
+#
+# An advisory lands against a dependency at a moment unrelated to any pull
+# request, and nothing about pnpm-lock.yaml changes when it does, so only a
+# periodic run finds it. It does not gate a merge: a red check on a pull request
+# whose diff cannot fix the finding trains everyone to merge past red. It runs
+# on its own clock and reports to whoever opens it.
+name: Dependency audit (daily)
+
+on:
+  # 03:00 UTC. A scheduled run is queued, not punctual, so it is set early
+  # enough that a delay of a few hours still lands before the workday.
+  schedule:
+    - cron: '0 3 * * *'
+  # So the sweep is reachable without waiting a day.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  daily-sweep:
+    name: Daily sweep (advisories)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-node-pnpm
+      - name: Audit the locked dependency tree
+        run: pnpm audit --audit-level=high

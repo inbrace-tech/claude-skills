@@ -7,6 +7,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "noImplicitOverride": true,
     "noEmit": true,
     "erasableSyntaxOnly": true,
     "allowImportingTsExtensions": true,
@@ -16,5 +17,5 @@
     "target": "esnext",
     "types": ["node"]
   },
-  "include": ["scripts/**/*.ts"]
+  "include": ["scripts/**/*.ts", "oxlint.config.ts"]
 }

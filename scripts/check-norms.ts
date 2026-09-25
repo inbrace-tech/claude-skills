@@ -19,7 +19,7 @@
 // the surfaces, prints and sets the exit code: 0 consistent, 1 inconsistent,
 // 2 not run from the repository root. Node 24 runs it as is, stripping the
 // types, with no build and no runtime dependency: run it from the repository
-// root with `npm run check-norms` or `node scripts/check-norms.ts`.
+// root with `pnpm run check-norms` or `node scripts/check-norms.ts`.
 
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, relative, sep } from "node:path";
