@@ -1,0 +1,35 @@
+# Dependency audit (PR gate): does any version pnpm-lock.yaml resolves carry a
+# published advisory of high severity or worse?
+#
+# A sibling of ci.yml rather than a job in it, because its daily counterpart,
+# dependency-audit-daily.yml, runs on a schedule; one workflow serving both
+# triggers would put a permanently skipped job on every pull request.
+#
+# The release-age floor in pnpm-workspace.yaml is the primary control: pnpm
+# refuses to resolve a version younger than three days. This job is the other
+# half, the known-vulnerable versions that are old enough to pass the floor.
+name: Dependency audit
+
+on:
+  # No `paths:` filter: a job that never runs looks the same as one that passed,
+  # and the audit is cheap.
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: pnpm audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-node-pnpm
+      # High and critical only: every dependency here is a dev tool, and a
+      # low-severity advisory on one of them is noise on a pull request.
+      - name: Audit the locked dependency tree
+        run: pnpm audit --audit-level=high

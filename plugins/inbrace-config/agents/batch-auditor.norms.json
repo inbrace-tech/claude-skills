@@ -23,7 +23,7 @@
       "id": "N04",
       "where": "Return",
       "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [12] },
-      "what": "Added in 0.4.3, after review of the pull request. The agent first said to return findings \"in the [N09] line format\", citing a norm of the skill; an agent does not see the skill that starts it, and a norm id is only meaningful inside the surface that defines it, so the agent now owns its return contract. The contract is wrapped in `<return_contract>` so it reads as material to use exactly, and it is the one owner of the finding line: the skill's findings file, its [N09], uses the same line and points here instead of restating it, which keeps a subagent's lines and the session's own lines identical and lets the session append them as they are. The clean-batch line is fixed so the session can tell a clean batch from an empty or failed return."
+      "what": "Added in 0.4.3, after review of the pull request. The agent first said to return findings \"in the `[N09]` line format\", citing a norm of the skill; an agent does not see the skill that starts it, and a norm id is only meaningful inside the surface that defines it, so the agent now owns its return contract. The contract is wrapped in `<return_contract>` so it reads as material to use exactly, and it is the one owner of the finding line: the skill's findings file, its [audit-opus-5-5#N09], uses the same line and points here instead of restating it, which keeps a subagent's lines and the session's own lines identical and lets the session append them as they are. The clean-batch line is fixed so the session can tell a clean batch from an empty or failed return."
     }
   ]
 }

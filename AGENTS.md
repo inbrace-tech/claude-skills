@@ -13,7 +13,12 @@ This repository is a public Claude Code plugin marketplace. Read `CONTRIBUTING.m
 ## Checks
 
 ```bash
-node scripts/check-norms.mjs
+pnpm install --frozen-lockfile
+pnpm run typecheck
+pnpm run lint
+pnpm test
+pnpm run check-norms
+pnpm audit --audit-level=high
 claude plugin validate --strict .
 claude plugin validate --strict plugins/<plugin>
 claude plugin validate --strict plugins/<plugin>/skills

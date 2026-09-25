@@ -1,5 +1,7 @@
 # CI: validates the marketplace manifest, every plugin manifest, every skill
-# and every agent with `claude plugin validate --strict`, on every PR and push to main.
+# and every agent with `claude plugin validate --strict`, then type-checks,
+# lints and tests the repository scripts and checks every norm against its sidecar, on
+# every PR and push to main.
 # --strict turns warnings (unknown fields, missing metadata) into failures.
 name: CI
 
@@ -29,11 +31,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: 24
+      # Node 24, pnpm from `packageManager`, and the dev dependencies from the
+      # lockfile: the type checker, Node's types, oxlint and Vitest.
+      - uses: ./.github/actions/setup-node-pnpm
       # Pinned version: bump it deliberately, so a CLI release never changes
-      # what CI accepts without a reviewed diff.
+      # what CI accepts without a reviewed diff. A global CLI, not a dependency
+      # of this repository, so it goes through the npm that ships with Node.
       - name: Install Claude Code
         env:
           CLAUDE_CODE_VERSION: 2.1.280
@@ -49,10 +52,17 @@ jobs:
               claude plugin validate --strict "${plugin}agents"
             fi
           done
-      # The repository's own scripts, on Node's built-in test runner. No install.
+      # The repository's scripts are TypeScript that Node 24 runs as is.
+      - name: Type-check scripts
+        run: pnpm run typecheck
+      # `pnpm run lint` runs `oxlint --fix`; here the check runs without --fix,
+      # so a finding fails the job instead of being rewritten on the runner.
+      - name: Lint scripts
+        run: pnpm exec oxlint
+      # The repository's own scripts, on Vitest.
       - name: Test scripts
-        run: node --test "scripts/*.test.mjs"
+        run: pnpm test
       # Every norm in a SKILL.md or an agent's <name>.md has an entry in its
-      # sidecar and vice versa, and every [Nxx] cross-reference resolves. Plain Node, no install.
+      # sidecar and vice versa, and every [Nxx] cross-reference resolves.
       - name: Check norms against their sidecars
-        run: node scripts/check-norms.mjs
+        run: pnpm run check-norms

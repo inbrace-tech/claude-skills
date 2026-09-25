@@ -7,6 +7,7 @@ Thanks for your interest in improving these skills. This is a small, curated col
 - **One plugin per theme, under `plugins/<plugin>/`, named `inbrace-<theme>`.** A plugin holds one or more skills in `skills/<skill>/SKILL.md` and is listed in `.claude-plugin/marketplace.json`, whose marketplace is `inbrace`. The shared prefix groups every Inbrace skill under `/inbrace` in the slash-command list.
 - **Choose who starts each skill, and say so in the README's Skills table.** Set `disable-model-invocation: true` for a skill with side effects or one a user runs once in a while, such as an audit: only the user can start it, and nothing about it sits in context until then. Leave it unset for a skill Claude should reach for on its own when a task matches, and write its `description` so Claude can tell when that is.
 - **Ground every claim about model behavior in a source.** Cite the official Anthropic documentation page in the skill's `Sources` section. A tip that only one person has seen work does not belong here.
+- **The repository's scripts are TypeScript, and it accepts no JavaScript.** Node 24 runs them as they are, with no build step; `pnpm run typecheck` checks them and `pnpm run lint` runs oxlint over them. The `tsconfig.json` is strict — `strict` plus `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noImplicitReturns`, `noFallthroughCasesInSwitch`, `noUnusedLocals`, `noUnusedParameters` and `noImplicitOverride` — and a `!` or an `as` that only silences the compiler is not accepted: guard or narrow the value instead.
 - **No executable code without discussion first.** Open an issue before adding a script or a hook to a plugin.
 - **Nothing private.** No internal repository names, URLs, credentials or customer data, including in examples.
 
@@ -16,7 +17,8 @@ Skills here follow one format, so every rule can be found, cited and traced to t
 
 - **One norm per list item, led by its id:** `- [N07] Measure the inventory before reading any of it, …`. A norm is one direct, imperative sentence stating what to do, and it may add the reason in one clause.
 - **Ids are stable.** Number new norms after the highest id in the skill. Never renumber or reuse an id: issues, pull requests and other skills cite them, as in `[N04]`.
-- **The history goes in `SKILL.norms.json`, beside the `SKILL.md`.** Give each norm an entry with its `id`, `where` (the section it sits in), `refs` (sources such as `{"docs": ["<url>"], "inbrace-tech/claude-skills": [<pr>]}`) and `what` (why the norm exists, what went wrong without it, what was measured). Claude never loads this file on its own, so the history costs no context.
+- **The history goes in `SKILL.norms.json`, beside the `SKILL.md`.** Give each norm an entry with its `id`, `where` (the section it sits in), `refs` (sources such as `{"docs": ["<url>"], "inbrace-tech/claude-skills": [<pr>]}`) and `what` (why the norm exists, what went wrong without it, what was measured). Claude never loads this file on its own, so the history costs no context. `pnpm run check-norms` holds `where` to a real heading of the surface, and every `refs` key to `owner/repo` with issue or pull request numbers, or `docs` with https URLs.
+- **Cite another surface's norm with its name**, as in `[audit-opus-5-5#N09]`, from prose, a sidecar or another Markdown file; the check resolves it against that surface's sidecar. A bare id outside its own surface and sidecar fails unless it sits in backticks.
 - **The surface states the final behavior.** How a rule changed, and why an alternative was rejected, belongs in the sidecar and the pull request, not in `SKILL.md`.
 - **Wrap content Claude executes verbatim** — a command, a template, a table it checks against — in a structural tag such as `<measure>` or `<patterns>`, so it reads as material to use rather than prose to paraphrase.
 - **Keep the context small.** A skill that reads a user's files states how it bounds what it reads, for example by measuring first and working in batches.
@@ -28,13 +30,19 @@ Skills here follow one format, so every rule can be found, cited and traced to t
 CI runs these on every pull request. Run them locally first:
 
 ```bash
-node --test "scripts/*.test.mjs"
-node scripts/check-norms.mjs
+pnpm install --frozen-lockfile
+pnpm run typecheck
+pnpm run lint
+pnpm test
+pnpm run check-norms
+pnpm audit --audit-level=high
 claude plugin validate --strict .
 claude plugin validate --strict plugins/<plugin>
 claude plugin validate --strict plugins/<plugin>/skills
 claude plugin validate --strict plugins/<plugin>/agents   # when the plugin ships agents
 ```
+
+The scripts' tests are Vitest specs, `scripts/**/*.spec.ts`; `pnpm run test:watch` reruns them as you edit.
 
 `check-norms` covers every `plugins/*/skills/*/SKILL.md` and every `plugins/*/agents/*.md`, each with its sidecar.
 
