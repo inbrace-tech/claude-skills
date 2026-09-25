@@ -2,6 +2,10 @@
 
 ## inbrace-config (formerly claude-config)
 
+### 0.4.4
+
+- The audit reads nothing outside the project, asks scope and run mode as two questions, runs one agent per area with a new `finding-verifier` checking every finding, estimates time from measured runs, and summarizes in the chat what it would change, why, what the verifier discarded and what it recommends.
+
 ### 0.4.3
 
 - Audit subagents now run as the plugin's own read-only agent, `inbrace-config:batch-auditor`, on Opus 5.5 at `medium` effort instead of a cheaper tier, and the gate states that tier and its cost.

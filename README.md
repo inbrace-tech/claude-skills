@@ -35,9 +35,9 @@ Every plugin and its skills are listed in [Skills](#skills) below. A skill start
 
 | Plugin | Skill | Mode | What it does |
 |---|---|---|---|
-| `inbrace-config` | `/inbrace-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Shows its plan and estimated token cost and asks before reading anything, asks again before each later costly stage, explains the findings in the chat with a short numbered table of changes, asks what to apply with a recommendation, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. |
+| `inbrace-config` | `/inbrace-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Shows its plan and estimated token cost and asks before reading anything, asks again before each later costly stage, can run one `batch-auditor` agent per area in parallel, has every raw finding checked by the `finding-verifier` agent, which tries to refute it, summarizes in the chat what it would change, why, what the verifier discarded and what it recommends, asks what to apply with a recommendation, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. |
 
-`inbrace-config` also ships one agent, `batch-auditor`, which only the audit starts, when you choose to run it in parallel subagents. It reads files and returns findings; it cannot edit or write anything.
+`inbrace-config` also ships two agents, which only the audit starts: `batch-auditor`, one per area of the setup when you choose to run the audit in parallel agents, and `finding-verifier`, which checks the raw findings at the end of every run and returns the final list. Both read files and return text; neither can edit or write anything.
 
 ## Install, step by step
 
@@ -139,7 +139,7 @@ Installing a plugin does not load its skills into every conversation. A skill's 
 
 The Skills table above says which mode each skill uses. One-shot or side-effecting skills, like the audit, are command only.
 
-Agents are different: while a plugin is enabled, the one-line description of each agent it ships stays in context, so Claude knows the agent exists. `inbrace-config` ships one, `batch-auditor`, with a single short sentence.
+Agents are different: while a plugin is enabled, the one-line description of each agent it ships stays in context, so Claude knows the agent exists. `inbrace-config` ships two, `batch-auditor` and `finding-verifier`, each with a single short sentence.
 
 ## Without the plugin system
 
@@ -148,13 +148,13 @@ Each skill is a plain folder with a `SKILL.md`, following the [Agent Skills](htt
 ```bash
 # for you, in every project
 cp -r plugins/inbrace-config/skills/audit-opus-5-5 ~/.claude/skills/
-cp plugins/inbrace-config/agents/batch-auditor.md ~/.claude/agents/
+cp plugins/inbrace-config/agents/batch-auditor.md plugins/inbrace-config/agents/finding-verifier.md ~/.claude/agents/
 # for one repository, shared with your team
 cp -r plugins/inbrace-config/skills/audit-opus-5-5 .claude/skills/
-cp plugins/inbrace-config/agents/batch-auditor.md .claude/agents/
+cp plugins/inbrace-config/agents/batch-auditor.md plugins/inbrace-config/agents/finding-verifier.md .claude/agents/
 ```
 
-The audit needs its agent file too: it reads the format of each finding line from `batch-auditor.md`, and stops at the plan, saying what to copy, when the file is in neither place. Outside the plugin the agent is called `batch-auditor`, without the `inbrace-config:` prefix.
+The skill alone runs the whole audit in your session. Copy the agent files too only to use agents: `batch-auditor.md` for the parallel mode and `finding-verifier.md` for the final check; without them the audit offers only the in-session mode and checks its findings itself. Outside the plugin the agents are called `batch-auditor` and `finding-verifier`, without the `inbrace-config:` prefix.
 
 A copied skill does not receive updates. Installing through the marketplace does.
 

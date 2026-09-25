@@ -1,0 +1,47 @@
+{
+  "surface": "plugins/inbrace-config/agents/finding-verifier.md",
+  "norms": [
+    {
+      "id": "N01",
+      "where": "Read",
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [21] },
+      "what": "Added in 0.4.4 with the agent. A subagent starts with only its own system prompt and the prompt it is given, and this agent sets `omitClaudeMd: true`, so the brief is everything it knows about the project: the pattern table, the line format and the rules it checks each finding against. Reading it before the findings keeps a finding from being judged without them. See #21."
+    },
+    {
+      "id": "N02",
+      "where": "Read",
+      "refs": { "inbrace-tech/claude-skills": [21] },
+      "what": "Added in 0.4.4. In the live test of 0.4.3 on a large harness — 113 files, 23 batches, 23 subagents — none of the 10 raw findings survived as a change: 7 were already decided by the project and 3 were protected phrases; a finding is refuted by what the file and the project's decision records say, not by the raw line alone, so the agent reads both before judging. See #21."
+    },
+    {
+      "id": "N03",
+      "where": "Verify",
+      "refs": { "inbrace-tech/claude-skills": [21] },
+      "what": "Added in 0.4.4. The verifier's job is adversarial: it starts from the assumption that a finding may be wrong and looks for the evidence that disproves it — a misquoted line, prose that does not instruct the model, a row whose condition does not hold, a decision the project already made. The maintainer chose refutation over confirmation because the raw findings of the 0.4.3 test were mostly wrong in exactly those ways. See #21."
+    },
+    {
+      "id": "N04",
+      "where": "Verify",
+      "refs": { "inbrace-tech/claude-skills": [21] },
+      "what": "Added in 0.4.4. The verifier corrects rather than only accepting or rejecting, so the session receives a final list it can write and present without triaging it again. Every final status is named, and `already decided` and `discarded` carry where and why, so the user can see the reason in the chat. See #21."
+    },
+    {
+      "id": "N05",
+      "where": "Verify",
+      "refs": { "inbrace-tech/claude-skills": [21] },
+      "what": "Added in 0.4.4. Three of the ten raw findings of the 0.4.3 large-harness test were protected phrases. A model upgrade changes nothing about a project's safety rules, confirmations, permission boundaries or facts, so a finding that would remove one is discarded, with the reason, whatever its pattern. See #21."
+    },
+    {
+      "id": "N06",
+      "where": "Verify",
+      "refs": { "docs": ["https://code.claude.com/docs/en/plugins/components#frontmatter-fields-in-plugin-agents"], "inbrace-tech/claude-skills": [21] },
+      "what": "Added in 0.4.4. \"Correct\" applies to the findings: the frontmatter grants only `Read, Grep, Glob`, which the plugin components page lists among the fields a plugin agent supports, and the norm states the same limit so the agent does not look for a way around it. The session that started it writes the findings file. See #21."
+    },
+    {
+      "id": "N07",
+      "where": "Return",
+      "refs": { "inbrace-tech/claude-skills": [21] },
+      "what": "Added in 0.4.4. The session reports what the verifier discarded or reclassified, with counts and examples, so every raw finding has to come back as a line, and a corrected line has to say what it was. The line format itself comes from the brief, since the skill owns it; the contract here fixes the order, the merges and that nothing is dropped. See #21."
+    }
+  ]
+}
