@@ -1,19 +1,5 @@
-// Unit tests for the lockfile audit's pure half: lockfile and workspace text
-// in, violations out. No network: the registry is a function the specs pass.
-//   pnpm test
-// The entry point is tested end to end in `check-lockfile-release-age.spec.ts`.
-//
-// The `should-catch` cases are what make this audit more than a green tick: a
-// check that never fires is indistinguishable from one whose subject moved
-// away underneath it. The fixtures model the threat the audit was built for, a
-// poisoned release published inside a short window and then taken down, with
-// invented package names.
-//
-// The last describe block runs the parser against the LIVE `pnpm-lock.yaml`.
-// Its job is not to re-assert what the fixtures prove but to establish that
-// the lockfile still has the shape the parser looks for: a pnpm format change
-// would leave every fixture case green while the audit parsed an empty set and
-// reported a clean delta forever.
+// Unit tests for the lockfile audit's pure rules (`pnpm test`); the registry is a function each spec
+// passes. Fixtures model a poisoned release later taken down, with invented package names.
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -72,17 +58,13 @@ describe("parseResolvedVersions", () => {
   });
 
   it("collapses a peer-suffixed snapshot key onto the published artifact", () => {
-    // `'@scope/plugin@2.1.0(core-lib@1.4.0)'` and `@scope/plugin@2.1.0` are
-    // one published tarball; counting them twice would double the registry
-    // fan-out and report the same package twice in a violation list.
+    // One tarball: counting both would fetch it and report it twice.
     const resolved = [...parseResolvedVersions(BASE_LOCKFILE)].filter((key) => key.startsWith("@scope/plugin@"));
     expect(resolved).toEqual(["@scope/plugin@2.1.0"]);
   });
 
   it("ignores the importers block, whose version lines sit deeper", () => {
-    // `        version: 1.4.0` under `importers:` is a specifier echo, not a
-    // resolution; matching it would make every importer entry a phantom
-    // package named `version`.
+    // The `version:` lines under `importers:` echo specifiers; matching them would invent a package `version`.
     expect([...parseResolvedVersions(BASE_LOCKFILE)]).not.toContain("version@1.4.0");
   });
 });
@@ -99,9 +81,7 @@ describe("splitResolvedKey", () => {
 
 describe("allResolvedVersions", () => {
   it("returns every resolution, which is what the scheduled sweep walks", () => {
-    // The sweep depends on no base ref by design: a version withdrawn from the
-    // registry long after it merged is added by no pull request, so only a
-    // full pass over the lockfile can observe it.
+    // No base ref: a version withdrawn long after merge is added by no pull request.
     expect(allResolvedVersions(BASE_LOCKFILE)).toEqual([
       { name: "@scope/plugin", version: "2.1.0" },
       { name: "core-lib", version: "1.4.0" },
@@ -121,8 +101,7 @@ describe("addedResolvedVersions", () => {
   });
 
   it("does not report a REMOVED entry as a finding", () => {
-    // Dropping a dependency cannot introduce an artifact this repository did
-    // not already trust, so the delta is deliberately one-directional.
+    // A removal cannot add an untrusted artifact, so the delta is one-directional.
     expect(addedResolvedVersions(HEAD_LOCKFILE, BASE_LOCKFILE)).not.toContainEqual({ name: "core-lib", version: "1.5.0" });
   });
 });
@@ -153,9 +132,7 @@ describe("evaluatePackage", () => {
   });
 
   it("should-catch: a version the registry no longer lists", () => {
-    // This is the question `minimumReleaseAge` cannot reach at all: a
-    // taken-down version ages past any floor while staying uninstallable and
-    // untrustworthy.
+    // What `minimumReleaseAge` cannot see: a taken-down version ages past any floor.
     const violation = evaluatePackage({
       pkg: { name: "cache-lib", version: "7.2.10" },
       fact: { publishedAt: "2026-01-10T10:14:41.662Z", stillPublished: false },
@@ -196,9 +173,7 @@ describe("evaluatePackage", () => {
   });
 
   it("sweep mode still reports a taken-down version", () => {
-    // `minimumReleaseAgeMinutes: null` is what the `--all` sweep passes. The
-    // takedown question is the one a per-PR delta cannot ask about an entry
-    // that merged weeks ago, so it must survive the sweep's narrower scope.
+    // `null` is the `--all` sweep, which must still catch takedowns of old entries.
     const violation = evaluatePackage({
       pkg: { name: "cache-lib", version: "7.2.10" },
       fact: { publishedAt: "2026-01-10T10:14:41.662Z", stillPublished: false },
@@ -209,8 +184,7 @@ describe("evaluatePackage", () => {
   });
 
   it("sweep mode does not flag a fresh version as too fresh", () => {
-    // Every entry already on the branch passed the floor when it merged, so
-    // flagging one that merged yesterday would make a daily job noisy.
+    // Entries on the branch already passed the floor when they merged.
     expect(
       evaluatePackage({
         pkg: { name: "core-lib", version: "1.5.0" },
@@ -222,8 +196,7 @@ describe("evaluatePackage", () => {
   });
 
   it("sweep mode tolerates a missing publish date", () => {
-    // The date answers the age question alone, which the sweep does not ask,
-    // so an old package with thin registry metadata must not fail it.
+    // The sweep does not ask age, so thin registry metadata on an old package must not fail it.
     expect(
       evaluatePackage({
         pkg: { name: "thin-meta", version: "5.0.1" },
@@ -256,14 +229,12 @@ describe("parseMinimumReleaseAge", () => {
   });
 
   it("does not mistake the Strict sibling for the floor", () => {
-    // `minimumReleaseAgeStrict: false` sits next to the real key in
-    // pnpm-workspace.yaml; a prefix match would read `false` as the floor.
+    // `minimumReleaseAgeStrict: false` sits beside the key; a prefix match would read `false`.
     expect(parseMinimumReleaseAge("minimumReleaseAgeStrict: false\n")).toBeUndefined();
   });
 
   it("reports absence rather than defaulting to zero", () => {
-    // A silent 0 would be a floor no version can fail: an audit that only
-    // looks like it guards anything.
+    // A silent 0 would be a floor no version can fail.
     expect(parseMinimumReleaseAge("packages:\n  - .\n")).toBeUndefined();
   });
 });
@@ -295,8 +266,7 @@ describe("registryFactsFromPackument", () => {
   });
 
   it("marks a version the time map dates but the versions map dropped as unpublished", () => {
-    // This is how a takedown shows in a packument: the publish is still dated,
-    // the version is gone from `versions`.
+    // A takedown in a packument: still dated in `time`, gone from `versions`.
     const facts = registryFactsFromPackument({
       time: { "7.2.10": "2026-01-10T10:14:41.662Z" },
       versions: { "7.2.9": {} },
@@ -343,8 +313,7 @@ describe("auditPackages", () => {
   });
 
   it("should-catch: an unreachable registry lands in unreachable, never in a clean result", async () => {
-    // The entry point fails on a non-empty `unreachable`. Were a rejected fetch
-    // swallowed here, a registry outage would pass the audit green.
+    // Swallowing a rejected fetch would let a registry outage pass green.
     const result = await auditPackages({
       packages: [
         { name: "core-lib", version: "1.4.0" },
@@ -425,10 +394,8 @@ describe("against the live repository", () => {
 
   it("parses the real lockfile into a non-trivial set of resolutions", () => {
     const resolved = parseResolvedVersions(readFileSync(join(repoRoot, "pnpm-lock.yaml"), "utf8"));
-    // A pnpm lockfile-format change is the failure this guards: the parser
-    // would match nothing, the delta would be empty forever, and the audit
-    // would report clean on every pull request. The dev tools alone resolve
-    // well over this many.
+    // Guards against a pnpm format change that would parse nothing and pass every pull request.
+    // The dev tools alone resolve well over this many.
     expect(resolved.size).toBeGreaterThan(50);
     expect([...resolved].every((key) => key.includes("@"))).toBe(true);
   });

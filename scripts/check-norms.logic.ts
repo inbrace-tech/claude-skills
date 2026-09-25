@@ -1,50 +1,10 @@
-// The pure half of check-norms: given one surface's text — a skill's SKILL.md
-// or an agent's <name>.md — and its sidecar's text, report every way the two
-// disagree; given every surface and every Markdown file, report what only the
-// whole corpus can show. No file system access here, so every rule can be
-// tested with plain strings; reading directories, printing and the exit code
-// live in check-norms.ts.
-//
-// PORTED from the norm-provenance checker of Inbrace's internal agent harness,
-// which enforces the same surface/sidecar format. What came across, under the
-// harness's own names:
-//   - `where` resolves to a real `##`–`######` heading of the surface
-//     (`extractHeadings`, `normaliseWhere`, prefix match in both directions,
-//     inline-code spans and fenced blocks blanked by `blankCodeRegions`);
-//   - `refs` keys are `owner/repo` (`REPO_KEY_PATTERN`), each value an array of
-//     positive integers;
-//   - the qualified citation `[<qualifier>#N01]` resolves to a norm another
-//     surface's sidecar declares (`surfaceQualifiers`), on a surface, in a
-//     sidecar's own `what`/`where`, or in any other Markdown file;
-//   - a bare `[N01]` in Markdown no sidecar serves fails, unless it sits in an
-//     inline-code span or a fenced block;
-//   - reported, never failed, as in the harness: a bare `#12` in `what`/`where`
-//     that `refs` does not list (`unlistedBareRefs`), a `refs` number the prose
-//     never writes (`uncitedRefNumbers`), and a bare id in sidecar prose that
-//     sidecar declares no entry for.
-// What differs, and why:
-//   - `refs` also accepts a `docs` key, an array of https URLs. The harness has
-//     no such key; here it is where a norm cites the official documentation,
-//     which CONTRIBUTING.md requires.
-//   - A norm id is still N and exactly two digits, and only a top-level `- `
-//     list item opens a norm. The harness also accepts three digits and ordered
-//     or nested items; this repository's format fixes the narrower form.
-//   - No `--scope`: it narrows the report for parallel waves of agents writing
-//     one tree, and this repository has none.
-//   - No population counters (citations, entries, empty `refs`) and no
-//     discovery through `git ls-files`: surfaces are found by path under
-//     plugins/, and Markdown by walking the tree.
-//
-// The per-surface definitions and cross-references read lines, not Markdown: a
-// `- [N01] ` line inside a fenced block defines a norm, and a `[N01]` anywhere
-// is a reference. Surfaces in this repository therefore never show a norm id
-// inside an example. The corpus checks blank code first, as the harness does.
+// The pure rules behind check-norms.ts: text in, errors out, so every rule is tested with strings.
+// Ported from Inbrace's internal norm checker and narrowed: an id is N plus exactly two digits in a
+// top-level `- ` item, and `refs` also takes a `docs` key of https URLs (required by CONTRIBUTING.md).
+// Per-surface definitions and cross-references are read line by line, fences included, so a surface
+// never shows a norm id in an example; the corpus checks blank code first.
 
-/**
- * A line that tries to define a norm: a list item led by `[N` and digits.
- * Matching any digit count, not just two, is what lets a malformed id such as
- * `[N1]` or `[N100]` be reported instead of silently read as prose.
- */
+/** A line that tries to define a norm; any digit count matches, so `[N1]` is reported, not read as prose. */
 export const DEFINITION = /^- \[(N\d+)\] /;
 
 /** Any `[Nxx]` in the text: a definition or a cross-reference. */
@@ -56,10 +16,7 @@ export const ID = /^N\d{2}$/;
 /** A JSON object whose fields have not been checked yet. */
 type Unchecked = Record<string, unknown>;
 
-/**
- * Narrows a parsed JSON value to an object whose fields can be read. An array
- * passes too: its fields read as undefined, like a missing field.
- */
+/** Narrows parsed JSON to a readable object; an array passes, its fields reading as undefined. */
 const isUnchecked = (value: unknown): value is Unchecked => typeof value === "object" && value !== null;
 
 /** `owner/repo`, anchored: GitHub's name charset, one slash. */
@@ -74,18 +31,10 @@ export const BARE_ISSUE_CITATION = /(?<![\w/#-])#(\d{1,6})\b/g;
 /** `owner/repo#12`, the unambiguous spelling, removed before the bare scan. */
 export const QUALIFIED_ISSUE_CITATION = /[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+#(\d{1,6})\b/g;
 
-/**
- * Both citation spellings: the bare `[N01]` and the qualified
- * `[<qualifier>#N01]`. They are disjoint by construction: the bare form needs
- * `N` right after `[`, and the qualified form spends that position on its
- * qualifier. The digits are one or more, so `[N7]` is read and then reported.
- */
+/** The bare `[N01]` or the qualified `[<qualifier>#N01]`; any digit count, so `[N7]` is read and reported. */
 const CITATION_PATTERN = /\[(?:([A-Za-z0-9._-]+)#)?N(\d+)\]/g;
 
-/**
- * Calls `visit` for each line with whether it sits in a fenced block, the
- * fence lines included. A fence closes on the same character, at least as long.
- */
+/** Visits each line with whether it is in a fenced block; a fence closes on the same character, at least as long. */
 function forEachLine(source: string, visit: (line: string, insideFence: boolean) => void): void {
   let fenceChar: string | null = null;
   let fenceLength = 0;
@@ -167,21 +116,14 @@ export function extractHeadings(source: string): string[] {
   return headings;
 }
 
-/**
- * A `where` in the alphabet `extractHeadings` returns: code spans blanked, then
- * trimmed at both ends, so a `where` quoting a heading verbatim, backticks and
- * all, compares equal wherever the span sits in it.
- */
+/** `where` normalised like `extractHeadings` output, so a heading quoted with its backticks compares equal. */
 export function normaliseWhere(where: string): string {
   return blankCodeRegions(where).replace(/^\s+|\s+$/g, "");
 }
 
 /**
- * Whether `where` names a heading of `surface`, by prefix in either direction,
- * since prose cites a heading shortened. A surface with no heading has nothing
- * for `where` to name, so any `where` resolves there. A `where` that is all one
- * code span normalises to "", which would prefix every heading, so it never
- * resolves.
+ * Whether `where` prefixes a heading of `surface`, or a heading prefixes it. Any `where` resolves on a
+ * surface with no heading; one that is all code span normalises to "" and never resolves.
  */
 export function whereResolves(where: string, surface: string): boolean {
   const normalised = normaliseWhere(where);
@@ -211,21 +153,14 @@ export function extractCitations(source: string): Citation[] {
   return citations;
 }
 
-/**
- * The names a qualified citation reaches a surface by: every `/` segment of its
- * path, plus its basename without `.md`. A skill is named by its directory, an
- * agent by its basename.
- */
+/** The names a qualified citation reaches a surface by: a skill by its directory, an agent by its basename. */
 export function surfaceQualifiers(surfacePath: string): string[] {
   const segments = surfacePath.split("/");
   const basename = segments.at(-1) ?? "";
   return [...segments, basename.replace(/\.md$/, "")];
 }
 
-/**
- * The bare `#12` numbers in `text` that `known` does not carry, deduplicated
- * and sorted. `owner/repo#12` is removed first: it already names its tree.
- */
+/** The bare `#12` numbers in `text` that `known` lacks, sorted; `owner/repo#12` is not bare. */
 export function unlistedBareRefs(text: string, known: ReadonlySet<number>): number[] {
   const bare = new Set<number>();
   for (const [, digits] of text.replace(QUALIFIED_ISSUE_CITATION, " ").matchAll(BARE_ISSUE_CITATION)) {
@@ -235,11 +170,7 @@ export function unlistedBareRefs(text: string, known: ReadonlySet<number>): numb
   return [...bare].sort((left, right) => left - right);
 }
 
-/**
- * The `refs` numbers `text` never writes as `#N`, bare or qualified,
- * deduplicated and sorted. A ref the prose beside it never names is an
- * attribution no reader can trace.
- */
+/** The `refs` numbers `text` never writes as `#N`, sorted: an attribution no reader can trace. */
 export function uncitedRefNumbers(text: string, numbers: readonly number[]): number[] {
   const cited = new Set<number>();
   for (const [, digits] of text.matchAll(/#(\d{1,6})(?!\d)/g)) cited.add(Number(digits));
@@ -293,26 +224,18 @@ export interface SurfaceResult {
   errors: string[];
 }
 
-/**
- * The norm ids a surface tries to define, in order, duplicates and malformed
- * ids included.
- */
+/** The norm ids a surface tries to define, in order, duplicates and malformed ids included. */
 export function definedNorms(surface: string): string[] {
   const ids: string[] = [];
   for (const line of surface.split("\n")) {
-    // DEFINITION's one group is not optional, so a match always carries it;
-    // the guard is what lets the compiler see that.
+    // The group is not optional; the guard is for the compiler.
     const id = line.match(DEFINITION)?.[1];
     if (id !== undefined) ids.push(id);
   }
   return ids;
 }
 
-/**
- * A relative path spelled with `/`, whatever the platform's separator, so it
- * compares equal to the `surface` field a sidecar records. `separator` is the
- * platform separator, `path.sep`.
- */
+/** A relative path spelled with `/` whatever `separator` (`path.sep`) is, to match a sidecar's `surface`. */
 export function toRepoPath(path: string, separator: string): string {
   return path.split(separator).join("/");
 }
@@ -325,11 +248,7 @@ export function sidecarPathFor(surfacePath: string): string {
   return surfacePath.replace(/\.md$/, ".norms.json");
 }
 
-/**
- * The agent names an `agents/` directory holds, given its file names: the stem
- * of every `<name>.md` and every `<name>.norms.json`, so an orphan sidecar is
- * found too. Other files are skipped. Sorted, each name once.
- */
+/** The agent names in an `agents/` directory, from each `.md` and `.norms.json` so an orphan sidecar counts; sorted. */
 export function agentNames(fileNames: string[]): string[] {
   const names = new Set<string>();
   for (const file of fileNames) {
@@ -341,10 +260,7 @@ export function agentNames(fileNames: string[]): string[] {
 
 const baseName = (path: string): string => path.slice(path.lastIndexOf("/") + 1);
 
-/**
- * Checks one surface — a skill's SKILL.md or an agent's <name>.md — against
- * its sidecar.
- */
+/** Checks one surface against its sidecar. */
 export function checkSurface({ surfacePath, sidecarPath, surface, sidecarText }: SurfaceInput): SurfaceResult {
   const surfaceName = baseName(surfacePath);
   const sidecarName = baseName(sidecarPath);

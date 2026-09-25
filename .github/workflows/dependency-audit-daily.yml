@@ -1,28 +1,12 @@
-# Dependency audit (daily sweep): the scheduled counterpart to the pull-request
-# gate in dependency-audit.yml. It never runs on a pull request.
-#
-# Two questions about the tree already on main: does any resolved version carry
-# a published advisory (`pnpm audit`), and has any of them been WITHDRAWN from
-# the registry since it merged (`pnpm run audit:lockfile:all`)? Neither shows up
-# in a pull request. An advisory lands against a dependency at a moment
-# unrelated to any pull request, and nothing about pnpm-lock.yaml changes when
-# the registry removes a version, so only a periodic full pass finds either.
-#
-# The sweep asks the takedown question alone, never the age question: every
-# entry passed the release-age floor when it merged, so flagging one again
-# would be noise that grows with the lockfile.
-#
-# It does not gate a merge: a red check on a pull request whose diff cannot fix
-# the finding trains everyone to merge past red. It runs on its own clock and
-# reports to whoever opens it.
+# Daily sweep of main: advisories (`pnpm audit`) and versions withdrawn from the registry since they
+# merged (`pnpm run audit:lockfile:all`, takedowns only), which no pull request would surface.
+# Not a merge gate: a PR whose diff cannot fix the finding should not go red.
 name: Dependency audit (daily)
 
 on:
-  # 03:00 UTC. A scheduled run is queued, not punctual, so it is set early
-  # enough that a delay of a few hours still lands before the workday.
+  # 03:00 UTC: scheduled runs can start hours late and should still land before the workday.
   schedule:
     - cron: '0 3 * * *'
-  # So the sweep is reachable without waiting a day.
   workflow_dispatch:
 
 permissions:

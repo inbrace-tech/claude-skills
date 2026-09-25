@@ -1,7 +1,5 @@
-// End-to-end tests for check-norms: they run the script itself, against this
-// repository and against throwaway fixture trees.
-//   pnpm test
-// The pure rules are tested with strings in `check-norms.logic.spec.ts`.
+// End-to-end tests: run check-norms against this repository and throwaway fixture trees (`pnpm test`).
+// The pure rules are tested with strings in check-norms.logic.spec.ts.
 
 import { spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";

@@ -1,6 +1,4 @@
-// Tests for the pure rules of check-norms, with strings and no file system:
-//   pnpm test
-// `check-norms.spec.ts` runs the script itself.
+// Tests for check-norms' pure rules, with strings and no file system (`pnpm test`).
 
 import {
   agentNames,
