@@ -56,6 +56,7 @@ wc -c <every file from the inventory>
 - [N07] Show the plan in one message before reading the first batch: the updated checklist, the root, the file count by area, what was excluded and why, the git state, the batch count, the estimated cost range, and how the audit will run.
 - [N39] Where the plan has more than one batch, ask how to proceed per [N33], with these options: audit in this session, batch by batch; audit a reduced scope — memory files and their imports, rules, agents and settings — with its own estimate; audit in parallel subagents, which finishes sooner and costs about the same or more tokens, since each subagent reads the pattern table again; or cancel, which goes straight to the close in [N45]. Recommend this session up to ten batches and the reduced scope above that, and state the reason in the recommended option. Where the plan has a single batch, show it and continue without asking.
 - [N40] Give each subagent, when the user chose them, its list of files, the pattern table, and the Stage 2 norms, and have it return its findings as text in the [N09] line format and write no file; this session writes the findings file.
+- [N46] When the user chose the reduced scope and its plan still has more than ten batches, show the new plan and ask again per [N33], offering: audit in this session, audit in parallel subagents, or cancel.
 
 ## Stage 2 — Audit in batches
 

@@ -270,6 +270,12 @@
       "where": "Stage 5 — Apply, verify, close",
       "refs": { "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. In the small-project test the stop path ended with no closing message, and the report files under `.claude/audits/` were left untracked without a word. Every path — cancelled at the plan, stopped at the report, headless, or applied — now ends with the same close: the final checklist, what was and was not applied, what to do with the report files, and one next step."
+    },
+    {
+      "id": "N46",
+      "where": "Stage 1 — Plan: list, measure, confirm",
+      "refs": { "inbrace-tech/claude-skills": [6] },
+      "what": "Added in 0.3.0, after review of the pull request. The reduced scope that [N39] recommends above ten batches is estimated on its own, and in a very large setup its plan can still exceed ten batches. Without a second gate, choosing it would start a run whose cost the user had not seen. Asking again with the new plan keeps the rule that no reading starts before the user sees what it will cost; reducing again is not offered, since the reduced scope is already the smallest one the skill defines."
     }
   ]
 }
