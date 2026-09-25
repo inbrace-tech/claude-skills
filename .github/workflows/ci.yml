@@ -32,7 +32,7 @@ jobs:
         with:
           persist-credentials: false
       # Node 24, pnpm from `packageManager`, and the dev dependencies from the
-      # lockfile: the type checker, Node's types and oxlint.
+      # lockfile: the type checker, Node's types, oxlint and Vitest.
       - uses: ./.github/actions/setup-node-pnpm
       # Pinned version: bump it deliberately, so a CLI release never changes
       # what CI accepts without a reviewed diff. A global CLI, not a dependency
@@ -59,7 +59,7 @@ jobs:
       # so a finding fails the job instead of being rewritten on the runner.
       - name: Lint scripts
         run: pnpm exec oxlint
-      # The repository's own scripts, on Node's built-in test runner.
+      # The repository's own scripts, on Vitest.
       - name: Test scripts
         run: pnpm test
       # Every norm in a SKILL.md or an agent's <name>.md has an entry in its

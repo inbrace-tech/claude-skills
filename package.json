@@ -8,13 +8,15 @@
   "scripts": {
     "typecheck": "tsc",
     "lint": "oxlint --fix",
-    "test": "node --test \"scripts/*.test.ts\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "check-norms": "node scripts/check-norms.ts"
   },
   "devDependencies": {
     "@types/node": "24.13.5",
     "oxlint": "1.83.0",
     "oxlint-tsgolint": "7.0.2002",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "vitest": "4.1.11"
   }
 }

@@ -15,7 +15,7 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "target": "esnext",
-    "types": ["node"]
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["scripts/**/*.ts", "oxlint.config.ts"]
+  "include": ["scripts/**/*.ts", "oxlint.config.ts", "vitest.config.ts"]
 }

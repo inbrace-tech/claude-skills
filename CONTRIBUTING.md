@@ -42,6 +42,8 @@ claude plugin validate --strict plugins/<plugin>/skills
 claude plugin validate --strict plugins/<plugin>/agents   # when the plugin ships agents
 ```
 
+The scripts' tests are Vitest specs, `scripts/**/*.spec.ts`; `pnpm run test:watch` reruns them as you edit.
+
 `check-norms` covers every `plugins/*/skills/*/SKILL.md` and every `plugins/*/agents/*.md`, each with its sidecar.
 
 Then install your branch locally and run the skill on a real project:
