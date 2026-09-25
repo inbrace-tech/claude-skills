@@ -2,7 +2,7 @@
 // or an agent's <name>.md — and its sidecar's text, report every way the two
 // disagree. No file system access here, so every rule can be tested with plain
 // strings; reading directories, printing and the exit code live in
-// check-norms.mjs.
+// check-norms.ts.
 //
 // The parser reads lines, not Markdown: a `- [N01] ` line inside a fenced
 // block defines a norm, and a `[N01]` anywhere is a reference. Surfaces in this
@@ -21,14 +21,34 @@ export const REFERENCE = /\[(N\d{2})\]/g;
 /** A valid norm id: N followed by exactly two digits. */
 export const ID = /^N\d{2}$/;
 
+/** A JSON object whose fields have not been checked yet. */
+type Unchecked = Record<string, unknown>;
+
+/** What `checkSurface` reads: one surface and its sidecar. */
+export interface SurfaceInput {
+  /** Surface path relative to the repository root, spelled with `/`. */
+  surfacePath: string;
+  /** Sidecar path relative to the repository root, spelled with `/`. */
+  sidecarPath: string;
+  /** Surface contents, or null when the file does not exist. */
+  surface: string | null;
+  /** Sidecar contents, or null when the file does not exist. */
+  sidecarText: string | null;
+}
+
+/** What `checkSurface` reports about one surface. */
+export interface SurfaceResult {
+  /** False for a surface with no norm and no sidecar, which is skipped. */
+  inFormat: boolean;
+  errors: string[];
+}
+
 /**
  * The norm ids a surface tries to define, in order, duplicates and malformed
  * ids included.
- * @param {string} surface
- * @returns {string[]}
  */
-export function definedNorms(surface) {
-  const ids = [];
+export function definedNorms(surface: string): string[] {
+  const ids: string[] = [];
   for (const line of surface.split("\n")) {
     const match = line.match(DEFINITION);
     if (match) ids.push(match[1]);
@@ -38,22 +58,18 @@ export function definedNorms(surface) {
 
 /**
  * A relative path spelled with `/`, whatever the platform's separator, so it
- * compares equal to the `surface` field a sidecar records.
- * @param {string} path
- * @param {string} separator  the platform separator, `path.sep`
- * @returns {string}
+ * compares equal to the `surface` field a sidecar records. `separator` is the
+ * platform separator, `path.sep`.
  */
-export function toRepoPath(path, separator) {
+export function toRepoPath(path: string, separator: string): string {
   return path.split(separator).join("/");
 }
 
 /**
  * The sidecar path for a surface: `SKILL.md` → `SKILL.norms.json`,
  * `agents/<name>.md` → `agents/<name>.norms.json`.
- * @param {string} surfacePath
- * @returns {string}
  */
-export function sidecarPathFor(surfacePath) {
+export function sidecarPathFor(surfacePath: string): string {
   return surfacePath.replace(/\.md$/, ".norms.json");
 }
 
@@ -61,11 +77,9 @@ export function sidecarPathFor(surfacePath) {
  * The agent names an `agents/` directory holds, given its file names: the stem
  * of every `<name>.md` and every `<name>.norms.json`, so an orphan sidecar is
  * found too. Other files are skipped. Sorted, each name once.
- * @param {string[]} fileNames
- * @returns {string[]}
  */
-export function agentNames(fileNames) {
-  const names = new Set();
+export function agentNames(fileNames: string[]): string[] {
+  const names = new Set<string>();
   for (const file of fileNames) {
     const match = file.match(/^(.+?)(\.norms\.json|\.md)$/);
     if (match) names.add(match[1]);
@@ -73,19 +87,13 @@ export function agentNames(fileNames) {
   return [...names].sort();
 }
 
-const baseName = (path) => path.slice(path.lastIndexOf("/") + 1);
+const baseName = (path: string): string => path.slice(path.lastIndexOf("/") + 1);
 
 /**
  * Checks one surface — a skill's SKILL.md or an agent's <name>.md — against
  * its sidecar.
- * @param {object} input
- * @param {string} input.surfacePath  surface path relative to the repository root, spelled with `/`
- * @param {string} input.sidecarPath  sidecar path relative to the repository root, spelled with `/`
- * @param {string | null} input.surface  surface contents, or null when the file does not exist
- * @param {string | null} input.sidecarText  sidecar contents, or null when the file does not exist
- * @returns {{ inFormat: boolean, errors: string[] }} inFormat is false for a surface with no norm and no sidecar, which is skipped
  */
-export function checkSurface({ surfacePath, sidecarPath, surface, sidecarText }) {
+export function checkSurface({ surfacePath, sidecarPath, surface, sidecarText }: SurfaceInput): SurfaceResult {
   const surfaceName = baseName(surfacePath);
   const sidecarName = baseName(sidecarPath);
   if (surface === null) {
@@ -96,7 +104,7 @@ export function checkSurface({ surfacePath, sidecarPath, surface, sidecarText })
   const defined = definedNorms(surface);
   if (defined.length === 0 && sidecarText === null) return { inFormat: false, errors: [] };
 
-  const errors = [];
+  const errors: string[] = [];
   for (const id of defined) {
     if (!ID.test(id)) errors.push(`${surfacePath}: norm id ${id} is not N followed by two digits`);
   }
@@ -107,33 +115,35 @@ export function checkSurface({ surfacePath, sidecarPath, surface, sidecarText })
     return { inFormat: true, errors };
   }
 
-  let sidecar;
+  let parsed: unknown;
   try {
-    sidecar = JSON.parse(sidecarText);
+    parsed = JSON.parse(sidecarText);
   } catch (error) {
-    errors.push(`${sidecarPath}: invalid JSON (${error.message})`);
+    errors.push(`${sidecarPath}: invalid JSON (${(error as Error).message})`);
     return { inFormat: true, errors };
   }
-  if (typeof sidecar !== "object" || sidecar === null || Array.isArray(sidecar)) {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
     errors.push(`${sidecarPath}: must be a JSON object`);
     return { inFormat: true, errors };
   }
+  const sidecar = parsed as Unchecked;
 
   if (sidecar.surface !== surfacePath) {
     errors.push(`${sidecarPath}: surface is "${sidecar.surface}", expected "${surfacePath}"`);
   }
 
-  const seen = new Set();
+  const seen = new Set<string>();
   for (const id of valid) {
     if (seen.has(id)) errors.push(`${surfacePath}: norm ${id} is defined more than once`);
     seen.add(id);
   }
 
   if (!Array.isArray(sidecar.norms)) errors.push(`${sidecarPath}: "norms" must be an array`);
-  const entries = Array.isArray(sidecar.norms) ? sidecar.norms : [];
-  const recorded = new Set();
-  for (const entry of entries) {
-    const id = entry?.id;
+  const entries: unknown[] = Array.isArray(sidecar.norms) ? sidecar.norms : [];
+  const recorded = new Set<string>();
+  for (const item of entries) {
+    const entry = (typeof item === "object" && item !== null ? item : {}) as Unchecked;
+    const id = entry.id;
     if (typeof id !== "string" || !ID.test(id)) {
       errors.push(`${sidecarPath}: entry with invalid id ${JSON.stringify(id)}`);
       continue;
@@ -148,7 +158,7 @@ export function checkSurface({ surfacePath, sidecarPath, surface, sidecarText })
   for (const id of seen) if (!recorded.has(id)) errors.push(`${surfacePath}: ${id} has no entry in ${sidecarName}`);
   for (const id of recorded) if (!seen.has(id)) errors.push(`${sidecarPath}: ${id} matches no norm in ${surfaceName}`);
 
-  const dangling = new Set();
+  const dangling = new Set<string>();
   for (const match of surface.matchAll(REFERENCE)) {
     if (!seen.has(match[1])) dangling.add(match[1]);
   }

@@ -1,5 +1,5 @@
 // Tests for check-norms. Node's built-in runner, no dependencies:
-//   node --test "scripts/*.test.mjs"
+//   npm test, or node --test "scripts/*.test.ts"
 // The pure rules are tested with strings; end-to-end tests run the script
 // itself, against this repository and against throwaway fixture trees.
 
@@ -9,15 +9,22 @@ import { spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { agentNames, checkSurface, definedNorms, sidecarPathFor, toRepoPath } from "./check-norms.logic.mjs";
+import { agentNames, checkSurface, definedNorms, sidecarPathFor, toRepoPath } from "./check-norms.logic.ts";
+import type { SurfaceInput } from "./check-norms.logic.ts";
 
 const SURFACE_PATH = "plugins/p/skills/s/SKILL.md";
 const SIDECAR_PATH = "plugins/p/skills/s/SKILL.norms.json";
 
-const entry = (id, overrides = {}) => ({ id, where: "Stage 1", refs: {}, what: "Why it exists.", ...overrides });
+const entry = (id: string, overrides: Record<string, unknown> = {}): Record<string, unknown> => ({ id, where: "Stage 1", refs: {}, what: "Why it exists.", ...overrides });
+
+interface SkillOverrides {
+  surface?: string | null;
+  sidecar?: object;
+  sidecarText?: string | null;
+}
 
 /** A consistent two-norm skill; each test breaks exactly one thing. */
-function skill({ surface, sidecar, sidecarText } = {}) {
+function skill({ surface, sidecar, sidecarText }: SkillOverrides = {}): SurfaceInput {
   return {
     surfacePath: SURFACE_PATH,
     sidecarPath: SIDECAR_PATH,
@@ -29,7 +36,7 @@ function skill({ surface, sidecar, sidecarText } = {}) {
   };
 }
 
-const errorsOf = (input) => checkSurface(input).errors;
+const errorsOf = (input: SurfaceInput): string[] => checkSurface(input).errors;
 
 test("a consistent skill passes", () => {
   assert.deepEqual(checkSurface(skill()), { inFormat: true, errors: [] });
@@ -165,7 +172,7 @@ test("agentNames finds agents by their .md or their sidecar, and skips other fil
 
 const AGENT_PATH = "plugins/p/agents/a.md";
 const AGENT_SIDECAR_PATH = "plugins/p/agents/a.norms.json";
-const agent = (sidecar) => ({
+const agent = (sidecar: object): SurfaceInput => ({
   surfacePath: AGENT_PATH,
   sidecarPath: AGENT_SIDECAR_PATH,
   surface: "---\nname: a\n---\n\n## Return\n\n- [N01] Return one line.\n\n<return_contract>\n`clean`\n</return_contract>\n",
@@ -185,8 +192,8 @@ test("an inconsistent agent is reported with the agent's own file names", () => 
   ]);
 });
 
-const script = join(import.meta.dirname, "check-norms.mjs");
-const run = (cwd) => spawnSync(process.execPath, [script], { cwd, encoding: "utf8" });
+const script = join(import.meta.dirname, "check-norms.ts");
+const run = (cwd: string) => spawnSync(process.execPath, [script], { cwd, encoding: "utf8" });
 
 test("this repository passes", () => {
   const result = run(join(import.meta.dirname, ".."));

@@ -1,4 +1,5 @@
-# Dependabot keeps the pinned GitHub Actions SHAs fresh. Minors and patches are
+# Dependabot keeps the pinned GitHub Actions SHAs and the exact npm dev
+# dependency versions fresh. Minors and patches are
 # grouped into one weekly PR; an action major arrives as its own PR, so a renamed
 # input or a new requirement is reviewed on its own.
 version: 2
@@ -18,6 +19,30 @@ updates:
       default-days: 7
     groups:
       actions-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      prefix: chore
+      include: scope
+  # The type checker and Node's types behind `npm run typecheck`, pinned to
+  # exact versions in package.json and package-lock.json.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: America/Sao_Paulo
+    open-pull-requests-limit: 5
+    # Same supply-chain quarantine as the actions above.
+    cooldown:
+      default-days: 7
+    versioning-strategy: increase
+    groups:
+      npm-minor-and-patch:
         patterns:
           - "*"
         update-types:

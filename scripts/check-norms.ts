@@ -15,14 +15,15 @@
 //   - an entry lacks a non-empty `where` or `what`, or `refs` is not an object.
 // A surface with no norm and no sidecar is not in the format and is skipped.
 // It finds `plugins/*/skills/*/SKILL.md` and `plugins/*/agents/*.md`, each
-// with its sidecar. The rules live in check-norms.logic.mjs; this file finds
+// with its sidecar. The rules live in check-norms.logic.ts; this file finds
 // the surfaces, prints and sets the exit code: 0 consistent, 1 inconsistent,
-// 2 not run from the repository root. Plain Node, no dependencies: run it from
-// the repository root with `node scripts/check-norms.mjs`.
+// 2 not run from the repository root. Node 24 runs it as is, stripping the
+// types, with no build and no runtime dependency: run it from the repository
+// root with `npm run check-norms` or `node scripts/check-norms.ts`.
 
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, relative, sep } from "node:path";
-import { agentNames, checkSurface, sidecarPathFor, toRepoPath } from "./check-norms.logic.mjs";
+import { agentNames, checkSurface, sidecarPathFor, toRepoPath } from "./check-norms.logic.ts";
 
 const root = process.cwd();
 const plugins = join(root, "plugins");
@@ -32,13 +33,21 @@ if (!existsSync(plugins)) {
   process.exit(2);
 }
 
+type Kind = "skill" | "agent";
+
+interface Surface {
+  kind: Kind;
+  /** Absolute path to the surface. */
+  path: string;
+}
+
 /**
- * Every surface to check, as `{ kind, path }`: `plugins/<plugin>/skills/<skill>/SKILL.md`
- * for each skill directory, and `plugins/<plugin>/agents/<name>.md` for each
- * agent name found by its `.md` or its `.norms.json`. Stray files are skipped.
+ * Every surface to check: `plugins/<plugin>/skills/<skill>/SKILL.md` for each
+ * skill directory, and `plugins/<plugin>/agents/<name>.md` for each agent name
+ * found by its `.md` or its `.norms.json`. Stray files are skipped.
  */
-function surfaces() {
-  const found = [];
+function surfaces(): Surface[] {
+  const found: Surface[] = [];
   for (const plugin of readdirSync(plugins, { withFileTypes: true })) {
     if (!plugin.isDirectory()) continue;
     const skills = join(plugins, plugin.name, "skills");
@@ -58,9 +67,9 @@ function surfaces() {
   return found;
 }
 
-const readIfPresent = (path) => (existsSync(path) ? readFileSync(path, "utf8") : null);
-const errors = [];
-const checked = { skill: 0, agent: 0 };
+const readIfPresent = (path: string): string | null => (existsSync(path) ? readFileSync(path, "utf8") : null);
+const errors: string[] = [];
+const checked: Record<Kind, number> = { skill: 0, agent: 0 };
 
 for (const { kind, path: surfacePath } of surfaces()) {
   const sidecarPath = sidecarPathFor(surfacePath);

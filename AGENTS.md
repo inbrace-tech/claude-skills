@@ -13,7 +13,10 @@ This repository is a public Claude Code plugin marketplace. Read `CONTRIBUTING.m
 ## Checks
 
 ```bash
-node scripts/check-norms.mjs
+npm ci --ignore-scripts
+npm run typecheck
+npm test
+npm run check-norms
 claude plugin validate --strict .
 claude plugin validate --strict plugins/<plugin>
 claude plugin validate --strict plugins/<plugin>/skills
