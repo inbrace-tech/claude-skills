@@ -2,6 +2,10 @@
 
 ## inbrace-config (formerly claude-config)
 
+### 0.4.5
+
+- P01 keeps a `[1m]` model suffix, the gate reads project hooks that require `model` before asking, the cost footer applies 3–5× only to this session, time and batch estimates follow the measured run, and the verifier cites a control rule without guessing where the file sits.
+
 ### 0.4.4
 
 - The audit reads nothing outside the project, asks scope and run mode as two questions, runs one agent per area with a new `finding-verifier` checking every finding, estimates time from measured runs, and summarizes in the chat what it would change, why, what the verifier discarded and what it recommends.
