@@ -7,26 +7,32 @@
 //   - a norm in SKILL.md has no sidecar entry, or a sidecar entry no norm;
 //   - an id is defined twice, or is not N followed by two digits;
 //   - a `[Nxx]` cross-reference names an id the skill does not define;
-//   - the sidecar's `surface` does not name the SKILL.md beside it;
+//   - the sidecar is not a JSON object, or its `surface` does not name the
+//     SKILL.md beside it;
 //   - an entry lacks a non-empty `where` or `what`, or `refs` is not an object.
 // A SKILL.md with no norm and no sidecar is not in the format and is skipped.
-// Plain Node, no dependencies: run it with `node scripts/check-norms.mjs`.
+// The rules live in check-norms.logic.mjs; this file finds the skills, prints
+// and sets the exit code. Plain Node, no dependencies: run it from the
+// repository root with `node scripts/check-norms.mjs`.
 
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
+import { checkSkill } from "./check-norms.logic.mjs";
 
 const root = process.cwd();
-const definition = /^- \[(N\d{2})\] /;
-const reference = /\[(N\d{2})\]/g;
 
+/** Every `plugins/<plugin>/skills/<skill>/` directory; stray files are skipped. */
 function skillDirs() {
   const plugins = join(root, "plugins");
   if (!existsSync(plugins)) return [];
   const dirs = [];
-  for (const plugin of readdirSync(plugins)) {
-    const skills = join(plugins, plugin, "skills");
+  for (const plugin of readdirSync(plugins, { withFileTypes: true })) {
+    if (!plugin.isDirectory()) continue;
+    const skills = join(plugins, plugin.name, "skills");
     if (!existsSync(skills)) continue;
-    for (const skill of readdirSync(skills)) dirs.push(join(skills, skill));
+    for (const skill of readdirSync(skills, { withFileTypes: true })) {
+      if (skill.isDirectory()) dirs.push(join(skills, skill.name));
+    }
   }
   return dirs;
 }
@@ -36,65 +42,17 @@ let checked = 0;
 
 for (const dir of skillDirs()) {
   const surfacePath = join(dir, "SKILL.md");
-  const sidecarPath = join(dir, "SKILL.norms.json");
   if (!existsSync(surfacePath)) continue;
-  const surface = readFileSync(surfacePath, "utf8");
-  const rel = relative(root, surfacePath);
-
-  const defined = [];
-  for (const line of surface.split("\n")) {
-    const match = line.match(definition);
-    if (match) defined.push(match[1]);
-  }
-  const hasSidecar = existsSync(sidecarPath);
-  if (defined.length === 0 && !hasSidecar) continue;
+  const sidecarPath = join(dir, "SKILL.norms.json");
+  const result = checkSkill({
+    surfacePath: relative(root, surfacePath),
+    sidecarPath: relative(root, sidecarPath),
+    surface: readFileSync(surfacePath, "utf8"),
+    sidecarText: existsSync(sidecarPath) ? readFileSync(sidecarPath, "utf8") : null,
+  });
+  if (!result.inFormat) continue;
   checked += 1;
-
-  if (!hasSidecar) {
-    errors.push(`${rel}: defines norms but has no SKILL.norms.json`);
-    continue;
-  }
-
-  let sidecar;
-  try {
-    sidecar = JSON.parse(readFileSync(sidecarPath, "utf8"));
-  } catch (error) {
-    errors.push(`${relative(root, sidecarPath)}: invalid JSON (${error.message})`);
-    continue;
-  }
-
-  if (sidecar.surface !== rel) {
-    errors.push(`${relative(root, sidecarPath)}: surface is "${sidecar.surface}", expected "${rel}"`);
-  }
-
-  const seen = new Set();
-  for (const id of defined) {
-    if (seen.has(id)) errors.push(`${rel}: norm ${id} is defined more than once`);
-    seen.add(id);
-  }
-
-  const entries = Array.isArray(sidecar.norms) ? sidecar.norms : [];
-  if (!Array.isArray(sidecar.norms)) errors.push(`${relative(root, sidecarPath)}: "norms" must be an array`);
-  const recorded = new Set();
-  for (const entry of entries) {
-    const id = entry?.id;
-    if (typeof id !== "string" || !/^N\d{2}$/.test(id)) {
-      errors.push(`${relative(root, sidecarPath)}: entry with invalid id ${JSON.stringify(id)}`);
-      continue;
-    }
-    if (recorded.has(id)) errors.push(`${relative(root, sidecarPath)}: ${id} is recorded more than once`);
-    recorded.add(id);
-    if (typeof entry.where !== "string" || entry.where.trim() === "") errors.push(`${relative(root, sidecarPath)}: ${id} has no "where"`);
-    if (typeof entry.what !== "string" || entry.what.trim() === "") errors.push(`${relative(root, sidecarPath)}: ${id} has no "what"`);
-    if (typeof entry.refs !== "object" || entry.refs === null || Array.isArray(entry.refs)) errors.push(`${relative(root, sidecarPath)}: ${id} "refs" must be an object`);
-  }
-
-  for (const id of seen) if (!recorded.has(id)) errors.push(`${rel}: ${id} has no entry in SKILL.norms.json`);
-  for (const id of recorded) if (!seen.has(id)) errors.push(`${relative(root, sidecarPath)}: ${id} matches no norm in SKILL.md`);
-
-  for (const match of surface.matchAll(reference)) {
-    if (!seen.has(match[1])) errors.push(`${rel}: cross-reference [${match[1]}] names no norm defined here`);
-  }
+  errors.push(...result.errors);
 }
 
 if (errors.length > 0) {
