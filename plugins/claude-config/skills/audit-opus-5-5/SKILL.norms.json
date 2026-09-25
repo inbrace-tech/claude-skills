@@ -4,13 +4,13 @@
     {
       "id": "N01",
       "where": "Stage 1 — Plan: list, measure, confirm",
-      "refs": { "inbrace-tech/claude-skills": [1] },
+      "refs": { "inbrace-tech/claude-skills": [1, 6] },
       "what": "The skill runs as a slash command with an optional path. Asking about scope before any work costs a round trip on the one decision a user rarely wants to make; stating the assumption in the report keeps it visible and correctable. In 0.3.0 the root is stated in the plan shown before any reading ([N07]) instead of at the top of the report, because the plan is now the first thing the user sees and the place where scope is confirmed."
     },
     {
       "id": "N02",
       "where": "Stage 1 — Plan: list, measure, confirm",
-      "refs": { "docs": ["https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills"] },
+      "refs": { "docs": ["https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills"], "inbrace-tech/claude-skills": [6] },
       "what": "These are the surfaces Claude Code reads instructions from: the memory files and their `@path` imports, path-scoped rules, subagent definitions, skills, commands and settings. API code is included because four of the Opus 5.5 breaking changes live in request code rather than in prose. In 0.3.0 the directories are narrowed to their Markdown files and the API search to code files and a `thinking` request parameter: in a test on a small project, searching every file for the word \"thinking\" returned prose about thinking, not API calls, and in a large harness with ~430 instruction files the JSON and YAML beside the skills were counted as instruction text."
     },
     {
@@ -22,25 +22,25 @@
     {
       "id": "N04",
       "where": "Stage 1 — Plan: list, measure, confirm",
-      "refs": {},
+      "refs": { "inbrace-tech/claude-skills": [6] },
       "what": "Instruction trees are often materialised by a tool — a plugin install, a sync script, a shared package — and gitignored in the project that receives them. An edit there is silently discarded by the next install, or, through a symlink, changes another project. Reporting the change for its source keeps it from being lost. In 0.3.0 it also says how to count a symlink that stays inside the root: in the small-project test a `CLAUDE.md` linked to `AGENTS.md` was listed and measured twice. It is now listed once, under its real path, with the link named beside it."
     },
     {
       "id": "N05",
       "where": "Stage 1 — Plan: list, measure, confirm",
-      "refs": { "inbrace-tech/claude-skills": [2] },
+      "refs": { "inbrace-tech/claude-skills": [2, 6] },
       "what": "A mature setup can hold hundreds of instruction files. Reading all of them at once fills the context window and dilutes attention on each file, which is where an audit loses findings. Measuring first costs one command and decides everything after it. Bytes divided by four is a deliberately rough estimate: it only has to size batches, not bill anyone. In 0.3.0 the estimate became a token range from bytes/4 to three times that: on the large harness, per-file reading overhead reached about 2.8× the bytes/4 figure, and the whole run spent ~2.99M tokens across subagents and the main session. A single figure read as a promise; a range with the multiplier stated does not. Cost is stated in tokens, because the session cannot know how the user is billed."
     },
     {
       "id": "N06",
       "where": "Stage 1 — Plan: list, measure, confirm",
-      "refs": { "inbrace-tech/claude-skills": [2] },
+      "refs": { "inbrace-tech/claude-skills": [2, 6] },
       "what": "The batch ceiling keeps each audited slice small beside a 1M-token window, so the pattern table and the batch both sit in focus. Grouping by relationship keeps an import and the file importing it in the same view, which is where a contradiction between them shows. In 0.3.0 it adds that each line range must fit one read: on the large harness a file bigger than one batch still exceeded the Read tool's per-call limit when read as a single range."
     },
     {
       "id": "N07",
       "where": "Stage 1 — Plan: list, measure, confirm",
-      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#user-facing-progress-updates"] },
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#user-facing-progress-updates"], "inbrace-tech/claude-skills": [6] },
       "what": "A long audit that says nothing reads as stuck. A one-line statement of intent before the work starts is the update cadence the Opus 5.5 guide recommends for human-in-the-loop runs. In 0.3.0 the statement became a full plan: the checklist, root, file count by area, exclusions, git state, batch count, cost range and run mode. In the large-harness test, the one-line statement was the only thing shown before ~2.8M tokens were spent across 47 batches, and the user saw no cost or alternative until the run was over. The plan feeds the cost and scope gate in [N39]."
     },
     {
@@ -58,7 +58,7 @@
     {
       "id": "N10",
       "where": "Stage 2 — Audit in batches",
-      "refs": {},
+      "refs": { "inbrace-tech/claude-skills": [6] },
       "what": "Several rows apply only to one kind of project — chat, unattended agents, API code. Recording a row's signal where its condition does not hold produces findings the user has to argue away, which is the fastest way to make an audit unreadable. In 0.3.0 it adds that a file pinned to a model other than Opus 5 or 5.5 gets no finding from a model-behavior row: on the large harness, P03, P04, P06, P07 and P09 carried no model qualifier and matched agents pinned to other models, whose behavior the Opus 5.5 guide says nothing about."
     },
     {
@@ -76,19 +76,19 @@
     {
       "id": "N13",
       "where": "Stage 3 — Report: explain it in the chat",
-      "refs": { "inbrace-tech/claude-skills": [2] },
+      "refs": { "inbrace-tech/claude-skills": [2, 6] },
       "what": "A large setup produces more findings than a chat message holds. A file keeps the whole report reviewable, shareable and diffable, and gives Stage 5 a place to record what was applied. In 0.3.0 the file also lists what [N36] excluded, and it is no longer the only place the user reads the report: the chat carries it per [N15], and the file keeps the full record."
     },
     {
       "id": "N14",
       "where": "Stage 5 — Apply, verify, close",
-      "refs": { "inbrace-tech/claude-skills": [2] },
+      "refs": { "inbrace-tech/claude-skills": [2, 6] },
       "what": "Where the session can publish a page, a report is easier to read and to share with a team there than in a file inside the repository. It is conditional because the tool exists only in some Claude environments. In 0.3.0 the artifact stopped being automatic and moved to the close, as an offer the user accepts or declines. In the small-project test, publishing it cost ~12k of the run's ~28k tokens for a report with one finding, and the detour broke the flow between the report and the question; the maintainer asked for it to be offered at most."
     },
     {
       "id": "N15",
       "where": "Stage 3 — Report: explain it in the chat",
-      "refs": { "inbrace-tech/claude-skills": [2] },
+      "refs": { "inbrace-tech/claude-skills": [2, 6] },
       "what": "The chat summary exists to support the decision in Stage 4, not to replace the report. In 0.3.0 the chat summary became the report itself, in a fixed form rendered as Markdown: a numbered table of changes with a type and a confidence, one plain-language line of why per pattern, and the sections that change nothing, shown as \"none\" when empty. Both tests showed that counts plus five findings, with the rest in a file, did not let the user decide from the chat; the maintainer asked for a structured report in the chat, with fixed sections, that explains rather than points elsewhere. The type column is what [N43] groups by, and the fifteen-row cap keeps a large setup readable."
     },
     {
@@ -100,19 +100,19 @@
     {
       "id": "N17",
       "where": "Stage 4 — Decide",
-      "refs": { "inbrace-tech/claude-skills": [2], "docs": ["https://code.claude.com/docs/en/tools-reference#askuserquestion-tool-behavior"] },
+      "refs": { "inbrace-tech/claude-skills": [2, 6], "docs": ["https://code.claude.com/docs/en/tools-reference#askuserquestion-tool-behavior"] },
       "what": "Which changes to make is the user's decision. A question with options is answered in one step, where a list of decisions inside a long report has to be found first. The recommendation is bounded so the skill never recommends applying a change the guide does not state. In 0.3.0 the options changed from high-confidence-only to: every proposed change with its count by confidence, choose by type (offered only when more than one type is present), diff first, or stop; and the recommendation adapts to the findings. In the small-project test the only finding was medium confidence, so \"apply every high-confidence change\" was an empty option and the rule for recommending it was vacuously true. Choosing by pattern id meant nothing to a user who had not read the table; choosing by type of action (remove, add, setting, rewrite) does. The dirty-tree warning from [N19] now sits in the option descriptions, so no separate question is needed before editing."
     },
     {
       "id": "N18",
       "where": "Stage 4 — Decide",
-      "refs": {},
+      "refs": { "inbrace-tech/claude-skills": [6] },
       "what": "Headless runs (`claude -p`, CI) have no interactive question tool. Changing nothing there keeps an unattended run from editing a project without approval. In 0.3.0 the fallback for a missing `AskUserQuestion` moved to [N33], which covers every question in the run; this norm now covers only runs where no one can answer, and ends them through the same close ([N45]) as every other path, since in the small-project test the stop path had no defined ending."
     },
     {
       "id": "N19",
       "where": "Stage 1 — Plan: list, measure, confirm",
-      "refs": {},
+      "refs": { "inbrace-tech/claude-skills": [6] },
       "what": "Mixing an audit's edits into uncommitted work makes both hard to review and impossible to revert separately. In 0.3.0 the check moved from the start of Stage 5 to the plan: the user sees the tree state before choosing anything, and a dirty tree becomes a note in the applying options of [N17] instead of one more question after the decision."
     },
     {
@@ -124,7 +124,7 @@
     {
       "id": "N21",
       "where": "Stage 5 — Apply, verify, close",
-      "refs": { "inbrace-tech/claude-skills": [2] },
+      "refs": { "inbrace-tech/claude-skills": [2, 6] },
       "what": "One of the Stage 4 options is to review the diff first; this norm is what makes that option mean something. In 0.3.0 the diff is shown without editing any file and is followed by a question: apply all, choose by type, or stop. In the small-project test the diff-first path had no defined continuation."
     },
     {
@@ -136,13 +136,13 @@
     {
       "id": "N23",
       "where": "Stage 5 — Apply, verify, close",
-      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#calibrate-effort"] },
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#calibrate-effort"], "inbrace-tech/claude-skills": [6] },
       "what": "The Opus 5.5 guide recommends testing several effort levels against the project's own evals rather than carrying settings over. The audit applies documented guidance; only the project's measurements show it holds for that project. In 0.3.0 it applies only where the audit ran: a run cancelled at the plan has nothing to measure."
     },
     {
       "id": "N24",
       "where": "Stage 5 — Apply, verify, close",
-      "refs": { "inbrace-tech/claude-skills": [2] },
+      "refs": { "inbrace-tech/claude-skills": [2, 6] },
       "what": "A report that records only findings cannot answer, a month later, which of them were acted on. In 0.3.0 the decision itself is recorded too, so a report where the user chose to stop still says so."
     },
     {
@@ -160,7 +160,7 @@
     {
       "id": "N27",
       "where": "Stage 2 — Audit in batches",
-      "refs": { "docs": ["https://github.com/anthropics/skills/blob/main/skills/claude-api/shared/prompt-audit.md", "https://code.claude.com/docs/en/model-config#adjust-effort-level"] },
+      "refs": { "docs": ["https://github.com/anthropics/skills/blob/main/skills/claude-api/shared/prompt-audit.md", "https://code.claude.com/docs/en/model-config#adjust-effort-level"], "inbrace-tech/claude-skills": [6] },
       "what": "N09 asked for a confidence level without defining one, so two runs could grade the same finding differently. The scale follows the prompt-audit rubric (documented or erroring = high, observed behavior = medium, inference = low), restated in terms of the Opus 5.5 guide's own wording: it states some changes, and only asks the reader to consider or re-test others. In 0.3.0 the high grade also covers the Claude Code documentation: the small-project test could not grade a P01 finding, because the Opus 5.5 guide alone does not say which settings Claude Code reads for effort, while the Claude Code model-config page states it."
     },
     {
@@ -178,97 +178,97 @@
     {
       "id": "N30",
       "where": "Stage 5 — Apply, verify, close",
-      "refs": { "docs": ["https://github.com/anthropics/skills/blob/main/skills/claude-api/shared/prompt-audit.md"] },
+      "refs": { "docs": ["https://github.com/anthropics/skills/blob/main/skills/claude-api/shared/prompt-audit.md"], "inbrace-tech/claude-skills": [6] },
       "what": "Adapted from prompt-audit's verification step: tests, hooks, log parsers and gate scripts sometimes match on instruction text, so a removal that looks safe in the instruction file can break a check elsewhere. N22 re-scans only the edited files and cannot see such a dependency. In 0.3.0 the dependency is named in the closing message, since the user now reads the outcome in the chat."
     },
     {
       "id": "N31",
       "where": "Stage 2 — Audit in batches",
-      "refs": { "inbrace-tech/claude-skills": [2] },
+      "refs": { "inbrace-tech/claude-skills": [2, 6] },
       "what": "A test run against a large, already-migrated instruction corpus showed that N12 guards only against proposing removals: the audit would have re-proposed an elapsed-time signal (P12) the project had evaluated and declined with a cited reason, and could not tell an Opus 5 instruction carried over unexamined from one re-tested and kept on purpose (P07). The same run led to narrowing P01 to files that run on Opus 5 or 5.5, since agents pinned to other models carry their own effort settings, and to exempting P09 where a file points to centrally stated update guidance. In 0.3.0 it uses the evaluation [N38] searches for in Stage 1, records a project-wide decision once instead of once per file, and takes precedence over older residue: on the large harness five findings were already decided, one decision was repeated per file, and the auditor could not tell whether [N11] or this norm applied."
     },
     {
       "id": "N32",
       "where": "Throughout the run",
-      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#user-facing-progress-updates"] },
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#user-facing-progress-updates"], "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. In the small-project test the user lost track of the run three times: after the report, when the question had no usable high-confidence option, and after choosing to stop. A checklist shown first and reprinted at every stage answers \"where are we and what is next\" without a question. It is plain text because task-list tools are not present in every session, and the `[-]` mark lets a cancelled or headless run end with an honest list."
     },
     {
       "id": "N33",
       "where": "Throughout the run",
-      "refs": { "docs": ["https://code.claude.com/docs/en/tools-reference#askuserquestion-tool-behavior"] },
+      "refs": { "docs": ["https://code.claude.com/docs/en/tools-reference#askuserquestion-tool-behavior"], "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. The maintainer asked for every decision to go through `AskUserQuestion`, which the user answers in one step, with the recommendation first. Without the tool — a headless run, or a client that lacks it — a numbered question in the chat keeps the same options and the same rule that nothing changes until the user answers. The small-project test exercised this fallback and it worked."
     },
     {
       "id": "N34",
       "where": "Throughout the run",
-      "refs": {},
+      "refs": { "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. In the small-project test the report came out in English and the artifact in Portuguese in the same run, because nothing said which language to use. Quoted text, paths, ids and commands stay untouched so a finding can still be found with a search."
     },
     {
       "id": "N35",
       "where": "Throughout the run",
-      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#user-facing-progress-updates"] },
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#user-facing-progress-updates"], "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. The large-harness test ran 47 batches over ~41 minutes; without a line per batch the run looked stuck. One line per batch or subagent, with done-of-total and findings added, is the short recap cadence the Opus 5.5 guide recommends for long human-in-the-loop work."
     },
     {
       "id": "N36",
       "where": "Stage 1 — Plan: list, measure, confirm",
-      "refs": {},
+      "refs": { "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. In the large-harness test, 427 files were listed and ~1.3M of ~2.57M estimated tokens were JSON sidecars; vendored references and data files were queued as if they were instructions. After exclusion 246 files remained. Naming each excluded group with its size keeps the exclusion visible and reversible."
     },
     {
       "id": "N37",
       "where": "Stage 1 — Plan: list, measure, confirm",
-      "refs": { "docs": ["https://code.claude.com/docs/en/model-config#adjust-effort-level"] },
+      "refs": { "docs": ["https://code.claude.com/docs/en/model-config#adjust-effort-level"], "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. Whether Opus 5.5 has an effort level depends on the user's settings file, which lies outside the audit root: a top-level `effortLevel` there does not count for Opus 5.5, while a level saved for it under `modelSettings` does. The small-project test reported P01 without knowing this, which made it a likely false positive. Reading the file as context, and never editing it, closes the gap without widening the audit's scope."
     },
     {
       "id": "N38",
       "where": "Stage 1 — Plan: list, measure, confirm",
-      "refs": {},
+      "refs": { "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. [N31] depends on knowing where the project records its Opus 5.5 decisions, and nothing told the auditor to look for that record. In the large-harness test five findings turned out to be already decided. Searching for the record in Stage 1 makes it available to every batch."
     },
     {
       "id": "N39",
       "where": "Stage 1 — Plan: list, measure, confirm",
-      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"] },
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. In the large-harness test the run spent ~2.8M tokens in subagents before the user saw any cost; the maintainer asked for a gate that shows the cost and lets the user continue, reduce the scope, use subagents, or cancel. Subagents are an option, never the default: they finish sooner, but each one reads the pattern table and the norms again, so they cost as much or more. The ten-batch threshold for recommending the in-session run is a judgment call from the two tests: the small project fit one batch, and the harness's 47 batches were well past what one session reads comfortably. A setup that fits one batch skips the question, since there is nothing to trade off."
     },
     {
       "id": "N40",
       "where": "Stage 1 — Plan: list, measure, confirm",
-      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"] },
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. In the large-harness test the subagents were refused the Write tool and one worked around it with a shell heredoc, so findings landed in inconsistent places. Having each subagent return its findings as text in the [N09] line format, and letting only this session write the file, keeps one writer and one format."
     },
     {
       "id": "N41",
       "where": "Stage 2 — Audit in batches",
-      "refs": {},
+      "refs": { "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. The lexical signals of P07 and P09–P12 — scope, delegation, checklist — matched project prose about pull requests, architecture and runbooks. In the large-harness test those false positives dominated the audit's cost, while 41 of 47 batches ended clean. The norm filters by function before a finding is recorded."
     },
     {
       "id": "N42",
       "where": "Stage 4 — Decide",
-      "refs": {},
+      "refs": { "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. The report carries items this skill never edits: re-test notes, already-decided items, unclear ones, API code handed off to `/claude-api migrate`, and older residue. Counting them under \"every proposed change\" would inflate the option and suggest the skill edits them."
     },
     {
       "id": "N43",
       "where": "Stage 4 — Decide",
-      "refs": { "docs": ["https://code.claude.com/docs/en/tools-reference#askuserquestion-tool-behavior"] },
+      "refs": { "docs": ["https://code.claude.com/docs/en/tools-reference#askuserquestion-tool-behavior"], "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. The maintainer chose type of action as the grouping for a partial approval, because a user can decide on \"remove\" or \"setting\" without learning the pattern ids. Listing only the types present, with the table numbers each one covers, keeps the multi-select question short and tied to the table the user just read."
     },
     {
       "id": "N44",
       "where": "Stage 4 — Decide",
-      "refs": {},
+      "refs": { "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. In the small-project test the question was asked even when its applying option was empty. With an empty table nothing can be decided, so the run goes straight to the close."
     },
     {
       "id": "N45",
       "where": "Stage 5 — Apply, verify, close",
-      "refs": {},
+      "refs": { "inbrace-tech/claude-skills": [6] },
       "what": "Added in 0.3.0. In the small-project test the stop path ended with no closing message, and the report files under `.claude/audits/` were left untracked without a word. Every path — cancelled at the plan, stopped at the report, headless, or applied — now ends with the same close: the final checklist, what was and was not applied, what to do with the report files, and one next step."
     }
   ]
