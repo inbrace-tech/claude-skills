@@ -5,6 +5,18 @@ Curated Claude Code skills from the team at [Inbrace](https://github.com/inbrace
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin%20marketplace-d97757)](https://code.claude.com/docs/en/discover-plugins)
 
+## Quickstart
+
+`/inbrace-config:audit-opus-5-5` audits your Claude Code setup for the move from Opus 5 to Opus 5.5: it shows the plan and its cost and asks before reading anything, explains the findings in the chat, and changes only what you approve.
+
+```text
+/plugin marketplace add inbrace-tech/claude-skills
+/plugin install inbrace-config@inbrace
+/inbrace-config:audit-opus-5-5
+```
+
+Run it from your project root. It starts only from this typed command. For scopes, updates and removal, see [Install, step by step](#install-step-by-step) below.
+
 ## Install, step by step
 
 New to plugins? These steps take you from nothing to a running audit. Every command is checked against [Install and manage plugins](https://code.claude.com/docs/en/plugins/install).
