@@ -1,5 +1,5 @@
-# CI: validates the marketplace manifest, every plugin manifest and every
-# skill with `claude plugin validate --strict`, on every PR and push to main.
+# CI: validates the marketplace manifest, every plugin manifest, every skill
+# and every agent with `claude plugin validate --strict`, on every PR and push to main.
 # --strict turns warnings (unknown fields, missing metadata) into failures.
 name: CI
 
@@ -38,18 +38,21 @@ jobs:
         env:
           CLAUDE_CODE_VERSION: 2.1.280
         run: npm install --global "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
-      - name: Validate marketplace, plugins and skills
+      - name: Validate marketplace, plugins, skills and agents
         run: |
           set -euo pipefail
           claude plugin validate --strict .
           for plugin in plugins/*/; do
             claude plugin validate --strict "$plugin"
             claude plugin validate --strict "${plugin}skills"
+            if [ -d "${plugin}agents" ]; then
+              claude plugin validate --strict "${plugin}agents"
+            fi
           done
       # The repository's own scripts, on Node's built-in test runner. No install.
       - name: Test scripts
         run: node --test "scripts/*.test.mjs"
-      # Every norm in a SKILL.md has a SKILL.norms.json entry and vice versa,
-      # and every [Nxx] cross-reference resolves. Plain Node, no install.
+      # Every norm in a SKILL.md or an agent's <name>.md has an entry in its
+      # sidecar and vice versa, and every [Nxx] cross-reference resolves. Plain Node, no install.
       - name: Check norms against their sidecars
         run: node scripts/check-norms.mjs

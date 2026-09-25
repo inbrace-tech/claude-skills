@@ -1,0 +1,29 @@
+{
+  "surface": "plugins/inbrace-config/agents/batch-auditor.md",
+  "norms": [
+    {
+      "id": "N01",
+      "where": "Read",
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [12] },
+      "what": "Added in 0.4.3 with the agent. A subagent starts with only its own system prompt and the prompt it is given, not the session's conversation, so the files and the brief named in that prompt are everything it knows about the batch. The agent sets `omitClaudeMd: true`, so the project facts it needs arrive through the brief, not the project memory; reading the brief before the first file keeps a file from being classified without them."
+    },
+    {
+      "id": "N02",
+      "where": "Classify",
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [12] },
+      "what": "Added in 0.4.3. The agent carries no pattern table of its own: the skill that starts it passes the table, the norms that apply to a batch and the project facts, so one copy of each lives in the skill and a change there reaches the agent without editing it. The facts are named because they change a classification: in the large-harness test that led to this agent, `sonnet` subagents marked as older residue a filter the project had already decided on, and proposed a P12 by inference."
+    },
+    {
+      "id": "N03",
+      "where": "Classify",
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents", "https://code.claude.com/docs/en/plugins/components#frontmatter-fields-in-plugin-agents"], "inbrace-tech/claude-skills": [12] },
+      "what": "Added in 0.4.3. In a 0.3.0 test the subagents were refused the Write tool and one worked around it with a shell heredoc, so findings landed in inconsistent places. The frontmatter now grants only `Read, Grep, Glob`, which the plugin components page lists among the fields a plugin agent supports, and the norm states the same limit so the agent does not look for a way around it: the session that started it is the only writer."
+    },
+    {
+      "id": "N04",
+      "where": "Return",
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [12] },
+      "what": "Added in 0.4.3, after review of the pull request. The agent first said to return findings \"in the [N09] line format\", citing a norm of the skill; an agent does not see the skill that starts it, and a norm id is only meaningful inside the surface that defines it, so the agent now owns its return contract. The contract is wrapped in `<return_contract>` so it reads as material to use exactly, and it is the one owner of the finding line: the skill's findings file, its [N09], uses the same line and points here instead of restating it, which keeps a subagent's lines and the session's own lines identical and lets the session append them as they are. The clean-batch line is fixed so the session can tell a clean batch from an empty or failed return."
+    }
+  ]
+}
