@@ -46,10 +46,25 @@ updates:
       semver-minor-days: 7
       semver-major-days: 30
     versioning-strategy: increase
+    # Node 24 is the runtime the CI setup and `engines` fix, so `@types/node`
+    # stays on the 24 major: a newer one describes APIs the runtime lacks. A new
+    # Node major is a deliberate change that moves the CI, `engines` and these
+    # types together, never a Dependabot pull request.
+    ignore:
+      - dependency-name: "@types/node"
+        update-types:
+          - "version-update:semver-major"
     groups:
-      npm-minor-and-patch:
+      tooling:
         patterns:
-          - "*"
+          - "oxlint"
+          - "oxlint-*"
+          - "typescript"
+      testing:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+      minor-and-patch:
         update-types:
           - minor
           - patch
