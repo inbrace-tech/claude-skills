@@ -23,7 +23,7 @@ Skills here follow one format, so every rule can be found, cited and traced to t
 - **Wrap content Claude executes verbatim** — a command, a template, a table it checks against — in a structural tag such as `<measure>` or `<patterns>`, so it reads as material to use rather than prose to paraphrase.
 - **Keep the context small.** A skill that reads a user's files states how it bounds what it reads, for example by measuring first and working in batches.
 - **Agents follow the same format.** A plugin agent at `agents/<name>.md` states its behavior as `- [Nxx]` norms under `##` sections, with their history in `<name>.norms.json` beside it, whose `surface` is the agent's path. Its ids are its own: an agent never cites another surface's norms, since the skill or session that starts it is not in its context.
-- **An agent's return contract lives in the agent**, wrapped in its own tag such as `<return_contract>`, with the exact format of what it returns. A skill that starts the agent points to that contract instead of restating it.
+- **An agent's return contract lives in the agent**, wrapped in its own tag such as `<return_contract>`, with the exact format of what it returns. A skill that starts the agent points to that contract instead of restating it; where the skill owns a format the agent returns, such as a finding line, the skill passes it in the agent's brief and the contract says to use the format the brief gives.
 
 ## Checking your change
 
