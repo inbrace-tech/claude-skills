@@ -6,7 +6,7 @@ body:
     id: skill
     attributes:
       label: Plugin and skill
-      description: e.g. claude-config / audit
+      description: e.g. inbrace-config / audit
     validations:
       required: true
   - type: textarea
