@@ -4,6 +4,7 @@ description: Classifies one batch of files for the audit-opus-5-5 skill; started
 model: claude-opus-5-5
 effort: medium
 tools: Read, Grep, Glob
+omitClaudeMd: true
 ---
 
 You classify one batch of files for the `audit-opus-5-5` skill.
