@@ -33,6 +33,18 @@ claude plugin install claude-config@inbrace
 |---|---|---|---|
 | `claude-config` | `/claude-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Works in context-sized batches, writes a full report, asks what to change, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. |
 
+## How this relates to Anthropic's `claude-api` skill
+
+Claude Code ships Anthropic's [`claude-api` skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/claude-api-skill), and the two cover different ground:
+
+| Use | For |
+|---|---|
+| `/claude-api migrate <scope> to claude-opus-5-5` | Code that calls the Claude API: model IDs, request parameters that now return errors, SDK syntax in each language |
+| `/claude-api prompt-audit` | Dated prompt patterns across model generations, independent of one transition |
+| `/claude-config:audit-opus-5-5` | What Claude Code reads as instructions (`CLAUDE.md`, rules, agents, skills, settings), checked against the Opus 5 → 5.5 guide |
+
+The audit never edits API code. It lists what it finds there and gives you the `/claude-api migrate` command to run, and it points to `/claude-api prompt-audit` for instructions older than Opus 5.
+
 ## Skills load only what they need
 
 Installing a plugin does not load its skills into every conversation. A skill's full instructions load only when it runs, and each skill declares who may start it:

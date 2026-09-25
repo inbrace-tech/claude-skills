@@ -144,6 +144,48 @@
       "where": "Stage 5 — Apply and verify",
       "refs": { "inbrace-tech/claude-skills": [2] },
       "what": "A report that records only findings cannot answer, a month later, which of them were acted on."
+    },
+    {
+      "id": "N25",
+      "where": "Stage 2 — Audit in batches",
+      "refs": { "docs": ["https://platform.claude.com/docs/en/agents-and-tools/agent-skills/claude-api-skill#migrating-to-a-newer-claude-model", "https://platform.claude.com/docs/en/models/opus-5-5/migration-guide"], "inbrace-tech/claude-skills": [2] },
+      "what": "The Opus 5.5 migration guide itself recommends `/claude-api migrate this project to claude-opus-5-5`, which swaps model IDs, rewrites the breaking parameters in eight SDK languages and adjusts for platform-specific IDs and features. Editing request code here would duplicate that work with less coverage, and would break this skill's own ask-before-edit contract only to reach a result the official skill already delivers. The four breaking-change rows stay in the table so the report still shows them, but their fix is the hand-off. Running the official skill from inside this one was rejected: its `migrate` edits once the scope is confirmed, which contradicts Stage 4, and this skill must also work where `claude-api` is not installed."
+    },
+    {
+      "id": "N26",
+      "where": "Stage 2 — Audit in batches",
+      "refs": { "docs": ["https://github.com/anthropics/skills/blob/main/skills/claude-api/shared/prompt-audit.md"] },
+      "what": "Adapted from the keep list of Anthropic's prompt-audit guidance, which separates trigger text from behavioral text: a skill's description decides whether it is invoked at all, and skills tend to under-trigger, so urgency there can be deliberate. A grep cannot tell the two apart, so the norm classifies by function before a finding is recorded."
+    },
+    {
+      "id": "N27",
+      "where": "Stage 2 — Audit in batches",
+      "refs": { "docs": ["https://github.com/anthropics/skills/blob/main/skills/claude-api/shared/prompt-audit.md"] },
+      "what": "N09 asked for a confidence level without defining one, so two runs could grade the same finding differently. The scale follows the prompt-audit rubric (documented or erroring = high, observed behavior = medium, inference = low), restated in terms of the Opus 5.5 guide's own wording: it states some changes, and only asks the reader to consider or re-test others."
+    },
+    {
+      "id": "N28",
+      "where": "Stage 2 — Audit in batches",
+      "refs": { "docs": ["https://github.com/anthropics/skills/blob/main/skills/claude-api/shared/prompt-audit.md"] },
+      "what": "From prompt-audit's prime directive: an audit that finds nothing should change nothing. A report with no findings reads as a failed run, which pressures the auditor to stretch a row; stating that a clean result is valid removes that pressure."
+    },
+    {
+      "id": "N29",
+      "where": "Stage 3 — Report",
+      "refs": { "docs": ["https://platform.claude.com/docs/en/agents-and-tools/agent-skills/claude-api-skill", "https://github.com/anthropics/skills/blob/main/skills/claude-api/SKILL.md"] },
+      "what": "N11 and N25 both leave findings unaddressed by design. Without a named next step the report ends at a dead end; with one, the reader knows which tool covers the rest. `prompt-audit` is a public subcommand of Anthropic's claude-api skill for dated patterns across model generations, and `migrate` handles request code."
+    },
+    {
+      "id": "N30",
+      "where": "Stage 5 — Apply and verify",
+      "refs": { "docs": ["https://github.com/anthropics/skills/blob/main/skills/claude-api/shared/prompt-audit.md"] },
+      "what": "Adapted from prompt-audit's verification step: tests, hooks, log parsers and gate scripts sometimes match on instruction text, so a removal that looks safe in the instruction file can break a check elsewhere. N22 re-scans only the edited files and cannot see such a dependency."
+    },
+    {
+      "id": "N31",
+      "where": "Stage 2 — Audit in batches",
+      "refs": { "inbrace-tech/claude-skills": [2] },
+      "what": "A test run against a large, already-migrated instruction corpus showed that N12 guards only against proposing removals: the audit would have re-proposed an elapsed-time signal (P12) the project had evaluated and declined with a cited reason, and could not tell an Opus 5 instruction carried over unexamined from one re-tested and kept on purpose (P07). The same run led to narrowing P01 to files that run on Opus 5 or 5.5, since agents pinned to other models carry their own effort settings, and to exempting P09 where a file points to centrally stated update guidance."
     }
   ]
 }

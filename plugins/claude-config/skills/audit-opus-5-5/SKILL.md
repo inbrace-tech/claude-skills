@@ -37,20 +37,25 @@ wc -c <every file from the inventory>
 - [N10] Check every batch against each row of the pattern table below, and record a finding only where the row's signal is present and its "applies when" condition holds for that file.
 - [N11] Record an instruction that belongs to a transition older than Opus 5 — explicit verification steps, "delegate more" guidance, severity filters in review prompts — as a single line under "Older residue", with no proposed change, since this audit's evidence covers the Opus 5 → 5.5 transition alone.
 - [N12] Never propose removing a safety rule, a confirmation step for a destructive or irreversible action, a permission boundary, a project fact, or an instruction the file says exists because of a measured failure; record anything whose purpose you cannot determine as "unclear" rather than proposing a deletion.
+- [N25] Record every finding in Claude API code — the rows whose "applies when" is API code — with the hand-off `/claude-api migrate <files> to claude-opus-5-5` as its proposed change, and keep it out of the set this skill edits, since Anthropic's `claude-api` skill migrates request code with the right syntax for each SDK language and platform.
+- [N26] Treat the `description` in a skill's or agent's frontmatter as routing text, where calibrated urgency is legitimate, and apply the rows about wording only to text that shapes behavior.
+- [N27] Grade confidence high when the guide states the change or the API rejects the old form, medium when the guide says to consider or re-test it, and low when the finding rests on your own inference.
+- [N28] Report a batch, or the whole audit, as clean when no row applies, and never stretch a row to fill the report.
+- [N31] Record as "already decided", with no proposed change, any finding the project states it already evaluated for Opus 5.5 — an addition it declined or an Opus 5 instruction it re-tested and kept — citing where it says so.
 
 <patterns>
 
 | Id | Pattern | Signal | Applies when | Proposed change |
 |---|---|---|---|---|
-| P01 | Effort left at the old default | no explicit effort, or one carried over from Opus 5 | always | Set effort explicitly. Opus 5.5 defaults to `medium` where Opus 5 defaulted to `high`, and its `medium` matches or beats Opus 5 at `high`. Re-test neighboring levels; keep `xhigh` and `max` for measured gains. |
-| P02 | Thinking disabled or budgeted | `thinking: {type: "disabled"}`, `budget_tokens` | API code | Remove. Both return a 400 on Opus 5.5 at every effort level. Use `low` effort where latency matters. |
+| P01 | Effort left at the old default | no explicit effort, or one carried over from Opus 5 | the file runs on Opus 5 or Opus 5.5 — pinned to it, or inheriting the session's model — never a file pinned to another model | Set effort explicitly. Opus 5.5 defaults to `medium` where Opus 5 defaulted to `high`, and its `medium` matches or beats Opus 5 at `high`. Re-test neighboring levels; keep `xhigh` and `max` for measured gains. |
+| P02 | Thinking disabled or budgeted | `thinking: {type: "disabled"}`, `budget_tokens` | API code | Hand off per [N25]. Both return a 400 on Opus 5.5 at every effort level; remove them and use `low` effort where latency matters. |
 | P03 | "Don't think" rules | "do not think", "don't reason", "skip thinking" | any instruction file | Remove. Thinking is always on, and such rules increase internal-tag leakage. |
 | P04 | Reasoning written into the response | "show your reasoning in the answer", "write out your chain of thought" | any instruction file | Remove. It can be declined with the `reasoning_extraction` refusal. Read summarized thinking blocks instead. |
 | P05 | Thinking-disabled mitigation | "you may say a brief sentence first… do not include internal or system XML tags" | the project ran Opus 5 with thinking off | Re-test, then remove if nothing regresses. It addressed artifacts that appear only with thinking disabled. |
 | P06 | "Think carefully" in chat prompts | "think carefully before answering", "take your time" | chat applications | Consider removing. Effort is the control, and removing the line made replies start sooner without a quality drop in Anthropic's testing. |
 | P07 | Opus 5 tuning instructions | conciseness, over-verification, scope, narration-cadence or correction-narration instructions written for Opus 5 | any instruction file | Keep as the starting point and mark for re-testing. They may no longer be needed; do not delete them on this audit's word alone. |
 | P08 | Silent agentic turns | a client or harness that renders only `text` blocks | API code, custom harnesses | Set `thinking.display: "updates"`. On Opus 5.5 notes between tool calls arrive as thinking blocks, empty by default. |
-| P09 | No update cadence | long human-in-the-loop agentic work with no guidance on updates | agent and orchestrator prompts | Add a cadence, for example a one-line intent before the first tool call and a short recap at the end. |
+| P09 | No update cadence | long human-in-the-loop agentic work with no guidance on updates | agent and orchestrator prompts, unless the file points to where the project states its update guidance | Add a cadence, for example a one-line intent before the first tool call and a short recap at the end. |
 | P10 | Unattended runs without a continuation plan | background or headless agents, no to-do tracking | unattended agents only | Add a checklist the model updates, auto-continue only when items are open and no blocker is stated, and cap continuations at 2–3. Opus 5.5 sometimes ends a turn with a text update instead of a tool call. |
 | P11 | Multi-app agents that act without looking | workflows across email, documents, spreadsheets or CRM | multi-app automation | Add the guide's instruction to explore the relevant sources before acting. |
 | P12 | Multi-agent runs without time signals | a lead agent delegating to subagents | multi-agent harnesses | Consider an elapsed-time line against a budget in each message back to the model. |
@@ -58,9 +63,9 @@ wc -c <every file from the inventory>
 | P14 | Unmarked pasted content | an application forwarding text users pasted | applications you build | Wrap pasted blocks in `<pasted_content id="…">` tags and add the guide's system-prompt note. |
 | P15 | Visual-input scaffolding | forced cropping, OCR passes, "zoom before reading the chart" | vision workloads | Re-test. Opus 5.5 reads charts and diagrams natively; crop tools still help on the densest inputs. |
 | P16 | Vague design direction | "avoid a generic AI look", "make it modern" | frontend work | Replace with the specific default patterns to avoid. |
-| P17 | Forced tool use | `tool_choice` of type `any` or `tool` | API code | Replace with `auto`, `strict: true` and a check that the call happened, or with structured outputs. Forced tool use returns a 400. |
-| P18 | Old computer-use tool | `computer_20251124` | API code | Move to `computer_toolset_20260801`. The old tool returns a 400. |
-| P19 | History edited between requests | code that rewrites `system`, `tools` or earlier messages mid-session | API code that builds `messages` itself | Keep history append-only. Edits before a thinking block invalidate it, and for newer accounts return a 400. |
+| P17 | Forced tool use | `tool_choice` of type `any` or `tool` | API code | Hand off per [N25]. Forced tool use returns a 400; the fix is `auto` with `strict: true` and a check that the call happened, or structured outputs. |
+| P18 | Old computer-use tool | `computer_20251124` | API code on the Claude API or Google Cloud | Hand off per [N25]. There the old tool returns a 400 and the fix is `computer_toolset_20260801`; on Amazon Bedrock it still works, so record no finding for Bedrock-only code. |
+| P19 | History edited between requests | code that rewrites `system`, `tools` or earlier messages mid-session | API code that builds `messages` itself | Hand off per [N25]. Keep history append-only: edits before a thinking block invalidate it, and for accounts created on or after 2026-08-31 return a 400. |
 
 </patterns>
 
@@ -69,6 +74,7 @@ wc -c <every file from the inventory>
 - [N13] Write the full report to `.claude/audits/opus-5-5-<YYYY-MM-DD>.md` under the root, opening with the scope, the files read, the files marked read-only, the batch plan, and the counts by pattern and by confidence, followed by every finding grouped by pattern and the older residue.
 - [N14] Publish the report as an artifact too where this session holds a tool that publishes one, and give its link beside the file path.
 - [N15] Keep the chat summary to the counts and the five highest-impact findings, and point to the report for the rest, since a large setup produces more findings than a chat message can carry.
+- [N29] Close the report's older-residue section by recommending Anthropic's model-general audit, `/claude-api prompt-audit`, for instructions written for models before Opus 5, and close the API-code section with the `/claude-api migrate` command covering every file it lists.
 - [N16] Propose no diff at this stage: the report names each proposed change in words, and the diff is written in Stage 5 for the changes the user approved.
 
 ## Stage 4 — Ask
@@ -79,6 +85,7 @@ wc -c <every file from the inventory>
 ## Stage 5 — Apply and verify
 
 - [N19] Before the first edit, check `git status` and ask to proceed on a dirty tree or outside a git repository, since an audit's edits are easiest to review and revert as one change on a clean branch.
+- [N30] Before removing any text, search the root for the exact string, and where a test, hook or script matches it, leave the text and name that dependency in the report.
 - [N20] Apply exactly the approved set and nothing beside it, and edit no file Stage 1 marked read-only — name it and its proposed change for the user to make where it is produced.
 - [N21] Show the diff of every edited file once the edits are done, when the user chose to review it first, and apply nothing until they confirm.
 - [N22] Re-scan every edited file against the pattern table after applying, and confirm that no instruction protected by [N12] was removed.
@@ -90,5 +97,6 @@ wc -c <every file from the inventory>
 - Prompting Claude Opus 5.5: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5
 - Migration guide, Opus 5 → Opus 5.5: https://platform.claude.com/docs/en/models/opus-5-5/migration-guide#migrating-from-claude-opus-5
 - Prompting Claude Opus 5: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5
+- Anthropic's Claude API skill, whose `migrate` and `prompt-audit` subcommands this audit hands off to: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/claude-api-skill
 
 **Every `[N<NN>]` above is one norm, and why it exists lives in [`SKILL.norms.json`](SKILL.norms.json), which nothing loads automatically.** Open it when a step is doubted.
