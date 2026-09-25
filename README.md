@@ -148,9 +148,13 @@ Each skill is a plain folder with a `SKILL.md`, following the [Agent Skills](htt
 ```bash
 # for you, in every project
 cp -r plugins/inbrace-config/skills/audit-opus-5-5 ~/.claude/skills/
+cp plugins/inbrace-config/agents/batch-auditor.md ~/.claude/agents/
 # for one repository, shared with your team
 cp -r plugins/inbrace-config/skills/audit-opus-5-5 .claude/skills/
+cp plugins/inbrace-config/agents/batch-auditor.md .claude/agents/
 ```
+
+The audit needs its agent file too: it reads the format of each finding line from `batch-auditor.md`, and stops at the plan, saying what to copy, when the file is in neither place. Outside the plugin the agent is called `batch-auditor`, without the `inbrace-config:` prefix.
 
 A copied skill does not receive updates. Installing through the marketplace does.
 
