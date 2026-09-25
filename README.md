@@ -7,15 +7,33 @@ Curated Claude Code skills from the team at [Inbrace](https://github.com/inbrace
 
 ## Quickstart
 
-`/inbrace-config:audit-opus-5-5` audits your Claude Code setup for the move from Opus 5 to Opus 5.5: it shows the plan and its cost and asks before reading anything, explains the findings in the chat, and changes only what you approve.
+Inside Claude Code, from your project root:
 
-```text
-/plugin marketplace add inbrace-tech/claude-skills
-/plugin install inbrace-config@inbrace
-/inbrace-config:audit-opus-5-5
-```
+1. Add the marketplace, once:
 
-Run it from your project root. It starts only from this typed command. For scopes, updates and removal, see [Install, step by step](#install-step-by-step) below.
+   ```text
+   /plugin marketplace add inbrace-tech/claude-skills
+   ```
+
+2. Install a plugin, for example `inbrace-config`:
+
+   ```text
+   /plugin install inbrace-config@inbrace
+   ```
+
+3. Run one of its skills by typing its command:
+
+   ```text
+   /inbrace-config:audit-opus-5-5
+   ```
+
+Every plugin and its skills are listed in [Skills](#skills) below. A skill starts only when you type its command. For scopes, updates and removal, see [Install, step by step](#install-step-by-step).
+
+## Skills
+
+| Plugin | Skill | Mode | What it does |
+|---|---|---|---|
+| `inbrace-config` | `/inbrace-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Shows its plan and estimated token cost and asks before reading anything, asks again before each later costly stage, explains the findings in the chat with a short numbered table of changes, asks what to apply with a recommendation, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. |
 
 ## Install, step by step
 
@@ -93,12 +111,6 @@ Test a branch, or a local copy for one session:
 claude plugin marketplace add inbrace-tech/claude-skills#<branch>
 claude --plugin-dir ./plugins/inbrace-config
 ```
-
-## Skills
-
-| Plugin | Skill | Mode | What it does |
-|---|---|---|---|
-| `inbrace-config` | `/inbrace-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Asks before each costly stage, showing its estimated token cost, explains the findings in the chat with a short numbered table of changes, asks what to apply with a recommendation, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. |
 
 ## How this relates to Anthropic's `claude-api` skill
 
