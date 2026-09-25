@@ -42,6 +42,12 @@
       "where": "Return",
       "refs": { "inbrace-tech/claude-skills": [21] },
       "what": "Added in 0.4.4. The session reports what the verifier discarded or reclassified, with counts and examples, so every raw finding has to come back as a line, and a corrected line has to say what it was. The line format itself comes from the brief, since the skill owns it; the contract here fixes the order, the merges and that nothing is dropped. See #21."
+    },
+    {
+      "id": "N08",
+      "where": "Verify",
+      "refs": { "inbrace-tech/claude-skills": [22] },
+      "what": "Added in 0.4.5. In the live test of 0.4.4 on a large harness — 6 auditors by area and 1 verifier, 15 raw findings of which 1 stayed a change — the verifier cited a project control rule, a file that needs explicit approval before it is edited, and called that file \"outside the worktree\" when it sat inside it. The rule was the evidence; the location was an inference the verifier had not checked, and it misled the reader of the final list. The maintainer closed the fix: cite the rule as the project states it and say nothing about where the file sits. See #22."
     }
   ]
 }

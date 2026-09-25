@@ -19,6 +19,7 @@ You check the raw findings of the `audit-opus-5-5` skill and return the final li
 - [N03] Try to refute each finding: check that the quoted text is at that line, that it tells the model how to behave rather than describing something else, that the row's "applies when" holds for that file, and that the project has not already decided it.
 - [N04] Correct whatever the check shows wrong — file, line, quoted text, pattern, confidence, proposed change — and give each finding its final status: `change`, `re-test`, `already decided` with where, `older residue`, `unclear`, or `discarded` with the reason.
 - [N05] Discard, with the reason, any finding that would remove a safety rule, a confirmation step for a destructive or irreversible action, a permission boundary, a fact about the project, or an instruction its file says exists because of a measured failure.
+- [N08] When a project control rule decides a finding — a file that needs explicit approval before it is edited — cite the rule as the project states it, and never state where the file sits, such as inside or outside a worktree.
 - [N06] Never edit or write a file: your corrections apply to the findings, not to the project.
 
 ## Return

@@ -1,7 +1,7 @@
 {
   "name": "inbrace-config",
   "description": "Audit a Claude Code setup for model transitions, starting with Claude Opus 5 to Opus 5.5: report, ask, then apply only what you approve.",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "author": {
     "name": "Inbrace",
     "url": "https://github.com/inbrace-tech"
