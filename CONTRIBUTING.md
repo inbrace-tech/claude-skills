@@ -40,6 +40,8 @@ Then install your branch locally and run the skill on a real project:
 /plugin install <plugin>@inbrace
 ```
 
+A skill with `disable-model-invocation: true` starts only from its typed slash command, so test it end to end in an interactive session (`claude --plugin-dir <plugin>`, then type the command), not with `claude -p` and a request in plain words.
+
 ## Versions
 
 Bump `version` in the plugin's `.claude-plugin/plugin.json` when users receive a change, and add one line to `CHANGELOG.md` saying what changed for them.

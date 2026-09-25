@@ -31,7 +31,9 @@ claude plugin install claude-config@inbrace
 
 | Plugin | Skill | Mode | What it does |
 |---|---|---|---|
-| `claude-config` | `/claude-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Works in context-sized batches, writes a full report, asks what to change, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. |
+| `claude-config` | `/claude-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Shows its plan and token cost before reading anything, explains the findings in the chat with a numbered table of changes, asks what to apply with a recommendation, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. |
+
+The audit starts only from its slash command: asking for an audit in plain words does not start it.
 
 ## How this relates to Anthropic's `claude-api` skill
 
