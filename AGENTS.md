@@ -19,6 +19,8 @@ pnpm run lint
 pnpm test
 pnpm run check-norms
 pnpm audit --audit-level=high
+pnpm run audit:lockfile
+pnpm run audit:lockfile:all
 claude plugin validate --strict .
 claude plugin validate --strict plugins/<plugin>
 claude plugin validate --strict plugins/<plugin>/skills

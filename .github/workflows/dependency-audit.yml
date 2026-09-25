@@ -1,18 +1,34 @@
-# Dependency audit (PR gate): does any version pnpm-lock.yaml resolves carry a
-# published advisory of high severity or worse?
+# Dependency audit (PR gate): two questions about the dependency versions
+# pnpm-lock.yaml resolves.
+#   - Does any of them carry a published advisory of high severity or worse
+#     (`pnpm audit`)?
+#   - Is every version this pull request ADDS still published, and past the
+#     release-age floor pnpm-workspace.yaml sets (`pnpm run audit:lockfile`)?
 #
 # A sibling of ci.yml rather than a job in it, because its daily counterpart,
 # dependency-audit-daily.yml, runs on a schedule; one workflow serving both
-# triggers would put a permanently skipped job on every pull request.
+# triggers would put a permanently skipped job on every pull request. It stays
+# out of ci.yml for a second reason: both steps talk to the registry, and every
+# check in ci.yml is offline, so a red result there never means the network
+# blipped.
 #
 # The release-age floor in pnpm-workspace.yaml is the primary control: pnpm
-# refuses to resolve a version younger than three days. This job is the other
-# half, the known-vulnerable versions that are old enough to pass the floor.
+# refuses to resolve a version younger than three days. `pnpm audit` covers the
+# known-vulnerable versions old enough to pass the floor. The lockfile audit
+# covers what no local setting can see: a version the registry has taken down,
+# which ages past every floor while staying uninstallable, and a lockfile the
+# floor never saw, edited by hand or by an older pnpm. It asks only about the
+# versions the change adds, so on a pull request that leaves pnpm-lock.yaml
+# alone it makes no registry request and says so.
+#
+# An unreachable registry fails the lockfile audit rather than passing it: a
+# check that reports green when it could not run is indistinguishable from a
+# satisfied one.
 name: Dependency audit
 
 on:
   # No `paths:` filter: a job that never runs looks the same as one that passed,
-  # and the audit is cheap.
+  # and both steps are cheap on a pull request that changes no dependency.
   pull_request:
     branches: [main]
 
@@ -21,15 +37,28 @@ permissions:
 
 jobs:
   audit:
-    name: pnpm audit
+    name: Advisories and lockfile release age
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          # Full history, so the lockfile audit can read pnpm-lock.yaml at the
+          # merge base with the pull request's base commit.
+          fetch-depth: 0
           persist-credentials: false
       - uses: ./.github/actions/setup-node-pnpm
       # High and critical only: every dependency here is a dev tool, and a
       # low-severity advisory on one of them is noise on a pull request.
       - name: Audit the locked dependency tree
         run: pnpm audit --audit-level=high
+      # Against the pull request's own base commit rather than whatever
+      # origin/main points at now, so a base branch that moved mid-review does
+      # not change what this change is judged against. `!cancelled()` so a red
+      # advisory above never hides a takedown here: the two findings are
+      # independent.
+      - name: Every version this PR adds is published and past the age floor
+        if: '!cancelled()'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: pnpm run audit:lockfile --base "${BASE_SHA}" --verbose

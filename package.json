@@ -10,7 +10,9 @@
     "lint": "oxlint --fix",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check-norms": "node scripts/check-norms.ts"
+    "check-norms": "node scripts/check-norms.ts",
+    "audit:lockfile": "node scripts/check-lockfile-release-age.ts",
+    "audit:lockfile:all": "node scripts/check-lockfile-release-age.ts --all"
   },
   "devDependencies": {
     "@types/node": "24.13.5",
