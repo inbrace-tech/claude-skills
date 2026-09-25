@@ -37,6 +37,8 @@ Every plugin and its skills are listed in [Skills](#skills) below. A skill start
 |---|---|---|---|
 | `inbrace-config` | `/inbrace-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Shows its plan and estimated token cost and asks before reading anything, asks again before each later costly stage, explains the findings in the chat with a short numbered table of changes, asks what to apply with a recommendation, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. |
 
+`inbrace-config` also ships one agent, `batch-auditor`, which only the audit starts, when you choose to run it in parallel subagents. It reads files and returns findings; it cannot edit or write anything.
+
 ## Install, step by step
 
 New to plugins? These steps take you from nothing to a running audit. Every command is checked against [Install and manage plugins](https://code.claude.com/docs/en/plugins/install).
@@ -136,6 +138,8 @@ Installing a plugin does not load its skills into every conversation. A skill's 
 | Default | You, or Claude when the task matches | Its one-line description |
 
 The Skills table above says which mode each skill uses. One-shot or side-effecting skills, like the audit, are command only.
+
+Agents are different: while a plugin is enabled, the one-line description of each agent it ships stays in context, so Claude knows the agent exists. `inbrace-config` ships one, `batch-auditor`, with a single short sentence.
 
 ## Without the plugin system
 
