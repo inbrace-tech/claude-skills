@@ -98,10 +98,12 @@ test("norms without a sidecar", () => {
 
 test("a sidecar that is not JSON", () => {
   const [error] = errorsOf(skill({ sidecarText: "{ not json" }));
+  assert.ok(error !== undefined, "expected an invalid JSON error");
   assert.match(error, /: invalid JSON \(/);
 });
 
-for (const [label, text] of [["null", "null"], ["a string", '"text"'], ["an array", "[]"], ["a number", "7"]]) {
+const NON_OBJECT_ROOTS: [label: string, text: string][] = [["null", "null"], ["a string", '"text"'], ["an array", "[]"], ["a number", "7"]];
+for (const [label, text] of NON_OBJECT_ROOTS) {
   test(`a sidecar whose root is ${label} is reported, not thrown`, () => {
     assert.deepEqual(errorsOf(skill({ sidecarText: text })), [`${SIDECAR_PATH}: must be a JSON object`]);
   });
@@ -125,6 +127,15 @@ test("norms that is not an array", () => {
 test("an entry with an invalid id", () => {
   const errors = errorsOf(skill({ sidecar: { surface: SURFACE_PATH, norms: [entry("N01"), entry("N02"), entry("N1")] } }));
   assert.deepEqual(errors, [`${SIDECAR_PATH}: entry with invalid id "N1"`]);
+});
+
+test("an entry that is not an object is reported, not thrown", () => {
+  const errors = errorsOf(skill({ sidecar: { surface: SURFACE_PATH, norms: [entry("N01"), entry("N02"), null, "N03", ["N04"]] } }));
+  assert.deepEqual(errors, [
+    `${SIDECAR_PATH}: entry with invalid id undefined`,
+    `${SIDECAR_PATH}: entry with invalid id undefined`,
+    `${SIDECAR_PATH}: entry with invalid id undefined`,
+  ]);
 });
 
 test("an entry recorded twice", () => {

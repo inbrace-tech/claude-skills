@@ -24,6 +24,12 @@ export const ID = /^N\d{2}$/;
 /** A JSON object whose fields have not been checked yet. */
 type Unchecked = Record<string, unknown>;
 
+/**
+ * Narrows a parsed JSON value to an object whose fields can be read. An array
+ * passes too: its fields read as undefined, like a missing field.
+ */
+const isUnchecked = (value: unknown): value is Unchecked => typeof value === "object" && value !== null;
+
 /** What `checkSurface` reads: one surface and its sidecar. */
 export interface SurfaceInput {
   /** Surface path relative to the repository root, spelled with `/`. */
@@ -50,8 +56,10 @@ export interface SurfaceResult {
 export function definedNorms(surface: string): string[] {
   const ids: string[] = [];
   for (const line of surface.split("\n")) {
-    const match = line.match(DEFINITION);
-    if (match) ids.push(match[1]);
+    // DEFINITION's one group is not optional, so a match always carries it;
+    // the guard is what lets the compiler see that.
+    const id = line.match(DEFINITION)?.[1];
+    if (id !== undefined) ids.push(id);
   }
   return ids;
 }
@@ -81,8 +89,8 @@ export function sidecarPathFor(surfacePath: string): string {
 export function agentNames(fileNames: string[]): string[] {
   const names = new Set<string>();
   for (const file of fileNames) {
-    const match = file.match(/^(.+?)(\.norms\.json|\.md)$/);
-    if (match) names.add(match[1]);
+    const name = file.match(/^(.+?)(\.norms\.json|\.md)$/)?.[1];
+    if (name !== undefined) names.add(name);
   }
   return [...names].sort();
 }
@@ -119,14 +127,14 @@ export function checkSurface({ surfacePath, sidecarPath, surface, sidecarText }:
   try {
     parsed = JSON.parse(sidecarText);
   } catch (error) {
-    errors.push(`${sidecarPath}: invalid JSON (${(error as Error).message})`);
+    errors.push(`${sidecarPath}: invalid JSON (${error instanceof Error ? error.message : String(error)})`);
     return { inFormat: true, errors };
   }
-  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+  if (!isUnchecked(parsed) || Array.isArray(parsed)) {
     errors.push(`${sidecarPath}: must be a JSON object`);
     return { inFormat: true, errors };
   }
-  const sidecar = parsed as Unchecked;
+  const sidecar = parsed;
 
   if (sidecar.surface !== surfacePath) {
     errors.push(`${sidecarPath}: surface is "${sidecar.surface}", expected "${surfacePath}"`);
@@ -142,7 +150,7 @@ export function checkSurface({ surfacePath, sidecarPath, surface, sidecarText }:
   const entries: unknown[] = Array.isArray(sidecar.norms) ? sidecar.norms : [];
   const recorded = new Set<string>();
   for (const item of entries) {
-    const entry = (typeof item === "object" && item !== null ? item : {}) as Unchecked;
+    const entry: Unchecked = isUnchecked(item) ? item : {};
     const id = entry.id;
     if (typeof id !== "string" || !ID.test(id)) {
       errors.push(`${sidecarPath}: entry with invalid id ${JSON.stringify(id)}`);
@@ -159,8 +167,8 @@ export function checkSurface({ surfacePath, sidecarPath, surface, sidecarText }:
   for (const id of recorded) if (!seen.has(id)) errors.push(`${sidecarPath}: ${id} matches no norm in ${surfaceName}`);
 
   const dangling = new Set<string>();
-  for (const match of surface.matchAll(REFERENCE)) {
-    if (!seen.has(match[1])) dangling.add(match[1]);
+  for (const [, id] of surface.matchAll(REFERENCE)) {
+    if (id !== undefined && !seen.has(id)) dangling.add(id);
   }
   for (const id of dangling) errors.push(`${surfacePath}: cross-reference [${id}] names no norm defined here`);
 
