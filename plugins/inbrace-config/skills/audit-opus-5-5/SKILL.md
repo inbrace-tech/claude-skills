@@ -1,6 +1,6 @@
 ---
 name: audit-opus-5-5
-description: Audit a project's Claude Code instruction surface (CLAUDE.md, rules, agents, skills, settings, and any Claude API code) for what changes when moving from Claude Opus 5 to Claude Opus 5.5 — instructions that no longer help, instructions that now backfire, and gaps the new model's behavior opens. Shows its plan and cost before reading, reports in the chat, asks what to change with a recommendation, then applies only what was approved.
+description: Audit a project's Claude Code instruction surface (CLAUDE.md, rules, agents, skills, settings, and any Claude API code) for what changes when moving from Claude Opus 5 to Claude Opus 5.5 — instructions that no longer help, instructions that now backfire, and gaps the new model's behavior opens. Asks before each costly stage with its estimated cost, reports in the chat, asks what to change with a recommendation, then applies only what was approved.
 argument-hint: "[path]"
 disable-model-invocation: true
 ---
@@ -11,6 +11,8 @@ disable-model-invocation: true
 
 **It has three jobs, and every stage below serves one of them.** Be transparent before spending anything: show the plan, the cost and the options, and let the user choose. Explain what it found in the chat, plainly enough that the user understands each change without opening a file. Ask what to do, with a recommendation, and change nothing the user did not approve.
 
+**While it runs, the chat carries only progress and the decisions taken with the user, who should read as little as possible to decide.** Reference material — coverage, what was not audited, older residue, counts by confidence — goes to the report file and the close.
+
 ## Throughout the run
 
 - [N32] Before the first tool call, show the run's checklist in the chat as plain text, and show it again, updated, at the start of every stage, so the user always sees where the run is and what comes next. Use this form, translated per [N34], marking each stage `[x]` done, `[>]` current, `[ ]` pending or `[-]` skipped, and never depend on a task-list tool, which not every session has:
@@ -19,7 +21,7 @@ disable-model-invocation: true
 
 ```text
 Opus 5 → 5.5 audit
-  [x] 1. Plan: list the files, estimate the cost, confirm if large
+  [x] 1. Plan: list the files, estimate the cost, confirm
   [>] 2. Audit: read in batches, record findings
   [ ] 3. Report: explain the findings here in the chat
   [ ] 4. Decide: you choose what to change
@@ -31,33 +33,35 @@ Opus 5 → 5.5 audit
 - [N33] Ask every question the run needs through `AskUserQuestion`, with a recommended option first; where that tool is not available, write the same question in the chat as a numbered list of options with the recommendation marked, end the turn, and change nothing until the user answers.
 - [N34] Write the chat, every question and both files under `.claude/audits/` in the user's language — the language of their messages, or the session's configured language — translating the headings of every template here, and keep quoted text, file paths, pattern ids and commands exactly as they are.
 - [N35] Report progress in the chat as the audit advances, counted in batches whatever the run mode: one line when each batch finishes, or when a subagent returns with the batches it covered, naming how many batches of the total are done and how many findings they added.
+- [N49] Ask for approval per [N33] before each costly step, even for a single batch: before reading the first batch ([N39]), before applying changes ([N17]) and before any subagent is started. In each question, separate the fixed cost already paid when the skill loaded from the step's marginal cost and the total expected to the end of the run, all labelled estimates.
+- [N50] Record each approved gate in the report file with the estimate that was shown, so the report shows that every spend was shown and approved.
 - [N47] After an interruption — an API error, a resumed or compacted session — read the findings file and the report file on disk, reprint the checklist with the stage the run was in, say where it stopped, and continue from the last batch the findings file records or the last edit the report records, without redoing finished work.
 
-## Stage 1 — Plan: list, estimate, confirm if large
+## Stage 1 — Plan: list, estimate, confirm
 
 - [N01] Take the path argument as the audit root, or the current project root when none is given, and state it in the plan without stopping to ask.
 - [N02] List every file that shapes model behavior under the root: `CLAUDE.md`, `CLAUDE.local.md` and `AGENTS.md` with every file they import through `@path`; the Markdown files under `.claude/rules/`, `.claude/agents/`, `.claude/skills/` and `.claude/commands/`; `.claude/settings.json` and `.claude/settings.local.json`; and any source file that calls the Claude API, found by searching code files — not prose — for `output_config`, `budget_tokens`, `tool_choice` and a `thinking` request parameter.
-- [N36] Leave out of the audit what is not instruction text — JSON or YAML data beside a skill, third-party reference material and licenses, scripts and hooks that do not call the Claude API — and name each excluded group with its size in the plan.
+- [N36] Leave out of the audit what is not instruction text — JSON or YAML data beside a skill, third-party reference material and licenses, scripts and hooks that do not call the Claude API — and name each group with its size in the plan under "Not audited (not instructions for the model)", never "excluded", which reads as deleted.
 - [N37] Read the user's `~/.claude/settings.json` as context for explaining pattern P01 only, never as an audit target or a file to edit, since it sits outside the root.
 - [N03] Name `.claude` explicitly in every search, or pass `--hidden` to `rg`, because `rg` skips dot-directories when it walks from `.` and returns zero results with no error.
 - [N04] Mark as read-only every listed file that is gitignored — except `.claude/settings.local.json`, which is personal by design — installed by a plugin, or reached through a symlink leading outside the root, since an edit to such a file is overwritten by the tool that produced it or lands in another project; list a file reached through a symlink inside the root once, under its real path, and name the link beside it.
-- [N38] Search the listed files, and the project's decision records outside the inventory — `docs/adrs/`, `docs/**/decisions/`, `docs/audits/` and similar — for an existing Opus 5.5 evaluation: a section, skill, decision record or rule that says what the project kept, changed or declined for Opus 5.5. Note where it is, since [N31] depends on it, and never state that no record exists without having searched those places.
+- [N38] Search the listed files, and the project's decision records outside the inventory — `docs/adrs/`, `docs/**/decisions/`, `docs/audits/` and similar — for an existing Opus 5.5 evaluation: a section, skill, decision record or rule that says what the project kept, changed or declined for Opus 5.5. Read the project's auto memory too, as context and never to edit — `~/.claude/projects/<project>/memory/`, or the directory `autoMemoryDirectory` names — since it sits outside the root. Note where the evaluation is, since [N31] depends on it, and never state that no record exists without having searched those places.
 - [N19] Check `git status` and whether the root is a git repository, and state the result in the plan, since an audit's edits are easiest to review and revert as one change on a clean branch.
-- [N05] Measure the listed files and the excluded groups before reading any of them, estimate the listed files' tokens as bytes divided by four, and state the run's cost in tokens, labelled an estimate, as a range from about 12,000 plus that figure to about 12,000 plus three times it, since the skill and its messages cost about 12,000 tokens on their own and reading adds overhead to what the files weigh:
+- [N05] Measure the listed files and the groups not audited before reading any of them, estimate the listed files' tokens as bytes divided by four, and estimate the audit stage's marginal cost as a range from that figure to three times it, since reading adds overhead to what the files weigh. Count the skill's fixed cost apart, about 30,000–40,000 tokens already paid once it loads — the skill's own body, the skill list and system reminders the session injects, and the round trips of its questions — and label every figure an estimate:
 
 <measure>
 
 ```bash
 wc -c <every file from the inventory>
-wc -c <every file in each excluded group> | tail -n 1
+wc -c <every file in each group not audited> | tail -n 1
 ```
 
 </measure>
 
 - [N06] Plan the audit as batches of at most 30,000 estimated tokens, grouping files that belong together — a `CLAUDE.md` with its imports, one agent with the skills it names — split a group larger than one batch into consecutive batches and say so in the plan, and read a single file larger than one batch in line ranges small enough for one read each.
-- [N07] Show the plan in one message before reading the first batch: the updated checklist, the root, the file count by area, what was excluded and why, the git state, the batch count, the estimated cost range, and how the audit will run.
-- [N39] Where the plan has more than one batch, ask how to proceed per [N33], with these options: audit in this session, batch by batch; audit a reduced scope — memory files and their imports, rules, agents and settings — with its own estimate and a warning that it leaves out the skills, where most text tuned for Opus 5 usually lives; audit in parallel subagents, which finishes sooner, with its own estimate: the in-session range plus, for each subagent, the base context it loads on start — the project's memory files with their imports and the rules injected with them, as measured in [N05] — times the number of subagents; or cancel, which goes straight to the close in [N45]. Recommend this session up to ten batches and the reduced scope above that, and state the reason in the recommended option. Where the plan has a single batch, show it and continue without asking.
-- [N40] Give each subagent, when the user chose them, its list of files, the pattern table, the Stage 2 norms and the project facts they depend on — the evaluation from [N38], the model pins, the read-only files — inline or in one shared file under `.claude/audits/` that each subagent reads, and have it return its findings as text in the [N09] line format and write no file; this session writes the findings file.
+- [N07] Show the plan in one short message before the question in [N39]: the updated checklist, the root, the file count by area, what is not audited and why, the git state, the batch count, and the estimated costs from [N05].
+- [N39] Before reading the first batch, always ask per [N49], even when the plan has a single batch, naming what will be read — files and batches — the stage's marginal cost and the total expected to the end, with these options: continue in this session; a reduced scope — memory files and their imports, rules, agents and settings — offered only when it would save at least one batch, with its own estimate and a warning that it leaves out the skills, where most text tuned for Opus 5 usually lives; parallel subagents, offered only when the plan has more than one batch, which finish sooner and cost more: for each subagent, the base context it loads on start — the project's memory files with their imports and the rules injected with them, as measured in [N05] — stated per subagent and in total; or cancel, which goes straight to the close in [N45]. Recommend continuing in this session up to ten batches and the reduced scope above that, and state the reason in the recommended option.
+- [N40] Give each subagent, once the user approved them per [N49], its list of files, the pattern table, the Stage 2 norms and the project facts they depend on — the evaluation from [N38], the model pins, the read-only files — inline or in one shared file under `.claude/audits/` that each subagent reads, and have it return its findings as text in the [N09] line format and write no file; this session writes the findings file.
 - [N46] When the user chose the reduced scope and its plan still has more than ten batches, show the new plan and ask again per [N33], offering: audit in this session, audit in parallel subagents, or cancel; recommend this session up to ten batches and subagents above that, with their extra cost from [N39] stated in the option.
 
 ## Stage 2 — Audit in batches
@@ -78,7 +82,7 @@ wc -c <every file in each excluded group> | tail -n 1
 
 | Id | Pattern | Signal | Applies when | Proposed change |
 |---|---|---|---|---|
-| P01 | Project not set to Opus 5.5 at `medium` | the project, local and managed settings leave `model` or a top-level `effortLevel` unset | the project runs on Opus 5 or Opus 5.5, and no settings file already pins `claude-opus-5-5` with an effort level; record it once per project, on `.claude/settings.json` | Add `"model": "claude-opus-5-5"` and `"effortLevel": "medium"` to the project settings, in the file the user picks per [N48]. This is the skill's recommendation, not the guide's rule: Opus 5.5's `medium` matches or beats Opus 5 at `high` and costs less, and a top-level `effortLevel` in project settings applies to every model. Explain from [N37] what the user's own settings do today: a top-level `effortLevel` in `~/.claude/settings.json` does not count for Opus 5.5. Type setting. High confidence when the user's settings hold only that ignored key, medium otherwise. |
+| P01 | Project not set to Opus 5.5 at `medium` | the project, local and managed settings leave `model` or a top-level `effortLevel` unset | the project runs on Opus 5 or Opus 5.5, and no settings file already sets an effort level with a model that resolves to Opus 5.5; resolve aliases as the Claude Code docs do: `opus`, `opus[1m]` and `default` are Opus 5.5 on the Anthropic API, Claude Platform on AWS, Amazon Bedrock and Google Cloud, but other models on Microsoft Foundry, and `ANTHROPIC_DEFAULT_OPUS_MODEL`, when set, decides what `opus` means; record it once per project, on `.claude/settings.json` | Add `"model": "claude-opus-5-5"` and `"effortLevel": "medium"` to the project settings, in the file the user picks per [N48]. This is the skill's recommendation, not the guide's rule: Opus 5.5's `medium` matches or beats Opus 5 at `high` and costs less, and a top-level `effortLevel` in project settings applies to every model. Explain from [N37] what the user's own settings do today: a top-level `effortLevel` in `~/.claude/settings.json` does not count for Opus 5.5. Type setting. High confidence when the project sets neither `model` nor `effortLevel` and the user relies on a top-level `effortLevel` in `~/.claude/settings.json`, which Opus 5.5 ignores; medium otherwise. |
 | P02 | Thinking disabled or budgeted | `thinking: {type: "disabled"}`, `budget_tokens` | API code | Hand off per [N25]. Both return a 400 on Opus 5.5 at every effort level; remove them and use `low` effort where latency matters. |
 | P03 | "Don't think" rules | "do not think", "don't reason", "skip thinking" | any instruction file | Remove. Thinking is always on, and such rules increase internal-tag leakage. |
 | P04 | Reasoning written into the response | "show your reasoning in the answer", "write out your chain of thought" | any instruction file | Remove. It can be declined with the `reasoning_extraction` refusal. Read summarized thinking blocks instead. |
@@ -104,46 +108,33 @@ wc -c <every file in each excluded group> | tail -n 1
 
 ## Stage 3 — Report: explain it in the chat
 
-- [N13] Write the full report to `.claude/audits/opus-5-5-<YYYY-MM-DD>.md` under the root, opening with the scope, the files read, the files excluded or marked read-only, the batch plan, and the counts by pattern and by confidence, followed by every finding grouped by pattern and the older residue.
-- [N15] Present the report in the chat in this form, rendered as Markdown rather than inside a code block, before any question, so the user can decide from the chat alone: a header line with the scope and cost; a table of every proposed change, numbered, in plain words, each typed as remove, add, setting or rewrite; one line per pattern found saying what changed in Opus 5.5 and why it matters for this project; then the sections that change nothing, one line per item, each written as "none" when empty rather than left out. Where more than fifteen changes are proposed, show the fifteen highest-impact in the table and the count per pattern for the rest, and point to the report file:
+- [N13] Write the full report to `.claude/audits/opus-5-5-<YYYY-MM-DD>.md` under the root, opening with the scope, the files read, the files not audited (not instructions for the model) or marked read-only, the batch plan, every approved gate with its estimate per [N50], and the counts by pattern and by confidence, followed by every finding grouped by pattern, the older residue, and every section of the chat report, each written as "none" when empty.
+- [N15] Present the report in the chat before any question, rendered as Markdown rather than inside a code block, in this form and order and nothing more: a one-line summary with the scope, the cost so far and the number of changes; the numbered table of changes, each typed as remove, add, setting or rewrite; one line per pattern found saying what changed in Opus 5.5 and why it matters here; one line naming only the categories that change nothing and have items, with their counts; and the `/claude-api migrate` line only when there is API code. Never show a heading followed by "none" in the chat — a category with nothing in it is left out there and written in the report file. Where more than fifteen changes are proposed, show the fifteen highest-impact in the table and the count per pattern for the rest:
 
 <chat_report>
 
 ```markdown
-## Opus 5 → 5.5 audit — <project>
-<files> files · <batches> batches · ~<tokens> tokens · <clean> batches clean
+**Opus 5 → 5.5 audit — <project>** · <files> files · ~<tokens> tokens so far · <n> changes
 
-### What would change (<n>)
 | # | File | Pattern | Today | Change | Type | Confidence |
 |---|---|---|---|---|---|---|
 | 1 | <file:line> | <Pnn> | <what it says, in a few words> | <what it becomes> | <remove/add/setting/rewrite> | <high/medium/low> |
 
-### Why
+**Why**
 - <Pnn>: <what changed in Opus 5.5, in one plain sentence, and what it means here>
 
-### Re-test only, no edit (<n>)
-- <file:line> · <Pnn> · <what to re-test>
-### Already decided by the project (<n>)
-- <files> · <Pnn> · <where the project says so>
-### Unclear (<n>)
-- <file:line> · <why its purpose is unclear>
-### Out of scope
-- Claude API code: <files, or none> → /claude-api migrate <files> to claude-opus-5-5
-- Older residue: <count, or none> → /claude-api prompt-audit
-### Coverage
-- <what was excluded, and any file read only in part>
-
-Full report: .claude/audits/opus-5-5-<date>.md
+**No change:** <n> re-test only · <n> already decided by the project · <n> unclear
+**API code:** /claude-api migrate <files> to claude-opus-5-5
 ```
 
 </chat_report>
 
-- [N29] Close the report's older-residue section by recommending Anthropic's model-general audit, `/claude-api prompt-audit`, for instructions written for models before Opus 5, and close the API-code section with the `/claude-api migrate` command covering every file it lists.
+- [N29] In the report file, close the older-residue section by recommending Anthropic's model-general audit, `/claude-api prompt-audit`, for instructions written for models before Opus 5, and close the API-code section with the `/claude-api migrate` command covering every file it lists.
 - [N16] Propose no diff at this stage: the table names each proposed change in words, and the diff is written in Stage 5 for the changes the user approved.
 
 ## Stage 4 — Decide
 
-- [N17] Ask what to change per [N33], with these options: apply every proposed change, its label carrying the count by confidence; choose by type of change, offered only when the table holds more than one type; show the diff first; stop here with the report. Recommend applying every change when none is low confidence, and showing the diff first otherwise; where the dirty tree or missing repository from [N19] applies, say so in each applying option's description, so picking it is the go-ahead to edit anyway. Where the table holds a P01 row, ask [N48]'s question in the same call.
+- [N17] Ask what to change per [N33], with these options: apply every proposed change, its label carrying the count by confidence; choose by type of change, offered only when the table holds more than one type; show the diff first; stop here with the report. Give each applying option, in its description, the estimated marginal cost of applying it — from the size of the files it edits — and the total expected to the end, per [N49]. Recommend applying every change when none is low confidence, and showing the diff first otherwise; where the dirty tree or missing repository from [N19] applies, say so in each applying option's description, so picking it is the go-ahead to edit anyway. Where the table holds a P01 row, ask [N48]'s question in the same call.
 - [N48] For a P01 row, ask where to write the project's model and effort, saying that `claude-opus-5-5` at `medium` is this skill's recommendation and the choice is the user's: shared, in `.claude/settings.json`, which applies to everyone who opens the project and so fixes the model and effort for the whole team — recommended; or only for me, in `.claude/settings.local.json`. Cite https://code.claude.com/docs/en/model-config#adjust-effort-level in the question, and apply P01 only to the file chosen.
 - [N42] Count as "every proposed change" only what this skill edits — the numbered table — and never the re-test-only, already-decided, unclear, out-of-scope or older-residue items.
 - [N43] When the user chooses by type, ask one multi-select question per [N33] listing only the types present — remove, add, setting (the project's model and effort, or a model pin), rewrite — each with its count and the table numbers it covers; a P01 row in the chosen set goes to the file picked per [N48].
@@ -154,10 +145,10 @@ Full report: .claude/audits/opus-5-5-<date>.md
 
 - [N30] Before removing any text, search the root for the exact string, and where a test, hook or script matches it, leave the text and name that dependency in the closing message.
 - [N20] Apply exactly the approved set and nothing beside it, and edit no file Stage 1 marked read-only — name it and its proposed change for the user to make where it is produced.
-- [N21] When the user chose to see the diff first, show the diff of every proposed change in the chat without editing any file, then ask per [N33] whether to apply all of it, choose by type, or stop.
+- [N21] When the user chose to see the diff first, show the diff of every proposed change in the chat without editing any file, then ask per [N49] whether to apply all of it, choose by type, or stop, with the cost of applying in each applying option.
 - [N22] Re-scan every edited file against the pattern table after applying, and confirm that no instruction protected by [N12] was removed.
 - [N24] Append the decision to the report file before the first edit, then each change as it is applied and the verification result, so the report records what the audit changed and not only what it found, and [N47] can resume from the last recorded edit.
-- [N45] Close every run the same way, whether it was cancelled at the plan, stopped at the report, or applied changes: the final checklist with each stage marked done or skipped; the files edited and every approved change not applied, with the reason; where the audit wrote report files under `.claude/audits/`, that they are untracked and whether to keep, commit or delete them is the user's call; and one recommended next step.
+- [N45] Close every run the same way, whether it was cancelled at the plan, stopped at the report, or applied changes: the final checklist with each stage marked done or skipped; the files edited and every approved change not applied, with the reason; the reference material kept out of the chat, listing only what has items — what was not audited, any file read only in part, the older residue with `/claude-api prompt-audit`, and the counts by confidence; where the audit wrote report files under `.claude/audits/`, that they are untracked and whether to keep, commit or delete them is the user's call; and one recommended next step.
 - [N23] Where the audit ran, make that next step re-running the project's own evals, or a short effort sweep at `low`, `medium` and `high`, since the guide's advice is a starting point that the project's own measurements confirm.
 - [N14] Where this session can publish an artifact, offer in the close to publish the report as one for sharing, and publish only if the user accepts.
 

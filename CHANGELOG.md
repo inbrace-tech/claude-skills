@@ -1,6 +1,10 @@
 # Changelog
 
-## claude-config
+## inbrace-config (formerly claude-config)
+
+### 0.4.0
+
+- The plugin is renamed `inbrace-config`, so the audit is now `/inbrace-config:audit-opus-5-5`: reinstall with `/plugin uninstall claude-config@inbrace`, then `/plugin install inbrace-config@inbrace`. The audit asks before each costly stage with its cost, keeps the chat to what you need to decide, and puts the reference material in the report.
 
 ### 0.3.1
 

@@ -15,20 +15,20 @@ Start `claude` in any project, then add this marketplace and install the plugin:
 
 ```text
 /plugin marketplace add inbrace-tech/claude-skills
-/plugin install claude-config@inbrace
+/plugin install inbrace-config@inbrace
 ```
 
 The install command opens a panel with the plugin's details, where you pick a scope (step 3). On Claude Code v2.1.275 or later, one command does both:
 
 ```text
-/plugin install claude-config --marketplace inbrace-tech/claude-skills
+/plugin install inbrace-config --marketplace inbrace-tech/claude-skills
 ```
 
 ### 2. Or install from your terminal
 
 ```bash
 claude plugin marketplace add inbrace-tech/claude-skills
-claude plugin install claude-config@inbrace --scope user
+claude plugin install inbrace-config@inbrace --scope user
 ```
 
 `--scope` takes `user`, `project` or `local`, and defaults to `user`.
@@ -46,7 +46,7 @@ For the audit, `user` is the right choice: you run it once in a while, in whiche
 ### 4. Run the audit
 
 ```text
-/claude-config:audit-opus-5-5 [path]
+/inbrace-config:audit-opus-5-5 [path]
 ```
 
 Without a path it audits the current project. It starts only from this typed command: asking for an audit in plain words does not start it.
@@ -62,12 +62,12 @@ Third-party marketplaces do not update on their own. Run `/plugin marketplace up
 ### 7. Turn off or remove
 
 ```text
-/plugin disable claude-config@inbrace
-/plugin enable claude-config@inbrace
+/plugin disable inbrace-config@inbrace
+/plugin enable inbrace-config@inbrace
 ```
 
 ```bash
-claude plugin uninstall claude-config@inbrace
+claude plugin uninstall inbrace-config@inbrace
 claude plugin marketplace remove inbrace
 ```
 
@@ -79,14 +79,14 @@ Test a branch, or a local copy for one session:
 
 ```bash
 claude plugin marketplace add inbrace-tech/claude-skills#<branch>
-claude --plugin-dir ./plugins/claude-config
+claude --plugin-dir ./plugins/inbrace-config
 ```
 
 ## Skills
 
 | Plugin | Skill | Mode | What it does |
 |---|---|---|---|
-| `claude-config` | `/claude-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Shows its plan and token cost before reading anything, explains the findings in the chat with a numbered table of changes, asks what to apply with a recommendation, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. |
+| `inbrace-config` | `/inbrace-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Asks before each costly stage, showing its estimated token cost, explains the findings in the chat with a short numbered table of changes, asks what to apply with a recommendation, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. |
 
 ## How this relates to Anthropic's `claude-api` skill
 
@@ -96,7 +96,7 @@ Claude Code ships Anthropic's [`claude-api` skill](https://platform.claude.com/d
 |---|---|
 | `/claude-api migrate <scope> to claude-opus-5-5` | Code that calls the Claude API: model IDs, request parameters that now return errors, SDK syntax in each language |
 | `/claude-api prompt-audit` | Dated prompt patterns across model generations, independent of one transition |
-| `/claude-config:audit-opus-5-5` | What Claude Code reads as instructions (`CLAUDE.md`, rules, agents, skills, settings), checked against the Opus 5 → 5.5 guide |
+| `/inbrace-config:audit-opus-5-5` | What Claude Code reads as instructions (`CLAUDE.md`, rules, agents, skills, settings), checked against the Opus 5 → 5.5 guide |
 
 The audit never edits API code. It lists what it finds there and gives you the `/claude-api migrate` command to run, and it points to `/claude-api prompt-audit` for instructions older than Opus 5.
 
@@ -117,9 +117,9 @@ Each skill is a plain folder with a `SKILL.md`, following the [Agent Skills](htt
 
 ```bash
 # for you, in every project
-cp -r plugins/claude-config/skills/audit-opus-5-5 ~/.claude/skills/
+cp -r plugins/inbrace-config/skills/audit-opus-5-5 ~/.claude/skills/
 # for one repository, shared with your team
-cp -r plugins/claude-config/skills/audit-opus-5-5 .claude/skills/
+cp -r plugins/inbrace-config/skills/audit-opus-5-5 .claude/skills/
 ```
 
 A copied skill does not receive updates. Installing through the marketplace does.
