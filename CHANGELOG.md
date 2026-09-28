@@ -2,6 +2,14 @@
 
 ## inbrace-config (formerly claude-config)
 
+### 0.5.0
+
+- New skill, `/inbrace-config:audit-sonnet-5-5`, audits a setup for the move from Claude Sonnet 5 to Sonnet 5.5 with the same stages and gates as the Opus audit; it proposes the model `claude-sonnet-5-5` without writing an effort level, and the `batch-auditor` and `finding-verifier` agents now serve both audits, reading the transition from the brief.
+- Both audits find the old tier's prompting delivered to the new model by a prefix match in gate and check scripts as well as hooks, and read and count only the scripts that match; they keep recommending full scope when the skills carry the old model's tuning, estimate parallel time from the slowest auditor's batch count, and recommend showing the diff or stopping when the project binds a pin to other files.
+- Both audits also read templates, triggers and a worktree's gitignored instruction files, find Claude API code by its SDK imports, anchor each finding on the line that carries it with one line per pattern, compute the total cost as fixed plus marginal, and recommend by a fixed ordered list; the verifier merges only exact duplicates.
+- Both audits take `--scope`, `--mode` and `--stop-at-report` arguments that answer the plan gate and stop at the report, so they can run headless; no argument applies changes.
+- Both audits also read model-dependent code and docs — price tables, prompting-guide indexes, model-id selectors and transcript parsers — and add rows for a source-model skill preloaded into a moving agent, the Claude Code version floor, content-based fallback, price tables, model docs and text-only parsers; a prefix selector's fix names exact or longest matching, project memory counts for a missing instruction unless the agent sets `omitClaudeMd`, every row states a confidence, and older residue takes the id `P00`.
+
 ### 0.4.7
 
 - The audit no longer proposes a rule an agent already loads through a skill in its `skills:` frontmatter, records as P22 an Opus 5 prompting skill that a hook delivers to Opus 5.5 by matching the model id's prefix, and shows advice the guide only offers — P06, P09, P12, P13 — as optional, in its own table and outside "apply every change".
