@@ -10,8 +10,8 @@
     {
       "id": "N02",
       "where": "Classify",
-      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [12, 21] },
-      "what": "Added in 0.4.3. The agent carries no pattern table of its own: the skill that starts it passes the table, the norms that apply to a batch and the project facts, so one copy of each lives in the skill and a change there reaches the agent without editing it. The facts are named because they change a classification: in the large-harness test that led to this agent, `sonnet` subagents marked as older residue a filter the project had already decided on, and proposed a P12 by inference. See #12. In 0.4.4 the norms it receives are called the rules in its brief, since the brief is the one thing the skill passes. See #21. In 0.5.0 the agent serves every inbrace-config audit skill, `audit-sonnet-5-5` as well as `audit-opus-5-5`, so it no longer names Opus: the project fact it names is the project's evaluation for the target model the brief names, and the brief of each skill states its transition, source and target model."
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [12, 21, 28] },
+      "what": "Added in 0.4.3. The agent carries no pattern table of its own: the skill that starts it passes the table, the norms that apply to a batch and the project facts, so one copy of each lives in the skill and a change there reaches the agent without editing it. The facts are named because they change a classification: in the large-harness test that led to this agent, `sonnet` subagents marked as older residue a filter the project had already decided on, and proposed a P12 by inference. See #12. In 0.4.4 the norms it receives are called the rules in its brief, since the brief is the one thing the skill passes. See #21. In 0.5.0 the agent serves every inbrace-config audit skill, `audit-sonnet-5-5` as well as `audit-opus-5-5`, so it no longer names Opus: the project fact it names is the project's evaluation for the target model the brief names, and the brief of each skill states its transition, source and target model. See #28."
     },
     {
       "id": "N03",
@@ -40,8 +40,8 @@
     {
       "id": "N07",
       "where": "Classify",
-      "refs": { "inbrace-tech/claude-skills": [21] },
-      "what": "Added in 0.4.4 with the status field of the finding line. In the live test of 0.4.3 on a large harness — 113 files, 23 batches, 23 subagents — none of the 10 raw findings survived as a change: 7 were already decided by the project and 3 were protected phrases, and nothing in the returned lines said so: the session had to triage each one again. A status per finding lets the agent say what it already knows — decided by the project, older than Opus 5, or unclear — and the verifier checks it. See #21. In 0.5.0 the agent serves every inbrace-config audit skill, `audit-sonnet-5-5` as well as `audit-opus-5-5`, so it no longer names Opus: `already decided` refers to the project's evaluation for the target model the brief names, and `older residue` to a transition older than the source model the brief names — Opus 5 for one audit, Sonnet 5 for the other."
+      "refs": { "inbrace-tech/claude-skills": [21, 28] },
+      "what": "Added in 0.4.4 with the status field of the finding line. In the live test of 0.4.3 on a large harness — 113 files, 23 batches, 23 subagents — none of the 10 raw findings survived as a change: 7 were already decided by the project and 3 were protected phrases, and nothing in the returned lines said so: the session had to triage each one again. A status per finding lets the agent say what it already knows — decided by the project, older than Opus 5, or unclear — and the verifier checks it. See #21. In 0.5.0 the agent serves every inbrace-config audit skill, `audit-sonnet-5-5` as well as `audit-opus-5-5`, so it no longer names Opus: `already decided` refers to the project's evaluation for the target model the brief names, and `older residue` to a transition older than the source model the brief names — Opus 5 for one audit, Sonnet 5 for the other. See #28."
     },
     {
       "id": "N08",
