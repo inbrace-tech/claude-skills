@@ -6,7 +6,7 @@ body:
     id: skill
     attributes:
       label: Plugin and skill
-      description: e.g. inbrace-config / audit
+      description: e.g. inbrace-config / audit-opus-5-5
     validations:
       required: true
   - type: textarea

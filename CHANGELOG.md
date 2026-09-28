@@ -2,6 +2,10 @@
 
 ## inbrace-config (formerly claude-config)
 
+### 0.4.6
+
+- The cost footer and the close no longer say the harness's per-agent token count includes cache re-reads or compare it with the estimate: they say the figures are tokens of context without the cache re-reads, which can multiply the tokens sent about 10× in an agent-heavy run, and point to `/usage` for the real volume and cost.
+
 ### 0.4.5
 
 - P01 keeps a `[1m]` model suffix, the gate reads project hooks that require `model` before asking, the cost footer applies 3–5× only to this session, time and batch estimates follow the measured run, and the verifier cites a control rule without guessing where the file sits.
