@@ -2,6 +2,10 @@
 
 ## inbrace-config (formerly claude-config)
 
+### 0.4.7
+
+- The audit no longer proposes a rule an agent already loads through a skill in its `skills:` frontmatter, records as P22 an Opus 5 prompting skill that a hook delivers to Opus 5.5 by matching the model id's prefix, and shows advice the guide only offers — P06, P09, P12, P13 — as optional, in its own table and outside "apply every change".
+
 ### 0.4.6
 
 - The cost footer and the close no longer say the harness's per-agent token count includes cache re-reads or compare it with the estimate: they say the figures are tokens of context without the cache re-reads, which can multiply the tokens sent about 10× in an agent-heavy run, and point to `/usage` for the real volume and cost.

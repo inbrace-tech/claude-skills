@@ -22,8 +22,8 @@
     {
       "id": "N04",
       "where": "Verify",
-      "refs": { "inbrace-tech/claude-skills": [21] },
-      "what": "Added in 0.4.4. The verifier corrects rather than only accepting or rejecting, so the session receives a final list it can write and present without triaging it again. Every final status is named, and `already decided` and `discarded` carry where and why, so the user can see the reason in the chat. See #21."
+      "refs": { "inbrace-tech/claude-skills": [21, 25] },
+      "what": "Added in 0.4.4. The verifier corrects rather than only accepting or rejecting, so the session receives a final list it can write and present without triaging it again. Every final status is named, and `already decided` and `discarded` carry where and why, so the user can see the reason in the chat. See #21. In 0.4.7 the final statuses include `optional`, which [N10] gives the findings of the rows the brief marks as optional. See #25."
     },
     {
       "id": "N05",
@@ -48,6 +48,18 @@
       "where": "Verify",
       "refs": { "inbrace-tech/claude-skills": [22] },
       "what": "Added in 0.4.5. In the live test of 0.4.4 on a large harness — 6 auditors by area and 1 verifier, 15 raw findings of which 1 stayed a change — the verifier cited a project control rule, a file that needs explicit approval before it is edited, and called that file \"outside the worktree\" when it sat inside it. The rule was the evidence; the location was an inference the verifier had not checked, and it misled the reader of the final list. The maintainer closed the fix: cite the rule as the project states it and say nothing about where the file sits. See #22."
+    },
+    {
+      "id": "N09",
+      "where": "Verify",
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents"], "inbrace-tech/claude-skills": [25] },
+      "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) three agents were each proposed a missing-instruction addition that a skill in their `skills:` frontmatter already stated. The sub-agents page says each listed skill's full content is injected into the subagent at startup, so the finding is refuted by the skill, which the verifier opens before judging; a skill with `disable-model-invocation: true` cannot be preloaded and a missing one is skipped, so those findings stand. See #25."
+    },
+    {
+      "id": "N10",
+      "where": "Verify",
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5"], "inbrace-tech/claude-skills": [25] },
+      "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) an elapsed-time signal the Opus 5.5 guide only offers was proposed as an ordinary change. The brief marks the rows the guide frames as optional; the verifier gives their findings the status `optional` and caps their confidence at medium, so the final list keeps optional advice apart from the changes the guide states outright. See #25."
     }
   ]
 }
