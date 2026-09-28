@@ -52,8 +52,8 @@
     {
       "id": "N09",
       "where": "Verify",
-      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents"], "inbrace-tech/claude-skills": [25] },
-      "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) three agents were each proposed a missing-instruction addition that a skill in their `skills:` frontmatter already stated. The sub-agents page says each listed skill's full content is injected into the subagent at startup, so the finding is refuted by the skill, which the verifier opens before judging; a skill with `disable-model-invocation: true` cannot be preloaded and a missing one is skipped, so those findings stand. See #25."
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents"], "inbrace-tech/claude-skills": [25, 28, 30] },
+      "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) three agents were each proposed a missing-instruction addition that a skill in their `skills:` frontmatter already stated. The sub-agents page says each listed skill's full content is injected into the subagent at startup, so the finding is refuted by the skill, which the verifier opens before judging; a skill with `disable-model-invocation: true` cannot be preloaded and a missing one is skipped, so those findings stand. See #25. In 0.5.0, after four seeded runs split three ways over a rule stated in project memory, the verifier also discards a missing-instruction finding the project memory settles for an agent that does not set `omitClaudeMd: true`. The sub-agents page's \"What loads at startup\" section and the `omitClaudeMd` field description say a custom subagent loads the project's CLAUDE.md hierarchy unless the field is set; one passage of the same page says CLAUDE.md files \"still load through the normal message flow\" even with it, so the rule rests on the majority of the page and the finding it decides carries medium confidence. See #28 and #30."
     },
     {
       "id": "N10",
