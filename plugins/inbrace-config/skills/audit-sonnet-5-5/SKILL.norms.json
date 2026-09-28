@@ -5,7 +5,7 @@
       "id": "N01",
       "where": "Stage 1 — Plan: list, estimate, confirm",
       "refs": { "inbrace-tech/claude-skills": [1, 6, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N01] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #1, #6). Carried over with only the model names changed. See #28."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N01] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #1, #6). Carried over with only the model names changed. See #28. In 0.5.0 the maintainer decided that the audit can run without anyone answering its gates — for a local `claude plugin eval` suite and for headless use — by passing the answers as arguments, only up to the report: no argument approves applying changes. The root is the first argument that is not a flag, per [N63]. See #28."
     },
     {
       "id": "N02",
@@ -101,13 +101,13 @@
       "id": "N17",
       "where": "Stage 4 — Decide",
       "refs": { "docs": ["https://code.claude.com/docs/en/tools-reference#askuserquestion-tool-behavior", "https://code.claude.com/docs/en/model-config#adjust-effort-level"], "inbrace-tech/claude-skills": [2, 6, 7, 8, 9, 21, 25, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N17] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #2, #6, #7, #8, #9, #21, #25). Carried over with only the model names changed. See #28. In 0.5.0, after a full-scope run of this skill on a private multi-agent harness — 64 batches, 13 auditors and the verifier — checked against a blind control audit of the same commit made from the sources alone, the recommendation checks for a coupling first: the rule would have recommended applying every pin change, but the harness enforced, through a check script that binds each pin to a tier prompting skill, that a pin and its skill move together, so the isolated edits would have failed its checks. The session recommended stopping on its own judgement; the norm now makes that the rule and names the coupling in the option. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — the recommendation follows an ordered list with \"would break\" defined, since the two runs starred different options from the same text — one read the coupling rule as a free choice between the diff and a stop — and a re-test-only row, whose fix is never in the table, now always leads to a stop. See #28."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N17] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #2, #6, #7, #8, #9, #21, #25). Carried over with only the model names changed. See #28. In 0.5.0, after a full-scope run of this skill on a private multi-agent harness — 64 batches, 13 auditors and the verifier — checked against a blind control audit of the same commit made from the sources alone, the recommendation checks for a coupling first: the rule would have recommended applying every pin change, but the harness enforced, through a check script that binds each pin to a tier prompting skill, that a pin and its skill move together, so the isolated edits would have failed its checks. The session recommended stopping on its own judgement; the norm now makes that the rule and names the coupling in the option. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — the recommendation follows an ordered list with \"would break\" defined, since the two runs starred different options from the same text — one read the coupling rule as a free choice between the diff and a stop — and a re-test-only row, whose fix is never in the table, now always leads to a stop. See #28. In 0.5.0 the maintainer decided that the audit can run without anyone answering its gates — for a local `claude plugin eval` suite and for headless use — by passing the answers as arguments, only up to the report: no argument approves applying changes. `--stop-at-report` answers this question with a stop, and the report says an argument chose it. See #28."
     },
     {
       "id": "N18",
       "where": "Stage 4 — Decide",
       "refs": { "inbrace-tech/claude-skills": [6, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N18] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6). Carried over with only the model names changed. See #28."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N18] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6). Carried over with only the model names changed. See #28. In 0.5.0 the maintainer decided that the audit can run without anyone answering its gates — for a local `claude plugin eval` suite and for headless use — by passing the answers as arguments, only up to the report: no argument approves applying changes. A run counts as headless where `AskUserQuestion` is unavailable or denied — the headless page says `dontAsk` denies it and `--permission-prompts none` removes it — and one given the scope and run mode by argument now reaches the report instead of stopping at the plan. See #28."
     },
     {
       "id": "N19",
@@ -233,7 +233,7 @@
       "id": "N39",
       "where": "Stage 1 — Plan: list, estimate, confirm",
       "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents", "https://code.claude.com/docs/en/tools-reference#askuserquestion-tool-behavior", "https://code.claude.com/docs/en/plugins/components#frontmatter-fields-in-plugin-agents"], "inbrace-tech/claude-skills": [6, 7, 8, 11, 12, 21, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N39] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6, #7, #8, #11, #12, #21). Adapted for the Sonnet 5 → Sonnet 5.5 transition: the reduced-scope warning names text tuned for Sonnet 5. The auditors and the verifier still run on Opus 5.5 at `medium`: the maintainer chose that tier for the agents of both audits. See #28."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N39] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6, #7, #8, #11, #12, #21). Adapted for the Sonnet 5 → Sonnet 5.5 transition: the reduced-scope warning names text tuned for Sonnet 5. The auditors and the verifier still run on Opus 5.5 at `medium`: the maintainer chose that tier for the agents of both audits. See #28. In 0.5.0 the maintainer decided that the audit can run without anyone answering its gates — for a local `claude plugin eval` suite and for headless use — by passing the answers as arguments, only up to the report: no argument approves applying changes. Arguments answer the scope and run-mode questions, but the plan and its tables are still shown, and an argument naming an option the gate would not offer stops the run rather than being replaced silently. See #28."
     },
     {
       "id": "N40",
@@ -269,7 +269,7 @@
       "id": "N45",
       "where": "Stage 5 — Apply, verify, close",
       "refs": { "docs": ["https://code.claude.com/docs/en/costs#track-your-costs", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/prompt-caching#subagents-and-the-cache"], "inbrace-tech/claude-skills": [6, 8, 11, 21, 22, 24, 26, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N45] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6, #8, #11, #21, #22, #24, #26). Carried over with only the model names changed. See #28."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N45] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6, #8, #11, #21, #22, #24, #26). Carried over with only the model names changed. See #28. In 0.5.0 the maintainer decided that the audit can run without anyone answering its gates — for a local `claude plugin eval` suite and for headless use — by passing the answers as arguments, only up to the report: no argument approves applying changes. The close lists the gates the arguments answered. See #28."
     },
     {
       "id": "N46",
@@ -299,7 +299,7 @@
       "id": "N50",
       "where": "Throughout the run",
       "refs": { "inbrace-tech/claude-skills": [8, 9, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N50] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #8, #9). Carried over with only the model names changed. See #28. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — each gate records the estimate of every option shown, since one run recorded only the chosen option's. See #28."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N50] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #8, #9). Carried over with only the model names changed. See #28. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — each gate records the estimate of every option shown, since one run recorded only the chosen option's. See #28. In 0.5.0 the maintainer decided that the audit can run without anyone answering its gates — for a local `claude plugin eval` suite and for headless use — by passing the answers as arguments, only up to the report: no argument approves applying changes. A gate the arguments answered is recorded as pre-approved by argument, with the estimates it would have shown. See #28."
     },
     {
       "id": "N51",
@@ -372,6 +372,12 @@
       "where": "Stage 2 — Audit in batches",
       "refs": { "docs": ["https://www-cdn.anthropic.com/870c8f525702625d2c62fc6dd04c857e3250bec1/Claude%20Sonnet%205.5%20System%20Card.pdf"], "inbrace-tech/claude-skills": [28] },
       "what": "Added in 0.5.0 with the skill. The repository requires every model-behavior claim to cite official Anthropic documentation; the System Card is Anthropic's published document but reports evaluations, not instructions, so its rows are low confidence and their notes cite page and section and say no more than the passage does. The maintainer adopted three card-only rows — blanket authorization (p.60–61, §6.2.1), prose-only approval gates (p.69, §6.2.5) and faults copied from replayed history (p.97–98, §7.2.3) — and dropped two: safety language for consumer API products, which is not a Claude Code instruction-surface finding, and a grader told the author is Claude, since the card finds that bias \"not measurably different from Claude Sonnet 5's\" (p.78–79, §6.3.1) and so not a change of this transition. See #28. In 0.5.0 the prose-only approval gate row was removed too, after the run on a private multi-agent harness: it fired on a safety gate, and the blind control rejected it because the card reports Sonnet 5.5 improving substantially on Sonnet 5 on recklessness (p.65, §6.2.2), so the move gives no new reason to act, the same reasoning that dropped the grader row. The remaining card rows are P20 and P21."
+    },
+    {
+      "id": "N63",
+      "where": "Throughout the run",
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#pass-arguments-to-skills", "https://code.claude.com/docs/en/skills#available-string-substitutions", "https://code.claude.com/docs/en/headless#create-a-commit"], "inbrace-tech/claude-skills": [28] },
+      "what": "Added in 0.5.0. In 0.5.0 the maintainer decided that the audit can run without anyone answering its gates — for a local `claude plugin eval` suite and for headless use — by passing the answers as arguments, only up to the report: no argument approves applying changes. The skills page says `$ARGUMENTS` expands to the whole argument string as typed, and that without a placeholder Claude Code appends it as `ARGUMENTS: <value>`; the skill now places it once, in a tagged block, and parses it order-free, since named `arguments:` map to positions. The headless page says a user-invoked skill runs in `-p` when its command is in the prompt, so the same flags drive an unattended run. An unknown or ambiguous argument stops the run before any tool call rather than being guessed. The id is N63 in both audit skills, so the ids stay aligned for the shared-procedure extraction. See #28."
     }
   ]
 }

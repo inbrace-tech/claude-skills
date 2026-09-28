@@ -35,8 +35,8 @@ Every plugin and its skills are listed in [Skills](#skills) below. A skill start
 
 | Plugin | Skill | Mode | What it does |
 |---|---|---|---|
-| `inbrace-config` | `/inbrace-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Lists, measures and searches the files to build its plan — a small fixed cost, about 30–40k tokens of context plus the project memory the session already loaded — then shows the plan with its estimated token cost and asks before auditing any file, asks again before each later costly stage, can run one `batch-auditor` agent per area in parallel, has every raw finding checked by the `finding-verifier` agent, which tries to refute it, summarizes in the chat what it would change, why, what the verifier discarded and what it recommends, asks what to apply with a recommendation, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. |
-| `inbrace-config` | `/inbrace-config:audit-sonnet-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Sonnet 5 to Sonnet 5.5, with the same stages, gates and agents as the Opus audit: it measures the files and shows the plan with its estimated token cost before auditing any file, asks again before each later costly stage, can run one `batch-auditor` agent per area in parallel, has every raw finding checked by the `finding-verifier` agent, summarizes in the chat what it would change and why, asks what to apply with a recommendation, and applies only what you approve. It proposes the model `claude-sonnet-5-5` where the project runs Sonnet 5 and never writes an effort level, leaving effort to a re-test against the guide's starting points. Each pattern cites the official Anthropic guide, the Claude Code documentation or, for three optional rows, the Claude Sonnet 5.5 System Card. |
+| `inbrace-config` | `/inbrace-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Lists, measures and searches the files to build its plan — a small fixed cost, about 30–40k tokens of context plus the project memory the session already loaded — then shows the plan with its estimated token cost and asks before auditing any file, asks again before each later costly stage, can run one `batch-auditor` agent per area in parallel, has every raw finding checked by the `finding-verifier` agent, which tries to refute it, summarizes in the chat what it would change, why, what the verifier discarded and what it recommends, asks what to apply with a recommendation, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. Arguments can pre-answer the plan gate and stop at the report — `--scope`, `--mode`, `--stop-at-report` — so it can run headless; no argument applies changes. |
+| `inbrace-config` | `/inbrace-config:audit-sonnet-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Sonnet 5 to Sonnet 5.5, with the same stages, gates and agents as the Opus audit: it measures the files and shows the plan with its estimated token cost before auditing any file, asks again before each later costly stage, can run one `batch-auditor` agent per area in parallel, has every raw finding checked by the `finding-verifier` agent, summarizes in the chat what it would change and why, asks what to apply with a recommendation, and applies only what you approve. It proposes the model `claude-sonnet-5-5` where the project runs Sonnet 5 and never writes an effort level, leaving effort to a re-test against the guide's starting points. Each pattern cites the official Anthropic guide, the Claude Code documentation or, for its optional card rows, the Claude Sonnet 5.5 System Card. Arguments can pre-answer the plan gate and stop at the report — `--scope`, `--mode`, `--stop-at-report` — so it can run headless; no argument applies changes. |
 
 `inbrace-config` also ships two agents, which only the audits start: `batch-auditor`, one per area of the setup when you choose to run an audit in parallel agents, and `finding-verifier`, which checks the raw findings at the end of every run and returns the final list. Both read files and return text; neither can edit or write anything.
 
@@ -86,6 +86,18 @@ For the audit, `user` is the right choice — **Install for you (user scope)** i
 ```
 
 Run the one for the model transition your project is making.
+
+Arguments can answer the plan's questions in advance, in any order: `--scope full|reduced|quick`, `--mode session|agents`, and `--stop-at-report`, which ends the run with the report. The plan is still shown, an option the plan would not offer stops the run with the reason, and no argument applies changes:
+
+```text
+/inbrace-config:audit-sonnet-5-5 --scope full --mode agents --stop-at-report
+```
+
+The same command runs headless, where nobody can answer a question; there the run always ends at the report, and without `--scope` (and `--mode`, when the plan has several batches) it stops at the plan:
+
+```bash
+claude -p "/inbrace-config:audit-sonnet-5-5 --scope full --mode agents"
+```
 
 Without a path it audits the current project. It starts only from this typed command: asking for an audit in plain words does not start it.
 
