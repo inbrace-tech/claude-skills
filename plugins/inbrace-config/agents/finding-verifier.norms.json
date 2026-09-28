@@ -22,8 +22,8 @@
     {
       "id": "N04",
       "where": "Verify",
-      "refs": { "inbrace-tech/claude-skills": [21, 25] },
-      "what": "Added in 0.4.4. The verifier corrects rather than only accepting or rejecting, so the session receives a final list it can write and present without triaging it again. Every final status is named, and `already decided` and `discarded` carry where and why, so the user can see the reason in the chat. See #21. In 0.4.7 the final statuses include `optional`, which [N10] gives the findings of the rows the brief marks as optional. See #25."
+      "refs": { "inbrace-tech/claude-skills": [21, 25, 28] },
+      "what": "Added in 0.4.4. The verifier corrects rather than only accepting or rejecting, so the session receives a final list it can write and present without triaging it again. Every final status is named, and `already decided` and `discarded` carry where and why, so the user can see the reason in the chat. See #21. In 0.4.7 the final statuses include `optional`, which [N10] gives the findings of the rows the brief marks as optional. See #25. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — the correction also moves a finding to the line that carries its row's signal, since both runs anchored the same findings on a function head and a nearby setting. See #28."
     },
     {
       "id": "N05",
@@ -40,8 +40,8 @@
     {
       "id": "N07",
       "where": "Return",
-      "refs": { "inbrace-tech/claude-skills": [21] },
-      "what": "Added in 0.4.4. The session reports what the verifier discarded or reclassified, with counts and examples, so every raw finding has to come back as a line, and a corrected line has to say what it was. The line format itself comes from the brief, since the skill owns it; the contract here fixes the order, the merges and that nothing is dropped. See #21."
+      "refs": { "inbrace-tech/claude-skills": [21, 28] },
+      "what": "Added in 0.4.4. The session reports what the verifier discarded or reclassified, with counts and examples, so every raw finding has to come back as a line, and a corrected line has to say what it was. The line format itself comes from the brief, since the skill owns it; the contract here fixes the order, the merges and that nothing is dropped. See #21. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — the contract merges only exact duplicates — the same file, line and pattern — and keeps every other line a raw line referenced, since one run merged neighbouring and co-firing findings into another line and dropped their line references. See #28."
     },
     {
       "id": "N08",

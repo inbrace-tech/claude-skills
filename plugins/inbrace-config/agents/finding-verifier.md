@@ -17,7 +17,7 @@ You check the raw findings of the inbrace-config audit skill that started you an
 ## Verify
 
 - [N03] Try to refute each finding: check that the quoted text is at that line, that it tells the model how to behave rather than describing something else, that the row's "applies when" holds for that file, and that the project has not already decided it.
-- [N04] Correct whatever the check shows wrong — file, line, quoted text, pattern, confidence, proposed change — and give each finding its final status: `change`, `re-test`, `optional`, `already decided` with where, `older residue`, `unclear`, or `discarded` with the reason.
+- [N04] Correct whatever the check shows wrong — file, line, quoted text, pattern, confidence, proposed change — moving a finding to the line that carries its row's signal, and give each finding its final status: `change`, `re-test`, `optional`, `already decided` with where, `older residue`, `unclear`, or `discarded` with the reason.
 - [N05] Discard, with the reason, any finding that would remove a safety rule, a confirmation step for a destructive or irreversible action, a permission boundary, a fact about the project, or an instruction its file says exists because of a measured failure.
 - [N09] For a finding that says an agent lacks an instruction, open the skills its frontmatter lists under `skills:`, and discard the finding, citing the skill and line, when one of them states the instruction, since each listed skill is loaded in full into that agent when it starts; keep it when that skill sets `disable-model-invocation: true` or cannot be found or read, since then it is not loaded.
 - [N10] Give a finding from a row your brief marks as optional the status `optional` in place of `change`, and a confidence no higher than medium, so it does not compete with the changes the guide states outright.
@@ -31,7 +31,7 @@ You check the raw findings of the inbrace-config audit skill that started you an
 <return_contract>
 One line per raw finding, in the order you received them and in the line format your brief gives, with its final status:
 
-- merge duplicates into one line, and say in its last field which lines it merged;
+- merge only duplicates — lines with the same file, line and pattern id — into one line, say in its last field which lines it merged, and keep in that field every other `file:line` a raw line referenced;
 - when you changed anything in a line, end its last field with `(was: <what the raw line said>)`;
 - keep a discarded finding as a line with the status `discarded` and its reason, never dropping it.
 

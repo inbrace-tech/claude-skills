@@ -11,7 +11,7 @@
       "id": "N02",
       "where": "Stage 1 — Plan: list, estimate, confirm",
       "refs": { "docs": ["https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills", "https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#migrating-from-claude-sonnet-5"], "inbrace-tech/claude-skills": [6, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N02] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6). Adapted for the Sonnet 5 → Sonnet 5.5 transition: the Claude API search adds `between_tools`, the lowest thinking setting on Sonnet 5.5, which the migration guide introduces and which P21 checks. See #28."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N02] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6). Adapted for the Sonnet 5 → Sonnet 5.5 transition: the Claude API search adds `between_tools`, the lowest thinking setting on Sonnet 5.5, which the migration guide introduces and which P21 checks. See #28. In 0.5.0, after a run on a private multi-agent harness, the inventory also lists templates, triggers and any Markdown a listed file tells the model to read or copy, since a dispatch brief template outside the listed directories held a finding the audit missed; lists, when the root is a git worktree, the gitignored instruction files from the main checkout, since a session that isolates into a worktree before writing its report otherwise audits a copy without them; and, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — finds Claude API code by what imports the SDK or a project module wrapping it before the request tokens, since the tokens alone missed a third of the API files in one run and cost two findings. See #28."
     },
     {
       "id": "N03",
@@ -23,7 +23,7 @@
       "id": "N04",
       "where": "Stage 1 — Plan: list, estimate, confirm",
       "refs": { "inbrace-tech/claude-skills": [6, 7, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N04] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6, #7). Carried over with only the model names changed. See #28."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N04] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6, #7). Carried over with only the model names changed. See #28. In 0.5.0, after a run on a private multi-agent harness, files read from the main checkout of a worktree are read-only, like other files outside the root, and only the root's own `.claude/settings.local.json` stays editable. See #28."
     },
     {
       "id": "N05",
@@ -53,7 +53,7 @@
       "id": "N09",
       "where": "Stage 2 — Audit in batches",
       "refs": { "docs": ["https://code.claude.com/docs/en/skills#available-string-substitutions"], "inbrace-tech/claude-skills": [2, 12, 21, 25, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N09] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #2, #12, #21, #25). Adapted for the Sonnet 5 → Sonnet 5.5 transition: the findings file is named `sonnet-5-5-<date>`. See #28. In 0.5.0, after a full-scope run of this skill on a private multi-agent harness — 64 batches, 13 auditors and the verifier — checked against a blind control audit of the same commit made from the sources alone, the grouping rule for P06 was added: a harness of that size mentions `sonnet` hundreds of times, and one line per mention would bury the decision the row asks for, so a dispatch convention is recorded once with every file it covers, as [N31] does for a project-wide decision."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N09] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #2, #12, #21, #25). Adapted for the Sonnet 5 → Sonnet 5.5 transition: the findings file is named `sonnet-5-5-<date>`. See #28. In 0.5.0, after a full-scope run of this skill on a private multi-agent harness — 64 batches, 13 auditors and the verifier — checked against a blind control audit of the same commit made from the sources alone, the grouping rule for P06 was added: a harness of that size mentions `sonnet` hundreds of times, and one line per mention would bury the decision the row asks for, so a dispatch convention is recorded once with every file it covers, as [N31] does for a project-wide decision. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — the line format anchors each finding on the line that carries the row's signal, since both runs anchored the same two findings on a function head and a nearby setting, and records one line per pattern per `file:line`, since one run merged co-firing and neighbouring findings into other lines' notes and lost them from the strict count. See #28."
     },
     {
       "id": "N10",
@@ -89,7 +89,7 @@
       "id": "N15",
       "where": "Stage 3 — Report: explain it in the chat",
       "refs": { "inbrace-tech/claude-skills": [2, 6, 8, 21, 25, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N15] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #2, #6, #8, #21, #25). Carried over with only the model names changed. See #28."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N15] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #2, #6, #8, #21, #25). Carried over with only the model names changed. See #28. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — \"My recommendation\" names the option [N17] recommends, since one run's prose recommended an option different from the one it starred. See #28."
     },
     {
       "id": "N16",
@@ -101,7 +101,7 @@
       "id": "N17",
       "where": "Stage 4 — Decide",
       "refs": { "docs": ["https://code.claude.com/docs/en/tools-reference#askuserquestion-tool-behavior", "https://code.claude.com/docs/en/model-config#adjust-effort-level"], "inbrace-tech/claude-skills": [2, 6, 7, 8, 9, 21, 25, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N17] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #2, #6, #7, #8, #9, #21, #25). Carried over with only the model names changed. See #28. In 0.5.0, after a full-scope run of this skill on a private multi-agent harness — 64 batches, 13 auditors and the verifier — checked against a blind control audit of the same commit made from the sources alone, the recommendation checks for a coupling first: the rule would have recommended applying every pin change, but the harness enforced, through a check script that binds each pin to a tier prompting skill, that a pin and its skill move together, so the isolated edits would have failed its checks. The session recommended stopping on its own judgement; the norm now makes that the rule and names the coupling in the option."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N17] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #2, #6, #7, #8, #9, #21, #25). Carried over with only the model names changed. See #28. In 0.5.0, after a full-scope run of this skill on a private multi-agent harness — 64 batches, 13 auditors and the verifier — checked against a blind control audit of the same commit made from the sources alone, the recommendation checks for a coupling first: the rule would have recommended applying every pin change, but the harness enforced, through a check script that binds each pin to a tier prompting skill, that a pin and its skill move together, so the isolated edits would have failed its checks. The session recommended stopping on its own judgement; the norm now makes that the rule and names the coupling in the option. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — the recommendation follows an ordered list with \"would break\" defined, since the two runs starred different options from the same text — one read the coupling rule as a free choice between the diff and a stop — and a re-test-only row, whose fix is never in the table, now always leads to a stop. See #28."
     },
     {
       "id": "N18",
@@ -215,7 +215,7 @@
       "id": "N36",
       "where": "Stage 1 — Plan: list, estimate, confirm",
       "refs": { "inbrace-tech/claude-skills": [6, 8, 25, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N36] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6, #8, #25). Adapted for the Sonnet 5 → Sonnet 5.5 transition: the hook scripts kept in the inventory are those [N59] reads for P05 and P17. See #28. In 0.5.0, after a full-scope run of this skill on a private multi-agent harness — 64 batches, 13 auditors and the verifier — checked against a blind control audit of the same commit made from the sources alone, the scripts kept for context are those the search of [N59] matches, which include gate and check scripts as well as hook scripts."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N36] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6, #8, #25). Adapted for the Sonnet 5 → Sonnet 5.5 transition: the hook scripts kept in the inventory are those [N59] reads for P05 and P17. See #28. In 0.5.0, after a full-scope run of this skill on a private multi-agent harness — 64 batches, 13 auditors and the verifier — checked against a blind control audit of the same commit made from the sources alone, the scripts kept for context are those the search of [N59] matches, which include gate and check scripts as well as hook scripts. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — a file that calls the Claude API is never left out as not instruction text. See #28."
     },
     {
       "id": "N37",
@@ -239,7 +239,7 @@
       "id": "N40",
       "where": "Stage 1 — Plan: list, estimate, confirm",
       "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents", "https://code.claude.com/docs/en/sub-agents#choose-a-model", "https://code.claude.com/docs/en/plugins/components#frontmatter-fields-in-plugin-agents"], "inbrace-tech/claude-skills": [6, 7, 8, 11, 12, 21, 25, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N40] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6, #7, #8, #11, #12, #21, #25). Adapted for the Sonnet 5 → Sonnet 5.5 transition: the brief also names the transition, source model Claude Sonnet 5 and target model Claude Sonnet 5.5, and the rows [N60] treats as optional, since the agents now serve every inbrace-config audit and read the transition and the optional rows from the brief rather than from their own text. See #28."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N40] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #6, #7, #8, #11, #12, #21, #25). Adapted for the Sonnet 5 → Sonnet 5.5 transition: the brief also names the transition, source model Claude Sonnet 5 and target model Claude Sonnet 5.5, and the rows [N60] treats as optional, since the agents now serve every inbrace-config audit and read the transition and the optional rows from the brief rather than from their own text. See #28. In 0.5.0, after a run on a private multi-agent harness, the brief states each project fact as `file:line` with the quoted text, since a paraphrased brief misstated how a hook matched and how many agents were pinned, which the verifier had to correct from the code; and, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — the brief carries every Stage 2 norm, since one run's brief started after the line-format norms. See #28."
     },
     {
       "id": "N41",
@@ -293,13 +293,13 @@
       "id": "N49",
       "where": "Throughout the run",
       "refs": { "docs": ["https://code.claude.com/docs/en/tools-reference#askuserquestion-tool-behavior", "https://code.claude.com/docs/en/costs#track-your-costs", "https://code.claude.com/docs/en/prompt-caching#how-the-cache-is-organized", "https://code.claude.com/docs/en/prompt-caching#subagents-and-the-cache", "https://code.claude.com/docs/en/commands", "https://platform.claude.com/docs/en/about-claude/pricing#prompt-caching"], "inbrace-tech/claude-skills": [8, 9, 21, 22, 24, 26, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N49] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #8, #9, #21, #22, #24, #26). Carried over with only the model names changed. See #28."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N49] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #8, #9, #21, #22, #24, #26). Carried over with only the model names changed. See #28. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — the total is computed as fixed plus marginal, since one run showed a total below its own fixed and marginal figures, and the verifier is sized again from the raw findings once Stage 2 ends, since the first estimate understated it on a small project. See #28."
     },
     {
       "id": "N50",
       "where": "Throughout the run",
       "refs": { "inbrace-tech/claude-skills": [8, 9, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N50] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #8, #9). Carried over with only the model names changed. See #28."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N50] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #8, #9). Carried over with only the model names changed. See #28. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — each gate records the estimate of every option shown, since one run recorded only the chosen option's. See #28."
     },
     {
       "id": "N51",
@@ -317,7 +317,7 @@
       "id": "N53",
       "where": "Stage 2 — Audit in batches",
       "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents", "https://code.claude.com/docs/en/plugins/components#frontmatter-fields-in-plugin-agents"], "inbrace-tech/claude-skills": [21, 25, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N53] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #21, #25). Carried over with only the model names changed. See #28."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N53] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #21, #25). Carried over with only the model names changed. See #28. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — the verifier moves a mis-anchored finding to the line carrying the signal and merges only lines with the same file, line and pattern. See #28."
     },
     {
       "id": "N54",
@@ -359,7 +359,7 @@
       "id": "N60",
       "where": "Stage 2 — Audit in batches",
       "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5", "https://www-cdn.anthropic.com/870c8f525702625d2c62fc6dd04c857e3250bec1/Claude%20Sonnet%205.5%20System%20Card.pdf"], "inbrace-tech/claude-skills": [25, 28] },
-      "what": "Derived in 0.5.0 from [audit-opus-5-5#N60] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #25). Adapted for the Sonnet 5 → Sonnet 5.5 transition: the optional rows are classified by the guide's own wording, a rule this skill carries from its first version: P11 (\"If you then want updates at predictable points\"), P12 (\"Try a higher effort level first\"), P13 (\"If you prefer changes limited\"), P14 (\"If you do want that extra thoroughness\"), P15 (\"If you want ideas or a plan first\") and P16 (\"If you see changes reported as complete without test or build output\"), which the maintainer classed as optional because an audit of files cannot observe a symptom in transcripts; P18–P20 rest on the System Card, which reports evaluations and gives no instruction. See #28. In 0.5.0 the optional rows are P13–P18, P20 and P21 of the refined table; the prose-only approval gate was removed, as [N62] records, and P14 and P15 reach more cases while staying optional."
+      "what": "Derived in 0.5.0 from [audit-opus-5-5#N60] of the `audit-opus-5-5` skill at 0.4.7, whose sidecar records why the norm exists (see #25). Adapted for the Sonnet 5 → Sonnet 5.5 transition: the optional rows are classified by the guide's own wording, a rule this skill carries from its first version: P11 (\"If you then want updates at predictable points\"), P12 (\"Try a higher effort level first\"), P13 (\"If you prefer changes limited\"), P14 (\"If you do want that extra thoroughness\"), P15 (\"If you want ideas or a plan first\") and P16 (\"If you see changes reported as complete without test or build output\"), which the maintainer classed as optional because an audit of files cannot observe a symptom in transcripts; P18–P20 rest on the System Card, which reports evaluations and gives no instruction. See #28. In 0.5.0 the optional rows are P13–P18, P20 and P21 of the refined table; the prose-only approval gate was removed, as [N62] records, and P14 and P15 reach more cases while staying optional. In 0.5.0 P15 also reaches memory files and their imports that state a minimal-diff preference, after both runs on a seeded synthetic repository missed a preference stated in the project memory. See #28."
     },
     {
       "id": "N61",
