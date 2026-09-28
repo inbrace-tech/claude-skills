@@ -5,7 +5,7 @@
       "id": "N01",
       "where": "Read",
       "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [21] },
-      "what": "Added in 0.4.4 with the agent. A subagent starts with only its own system prompt and the prompt it is given, and this agent sets `omitClaudeMd: true`, so the brief is everything it knows about the project: the pattern table, the line format and the rules it checks each finding against. Reading it before the findings keeps a finding from being judged without them. See #21."
+      "what": "Added in 0.4.4 with the agent. A subagent starts with only its own system prompt and the prompt it is given, and this agent sets `omitClaudeMd: true`, so the brief is everything it knows about the project: the pattern table, the line format and the rules it checks each finding against. Reading it before the findings keeps a finding from being judged without them. See #21. In 0.5.0 the agent serves every inbrace-config audit skill, `audit-sonnet-5-5` as well as `audit-opus-5-5`, so it no longer names Opus: the brief carries the project's evaluation for the target model it names, which the verifier reads before the findings."
     },
     {
       "id": "N02",

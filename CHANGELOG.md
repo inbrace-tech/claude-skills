@@ -2,6 +2,10 @@
 
 ## inbrace-config (formerly claude-config)
 
+### 0.5.0
+
+- New skill, `/inbrace-config:audit-sonnet-5-5`, audits a setup for the move from Claude Sonnet 5 to Sonnet 5.5 with the same stages and gates as the Opus audit; it proposes the model `claude-sonnet-5-5` without writing an effort level, and the `batch-auditor` and `finding-verifier` agents now serve both audits, reading the transition from the brief.
+
 ### 0.4.7
 
 - The audit no longer proposes a rule an agent already loads through a skill in its `skills:` frontmatter, records as P22 an Opus 5 prompting skill that a hook delivers to Opus 5.5 by matching the model id's prefix, and shows advice the guide only offers — P06, P09, P12, P13 — as optional, in its own table and outside "apply every change".

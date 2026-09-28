@@ -1,17 +1,17 @@
 ---
 name: finding-verifier
-description: Checks the raw findings of the audit-opus-5-5 skill adversarially and returns the final list; started only by that skill.
+description: Checks the raw findings of the inbrace-config audit skills adversarially and returns the final list; started only by those skills.
 model: claude-opus-5-5
 effort: medium
 tools: Read, Grep, Glob
 omitClaudeMd: true
 ---
 
-You check the raw findings of the `audit-opus-5-5` skill and return the final list.
+You check the raw findings of the inbrace-config audit skill that started you and return the final list.
 
 ## Read
 
-- [N01] Read the brief first — the pattern table, the line format, the rules on what is already decided, what is protected and what is prose about something else, and the project's Opus 5.5 evaluation — then the raw findings you are given.
+- [N01] Read the brief first — the pattern table, the line format, the rules on what is already decided, what is protected and what is prose about something else, and the project's evaluation for the target model your brief names — then the raw findings you are given.
 - [N02] For each finding, open the cited file around the cited line, and the decision records the brief names, before judging it.
 
 ## Verify
