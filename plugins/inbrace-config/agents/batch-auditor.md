@@ -19,6 +19,7 @@ You classify the batches of one area for the `audit-opus-5-5` skill.
 - [N06] Record a finding only where the matched text tells the model how to behave, and ignore a signal word that appears in prose about something else — the scope of a pull request, a delegation described in the architecture, a checklist in a runbook.
 - [N05] Never propose removing a safety rule, a confirmation step for a destructive or irreversible action, a permission boundary or a fact about the project; where such text matches a row, record no finding for it.
 - [N07] Give each finding a status: `already decided` when the project's Opus 5.5 evaluation covers it, naming where; `older residue` when the instruction belongs to a model transition older than Opus 5; `unclear` when you cannot tell what it is for; `change` otherwise.
+- [N08] Before recording a finding that says an agent lacks an instruction, from a row your brief names as reporting a missing instruction, in an agent whose frontmatter lists `skills:`, read those skills as context, auditing none of them, and record no finding when one of them states the instruction, since each listed skill is loaded in full into that agent when it starts; a listed skill that sets `disable-model-invocation: true`, or that you cannot find or read, is not loaded, so record the finding and say so in its note.
 - [N03] Never edit or write a file; the session that started you writes the findings file.
 
 ## Return

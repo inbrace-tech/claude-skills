@@ -42,6 +42,12 @@
       "where": "Classify",
       "refs": { "inbrace-tech/claude-skills": [21] },
       "what": "Added in 0.4.4 with the status field of the finding line. In the live test of 0.4.3 on a large harness — 113 files, 23 batches, 23 subagents — none of the 10 raw findings survived as a change: 7 were already decided by the project and 3 were protected phrases, and nothing in the returned lines said so: the session had to triage each one again. A status per finding lets the agent say what it already knows — decided by the project, older than Opus 5, or unclear — and the verifier checks it. See #21."
+    },
+    {
+      "id": "N08",
+      "where": "Classify",
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents"], "inbrace-tech/claude-skills": [25] },
+      "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) the auditors proposed the same missing-instruction addition in three agents that each already loaded the rule through a skill named in their `skills:` frontmatter. The sub-agents page says each listed skill's full content is injected into the subagent at startup, so the rule is present in the agent; a skill with `disable-model-invocation: true` cannot be preloaded and a missing one is skipped, so those keep the finding. The agent reads the listed skills only when such a finding depends on them, since the skill usually sits in another auditor's batches. See #25."
     }
   ]
 }
