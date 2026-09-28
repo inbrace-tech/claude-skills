@@ -5,6 +5,7 @@
 ### 0.5.0
 
 - New skill, `/inbrace-config:audit-sonnet-5-5`, audits a setup for the move from Claude Sonnet 5 to Sonnet 5.5 with the same stages and gates as the Opus audit; it proposes the model `claude-sonnet-5-5` without writing an effort level, and the `batch-auditor` and `finding-verifier` agents now serve both audits, reading the transition from the brief.
+- Both audits find the old tier's prompting delivered to the new model by a prefix match in gate and check scripts as well as hooks, and read and count only the scripts that match; they keep recommending full scope when the skills carry the old model's tuning, estimate parallel time from the slowest auditor's batch count, and recommend showing the diff or stopping when the project binds a pin to other files.
 
 ### 0.4.7
 
