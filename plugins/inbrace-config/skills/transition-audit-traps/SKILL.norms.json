@@ -1,0 +1,124 @@
+{
+  "surface": "plugins/inbrace-config/skills/transition-audit-traps/SKILL.md",
+  "norms": [
+    {
+      "id": "N01",
+      "where": "Before anything",
+      "refs": {
+        "docs": [
+          "https://code.claude.com/docs/en/skills#control-who-invokes-a-skill"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          40
+        ]
+      },
+      "what": "A stage skill is model-invocable so the orchestrator can start it, which also lets Claude invoke it on an unrelated task; the run-file guard makes that cost one skill load. Written for the transition-agnostic audit (#34, #40)."
+    },
+    {
+      "id": "N02",
+      "where": "Before anything",
+      "refs": {
+        "docs": [
+          "https://code.claude.com/docs/en/skills#skill-content-lifecycle"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          40
+        ]
+      },
+      "what": "After compaction the orchestrator, the oldest skill of the run, is the first to be dropped; re-invoking it restores the run's standing rules. Written for the transition-agnostic audit (#34, #40)."
+    },
+    {
+      "id": "N03",
+      "where": "Before anything",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          40
+        ]
+      },
+      "what": "The traps are the part of the knowledge file only this stage needs. A quick sweep skips discovery, which normally writes the brief, so this stage writes it from the discover skill's own text rather than a second copy that could drift. Written for the transition-agnostic audit (#34, #40)."
+    },
+    {
+      "id": "N04",
+      "where": "Check each trap",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          40
+        ]
+      },
+      "what": "The learned edge cases — prefix-matched delivery, inherited effort, the version floor, alias resolution per provider — are applied after discovery as a checklist, so the table guides the search without bounding it (#34). Derived from `audit-sonnet-5-5` `N10` and `audit-opus-5-5` `N10` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #40)."
+    },
+    {
+      "id": "N05",
+      "where": "Check each trap",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          40
+        ]
+      },
+      "what": "A finding discovery already recorded should appear once, under the id of the trap that explains it, while keeping the trace of where it came from. Written for the transition-agnostic audit (#34, #40)."
+    },
+    {
+      "id": "N06",
+      "where": "Check each trap",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          40
+        ]
+      },
+      "what": "Discovery can miss a known edge case; looking for each trap where it can occur adds it back. Lexical traps are found by search, the others by reading their areas, within what the user approved. Written for the transition-agnostic audit (#34, #40)."
+    },
+    {
+      "id": "N07",
+      "where": "Check each trap",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          40
+        ]
+      },
+      "what": "Discovery reasons from today's docs alone and can propose changing what a trap learned should be kept or only re-tested; the trap corrects it, with the trace. Written for the transition-agnostic audit (#34, #40)."
+    },
+    {
+      "id": "N08",
+      "where": "Check each trap",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          40
+        ]
+      },
+      "what": "Some traps rest on advice the guides only offer, or on a system card; shown apart, they do not compete with the changes the docs state. Derived from `audit-sonnet-5-5` `N60` and `audit-opus-5-5` `N60` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #40)."
+    },
+    {
+      "id": "N09",
+      "where": "Check each trap",
+      "refs": {
+        "docs": [
+          "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/claude-api-skill"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          40
+        ]
+      },
+      "what": "A trap's kind decides how its finding is presented: a re-test lists without an edit, a hand-off goes to Anthropic's claude-api skill, and a setting's file is the user's choice. Written for the transition-agnostic audit (#34, #40)."
+    },
+    {
+      "id": "N10",
+      "where": "Close the stage",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          40
+        ]
+      },
+      "what": "The report must show that every trap the per-transition audits checked was checked again, so nothing they caught goes unchecked. Written for the transition-agnostic audit (#34, #40)."
+    }
+  ]
+}
