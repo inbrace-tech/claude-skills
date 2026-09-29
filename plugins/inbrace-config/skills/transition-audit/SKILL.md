@@ -28,7 +28,7 @@ $ARGUMENTS
 
 - [N03] Take the knowledge file as `${CLAUDE_SKILL_DIR}/transitions/<slug>.md`; where none exists, run a bootstrap, which the plan states: its docs come from the index at `https://platform.claude.com/llms.txt`, confirmed by the user at the first gate, and it has no known-traps stage.
 - [N04] Keep the run file, `.claude/audits/<target>-<YYYY-MM-DD>.run.md` under the audit root, where `<target>` is the target model id without `claude-`: write it before the plan with the slug, the knowledge file's absolute path or "bootstrap", the root and the arguments, and after every stage record the stage finished, the stage next and each gate answered, since each stage reads it to know it may run.
-- [N05] Run the stages in the order of `<stages>`, invoking each through the Skill tool by the name it lists — `inbrace-config:transition-audit-plan` from the plugin, `transition-audit-plan` when copied — after setting it as next in the run file; a run cancelled at the plan, stopped at the report or headless goes straight to apply for its close.
+- [N05] Run the stages in the order of `<stages>`, invoking each through the Skill tool by the name it lists — `inbrace-config:transition-audit-plan` from the plugin, `transition-audit-plan` when copied — after setting it as next in the run file; a quick sweep skips discover, and a run cancelled at the plan, stopped at the report or headless goes straight to apply for its close.
 
 <stages>
 
