@@ -70,8 +70,8 @@
     {
       "id": "N12",
       "where": "Throughout the run",
-      "refs": { "docs": ["https://code.claude.com/docs/en/costs#track-your-costs", "https://code.claude.com/docs/en/prompt-caching#how-the-cache-is-organized"], "inbrace-tech/claude-skills": [34, 38] },
-      "what": "Transparency before spending: every costly step is approved with its cost, and the footer says why the harness and the bill show several times these figures, measured on real runs. Derived from `audit-sonnet-5-5` `N49` and `audit-opus-5-5` `N49` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/costs#track-your-costs", "https://code.claude.com/docs/en/prompt-caching#how-the-cache-is-organized"], "inbrace-tech/claude-skills": [34, 38, 59] },
+      "what": "Transparency before spending: every costly step is approved with its cost, and the footer says why the harness and the bill show several times these figures, measured on real runs. Derived from `audit-sonnet-5-5` `N49` and `audit-opus-5-5` `N49` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.x the estimate was rebuilt from two runs of this audit at full scope in session mode: a small seeded project (inventory ~18k tokens, 10 batches, 74 raw findings, 3 verifiers) whose gate said ~65k–125k and which spent ~243k tokens of context in the session and ~248k in the verifiers, US$7.90, 18 min; and a tiny throwaway project (~0.2k, 1 batch, 8 findings, 1 verifier) whose gate said ~30–40k and which spent ~116k and ~40k, US$2.16, 4.5 min; cache re-reads came to 15× and 19× the context (#59)."
     },
     {
       "id": "N13",

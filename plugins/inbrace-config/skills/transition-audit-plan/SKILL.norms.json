@@ -82,8 +82,8 @@
     {
       "id": "N14",
       "where": "Measure",
-      "refs": { "inbrace-tech/claude-skills": [34, 38] },
-      "what": "Measuring before reading makes the cost shown at the gate real. Bytes divided by three replaces the old divide-by-four: the Sonnet audit's 73,671 bytes measured 25,806 tokens, 2.85 bytes per token, so the old estimate ran about 30% low. Derived from `audit-sonnet-5-5` `N05` and `audit-opus-5-5` `N05` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "inbrace-tech/claude-skills": [34, 38, 59] },
+      "what": "Measuring before reading makes the cost shown at the gate real. Bytes divided by three replaces the old divide-by-four: the Sonnet audit's 73,671 bytes measured 25,806 tokens, 2.85 bytes per token, so the old estimate ran about 30% low. Derived from `audit-sonnet-5-5` `N05` and `audit-opus-5-5` `N05` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.x the estimate was rebuilt from two runs of this audit at full scope in session mode: a small seeded project (inventory ~18k tokens, 10 batches, 74 raw findings, 3 verifiers) whose gate said ~65k–125k and which spent ~243k tokens of context in the session and ~248k in the verifiers, US$7.90, 18 min; and a tiny throwaway project (~0.2k, 1 batch, 8 findings, 1 verifier) whose gate said ~30–40k and which spent ~116k and ~40k, US$2.16, 4.5 min; cache re-reads came to 15× and 19× the context (#59)."
     },
     {
       "id": "N15",
@@ -112,14 +112,14 @@
     {
       "id": "N19",
       "where": "Show the plan and ask",
-      "refs": { "inbrace-tech/claude-skills": [34, 38] },
-      "what": "Two short tables let the user choose without reading the inventory; the batch counts read as a floor because grouping packs fewer tokens per batch than the estimate assumes. Derived from `audit-sonnet-5-5` `N07` and `audit-opus-5-5` `N07` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "inbrace-tech/claude-skills": [34, 38, 59] },
+      "what": "Two short tables let the user choose without reading the inventory; the batch counts read as a floor because grouping packs fewer tokens per batch than the estimate assumes. Derived from `audit-sonnet-5-5` `N07` and `audit-opus-5-5` `N07` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.x the estimate was rebuilt from two runs of this audit at full scope in session mode: a small seeded project (inventory ~18k tokens, 10 batches, 74 raw findings, 3 verifiers) whose gate said ~65k–125k and which spent ~243k tokens of context in the session and ~248k in the verifiers, US$7.90, 18 min; and a tiny throwaway project (~0.2k, 1 batch, 8 findings, 1 verifier) whose gate said ~30–40k and which spent ~116k and ~40k, US$2.16, 4.5 min; cache re-reads came to 15× and 19× the context (#59)."
     },
     {
       "id": "N20",
       "where": "Show the plan and ask",
-      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#what-loads-at-startup"], "inbrace-tech/claude-skills": [34, 38] },
-      "what": "The first gate is where the user decides what to spend, with scope and run mode as two questions; arguments can answer them for headless runs, but never with an option the gate would not offer. Derived from `audit-sonnet-5-5` `N39` and `audit-opus-5-5` `N39` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#what-loads-at-startup"], "inbrace-tech/claude-skills": [34, 38, 59] },
+      "what": "The first gate is where the user decides what to spend, with scope and run mode as two questions; arguments can answer them for headless runs, but never with an option the gate would not offer. Derived from `audit-sonnet-5-5` `N39` and `audit-opus-5-5` `N39` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.x the estimate was rebuilt from two runs of this audit at full scope in session mode: a small seeded project (inventory ~18k tokens, 10 batches, 74 raw findings, 3 verifiers) whose gate said ~65k–125k and which spent ~243k tokens of context in the session and ~248k in the verifiers, US$7.90, 18 min; and a tiny throwaway project (~0.2k, 1 batch, 8 findings, 1 verifier) whose gate said ~30–40k and which spent ~116k and ~40k, US$2.16, 4.5 min; cache re-reads came to 15× and 19× the context (#59)."
     },
     {
       "id": "N21",
@@ -136,14 +136,20 @@
     {
       "id": "N23",
       "where": "Show the plan and ask",
-      "refs": { "inbrace-tech/claude-skills": [34, 38] },
-      "what": "A cheap lexical pass is useful when the budget is small, as long as its limit is stated; with open discovery it covers only the known traps. Derived from `audit-sonnet-5-5` `N51` and `audit-opus-5-5` `N51` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "inbrace-tech/claude-skills": [34, 38, 59] },
+      "what": "A cheap lexical pass is useful when the budget is small, as long as its limit is stated; with open discovery it covers only the known traps. Derived from `audit-sonnet-5-5` `N51` and `audit-opus-5-5` `N51` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.x the estimate was rebuilt from two runs of this audit at full scope in session mode: a small seeded project (inventory ~18k tokens, 10 batches, 74 raw findings, 3 verifiers) whose gate said ~65k–125k and which spent ~243k tokens of context in the session and ~248k in the verifiers, US$7.90, 18 min; and a tiny throwaway project (~0.2k, 1 batch, 8 findings, 1 verifier) whose gate said ~30–40k and which spent ~116k and ~40k, US$2.16, 4.5 min; cache re-reads came to 15× and 19× the context (#59)."
     },
     {
       "id": "N24",
       "where": "Show the plan and ask",
       "refs": { "inbrace-tech/claude-skills": [34, 38] },
       "what": "The report and the run file keep the plan and every option's estimate, so the trail of what was approved starts at the plan. Derived from `audit-sonnet-5-5` `N50` and `audit-opus-5-5` `N50` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N25",
+      "where": "Measure",
+      "refs": { "inbrace-tech/claude-skills": [34, 59] },
+      "what": "Added after the gate's estimate proved far too low. The old estimate was the inventory times one to three, plus 30–40k for the skills, but the inventory is a small part of a run: the fixed load (harness, the audit's own skills, the knowledge file) is ~75–85k, the docs ~30k, each finding costs its writing, relabelling, verification and report entry, and every verifier loads its own base and opens the cached pages to check passages. Each row's coefficients come from two runs of this audit at full scope in session mode: a small seeded project (inventory ~18k tokens, 10 batches, 74 raw findings, 3 verifiers) whose gate said ~65k–125k and which spent ~243k tokens of context in the session and ~248k in the verifiers, US$7.90, 18 min; and a tiny throwaway project (~0.2k, 1 batch, 8 findings, 1 verifier) whose gate said ~30–40k and which spent ~116k and ~40k, US$2.16, 4.5 min. Recomputed from what each plan knew, the rows bracket both: ~221k–565k against ~490k, and ~148k–201k against ~156k. The range is wide because the number of findings is unknown until the files are read (#34, #59)."
     }
   ]
 }
