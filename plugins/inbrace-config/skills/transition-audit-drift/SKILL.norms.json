@@ -5,7 +5,7 @@
       "id": "N01",
       "where": "Before anything",
       "refs": { "docs": ["https://code.claude.com/docs/en/skills#control-who-invokes-a-skill", "https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 43, 57] },
-      "what": "A stage skill is model-invocable so the orchestrator can start it, which also lets Claude invoke it on an unrelated task; the run-file guard makes that cost one skill load. Written for the transition-agnostic audit (#34, #43). In 0.6.1 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
+      "what": "A stage skill is model-invocable so the orchestrator can start it, which also lets Claude invoke it on an unrelated task; the run-file guard makes that cost one skill load. Written for the transition-agnostic audit (#34, #43). In 0.6.0 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
     },
     {
       "id": "N02",
@@ -17,7 +17,7 @@
       "id": "N03",
       "where": "Compare",
       "refs": { "docs": ["https://code.claude.com/docs/en/tools-reference#webfetch-tool-behavior", "https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 43, 57] },
-      "what": "Each trap records the passage it rests on and the date it was verified; comparing them with the page as it reads today keeps a trap from outliving the docs (#34). The raw page is needed, since a paraphrase cannot confirm a verbatim passage. Written for the transition-agnostic audit (#34, #43). In 0.6.1 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
+      "what": "Each trap records the passage it rests on and the date it was verified; comparing them with the page as it reads today keeps a trap from outliving the docs (#34). The raw page is needed, since a paraphrase cannot confirm a verbatim passage. Written for the transition-agnostic audit (#34, #43). In 0.6.0 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
     },
     {
       "id": "N04",
