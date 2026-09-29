@@ -1,4 +1,10 @@
 # pnpm 11 reads its settings here, not from package.json.
+
+# Each plugin is a private package so Changesets can version it: its package.json holds the version,
+# which `pnpm run release:version` copies into .claude-plugin/plugin.json.
+packages:
+  - plugins/*
+
 # No `allowBuilds`: no dependency runs an install script. One that starts needing it fails the install
 # and is opted in here by name after review.
 

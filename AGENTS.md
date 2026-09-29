@@ -18,6 +18,9 @@ pnpm run typecheck
 pnpm run lint
 pnpm test
 pnpm run check-norms
+pnpm run check-version
+pnpm exec changeset status --since=origin/main
+pnpm run release:check-changesets
 pnpm audit --audit-level=high
 pnpm run audit:lockfile
 pnpm run audit:lockfile:all
@@ -26,3 +29,5 @@ claude plugin validate --strict plugins/<plugin>
 claude plugin validate --strict plugins/<plugin>/skills
 claude plugin validate --strict plugins/<plugin>/agents
 ```
+
+A change under `plugins/<plugin>/` adds a changeset (`pnpm changeset`). Releases are the maintainer's, never an agent's unless asked: `pnpm run release:version`, `pnpm run release`, `pnpm run release:verify-tag <tag> [--verify-signature]` and `pnpm --silent run release:notes <version>`, as `CONTRIBUTING.md` › Versions describes.

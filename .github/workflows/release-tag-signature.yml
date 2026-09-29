@@ -1,0 +1,38 @@
+# On every pushed release tag (`<plugin>@<version>`, as Changesets names them): the tag must be
+# annotated and carry a signature block. A runner holds no maintainer key, so this checks presence
+# only; the maintainer verifies the signature itself with `pnpm run release:verify-tag <tag> --verify-signature`.
+# Red means the tag was not signed: delete it (`git push origin :refs/tags/<tag>` and
+# `git tag --delete <tag>`), re-cut it locally with `pnpm run release`, and push again.
+name: Release tag signature
+
+on:
+  push:
+    tags: ["*@*"]
+
+permissions:
+  contents: read
+
+jobs:
+  signed:
+    name: Signed release tag
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      # persist-credentials: false keeps the job token out of .git/config, where later steps could read it.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Node only, no dependencies: the script imports nothing outside Node.
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+      # The checkout may write the tag's ref as a lightweight one at its commit; fetch the tag object
+      # itself over it. The tag name comes from the event, so it goes through env, never into the script.
+      - name: Fetch the tag object
+        env:
+          TAG: ${{ github.ref_name }}
+        run: git fetch --no-tags origin "+refs/tags/${TAG}:refs/tags/${TAG}"
+      - name: The tag is annotated and signed
+        env:
+          TAG: ${{ github.ref_name }}
+        run: node scripts/verify-tag-signature.ts "$TAG"

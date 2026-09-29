@@ -1,5 +1,8 @@
 # CI on every PR and push to main: `claude plugin validate --strict` (warnings fail) over the
-# marketplace, plugins, skills and agents, then typecheck, lint, test and check-norms.
+# marketplace, plugins, skills and agents, then typecheck, lint, test, check-norms and check-version.
+# On a PR, `changeset status` also fails when a plugin changed without a changeset, and
+# release:check-changesets when a changeset is not one line within the ceiling or names no plugin;
+# there is no label or flag that skips either.
 name: CI
 
 on:
@@ -23,8 +26,10 @@ jobs:
     timeout-minutes: 5
     steps:
       # persist-credentials: false keeps the job token out of .git/config, where later steps could read it.
+      # fetch-depth: 0 brings the base branch's history, which `changeset status --since` diffs against.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          fetch-depth: 0
           persist-credentials: false
       - uses: ./.github/actions/setup-node-pnpm
       # Pinned so a CLI release never changes what CI accepts without a reviewed diff.
@@ -52,3 +57,14 @@ jobs:
         run: pnpm test
       - name: Check norms against their sidecars
         run: pnpm run check-norms
+      - name: Check each plugin.json carries its package's version
+        run: pnpm run check-version
+      - name: Check each changeset is one line within the ceiling
+        if: github.event_name == 'pull_request'
+        run: pnpm run release:check-changesets
+      # The base ref comes from the event, so it goes through env, never straight into the script.
+      - name: Require a changeset for every changed plugin
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: pnpm exec changeset status --since="origin/${BASE_REF}"

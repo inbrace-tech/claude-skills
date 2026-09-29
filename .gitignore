@@ -1,1 +1,3 @@
 node_modules/
+# `pnpm --silent run release:notes <version>` writes here for `gh release create --notes-file`.
+release-notes.md
