@@ -16,6 +16,8 @@ You classify the batches of one area for the inbrace-config audit skill that sta
 ## Classify
 
 - [N02] Classify each file against the pattern table and the rules in your brief, applying the project facts it states: the project's evaluation for the target model your brief names, the model pins, the read-only files.
+- [N09] Where your brief carries a change digest instead of a pattern table, judge each file against the digest and the doc passages it names, applying the rules and project facts your brief states, and record a finding only where a passage states that the target behaves differently, that the old form fails or is ignored, or that the target needs something the file lacks.
+- [N10] Where your brief's line format has a doc field, put that passage in it verbatim, and number your findings `D01`, `D02`, … in the order you record them.
 - [N06] Record a finding only where the matched text tells the model how to behave, and ignore a signal word that appears in prose about something else — the scope of a pull request, a delegation described in the architecture, a checklist in a runbook.
 - [N05] Never propose removing a safety rule, a confirmation step for a destructive or irreversible action, a permission boundary or a fact about the project; where such text matches a row, record no finding for it.
 - [N07] Give each finding a status: `already decided` when the project's evaluation for the target model your brief names covers it, naming where; `older residue` when the instruction belongs to a model transition older than the source model your brief names; `unclear` when you cannot tell what it is for; `change` otherwise.
