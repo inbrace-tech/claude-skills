@@ -35,6 +35,9 @@ pnpm run typecheck
 pnpm run lint
 pnpm test
 pnpm run check-norms
+pnpm run check-version
+pnpm exec changeset status --since=origin/main
+pnpm run release:check-changesets
 pnpm audit --audit-level=high
 pnpm run audit:lockfile
 pnpm run audit:lockfile:all
@@ -44,7 +47,7 @@ claude plugin validate --strict plugins/<plugin>/skills
 claude plugin validate --strict plugins/<plugin>/agents   # when the plugin ships agents
 ```
 
-The scripts' tests are Vitest specs, `scripts/**/*.spec.ts`; `pnpm run test:watch` reruns them as you edit.
+The scripts' tests are Vitest specs, `scripts/**/*.spec.ts`; `pnpm run test:watch` reruns them as you edit. Each script is four files: `X.ts`, the entrypoint that reads git and files and sets the exit code; `X.logic.ts`, its pure rules; `X.logic.spec.ts`, unit tests of those rules with strings only; and `X.spec.ts`, which runs `X.ts` end to end in a throwaway fixture, with no network. Rules two entrypoints share live in one logic module named for what it holds, such as `release-preconditions.logic.ts`, with its own `.logic.spec.ts`.
 
 `pnpm run audit:lockfile` asks the npm registry whether every version your change adds to `pnpm-lock.yaml` is still published and past the `minimumReleaseAge` floor in `pnpm-workspace.yaml`, comparing against the merge base with `origin/main`; `pnpm run audit:lockfile:all` asks the whole lockfile whether any version has been taken down. Both need the network and fail, rather than pass, when the registry cannot be reached. The pull-request workflow runs the first, and a daily workflow runs the second.
 
@@ -61,7 +64,39 @@ A skill with `disable-model-invocation: true` starts only from its typed slash c
 
 ## Versions
 
-Bump `version` in the plugin's `.claude-plugin/plugin.json` when users receive a change, and add one line to `CHANGELOG.md` saying what changed for them.
+Claude Code gives an installed plugin a new copy only when its version changes, so a change pushed without a bump leaves existing users on their cached copy ([Create and distribute a plugin marketplace](https://code.claude.com/docs/en/plugins/host-marketplace)). Versions move with [Changesets](https://github.com/changesets/changesets): each plugin is a private workspace package whose `package.json` holds the version, and a release moves it once for everything merged since the last one.
+
+Every pull request that changes a file under `plugins/<plugin>/` adds a changeset: run `pnpm changeset`, pick the plugin and its bump, and write one line saying what changed for its users. It lands in `.changeset/` and is committed with the change. CI fails the pull request when:
+
+- a plugin changed without a changeset (`changeset status` against the base branch); the files a release writes — the plugin's `package.json`, `CHANGELOG.md` and `.claude-plugin/plugin.json` — do not count, so the version pull request passes;
+- a changeset names no plugin, or its summary is not one line of at most 200 characters (`pnpm run release:check-changesets`). The summary becomes a line of the public changelog and of the GitHub Release; the reasoning belongs in the pull request, which the changelog links to;
+- a plugin's `package.json` and `.claude-plugin/plugin.json` disagree on the version (`pnpm run check-version`). Never edit a version or a plugin's `CHANGELOG.md` by hand.
+
+### Which bump
+
+The version is per plugin: the marketplace holds several plugins, each versioned on its own, and has no version of its own that drives updates. Pick the bump by what the plugin's users get:
+
+- `patch` — a fix or refinement of an existing skill or agent that adds no capability and breaks nothing: wording, a corrected rule or pattern row, a verifier fix.
+- `minor` — a new skill, agent, argument or pattern family, or a noticeably wider audit.
+- `major` — removing or renaming a skill or agent, changing its invocation or arguments incompatibly, or raising the Claude Code version the plugin needs.
+
+While a plugin is `0.x`, a breaking change is a `minor`: Changesets turns a `major` on `0.x` into `1.0.0`, and a plugin reaches `1.0.0` only by the maintainer's decision. From `1.0.0` on, a breaking change is a `major`.
+
+### Cutting a release
+
+The maintainer cuts releases:
+
+1. `pnpm run release:version` (`scripts/release-version.ts`) on an up-to-date checkout of `main`. It fetches `origin` and refuses, listing every reason, unless `HEAD` is `origin/main`, the tree is clean and at least one changeset is pending. Changesets then consumes the pending changesets, moves each plugin's version and writes `plugins/<plugin>/CHANGELOG.md`, and the version is copied into `plugin.json`. It needs a GitHub token for the changelog's links, taken from `GITHUB_TOKEN` or else `gh auth token`, and passed only to Changesets' environment.
+2. Branch from there (`git switch -c release/<date>`), commit the diff, open it as the version pull request and merge it.
+3. On the merged `main`, `pnpm run release` (`scripts/release-tag.ts`) fetches `origin` and refuses unless `HEAD` is `origin/main`, the tree is clean, no changeset is pending and `check-version` passes. It creates a signed `<plugin>@<version>` tag for each plugin that has none, then works from each plugin's `package.json`: a tag already on `origin` is fetched and must be annotated and signed, and a tag only in this clone — just created, or left by a run whose push failed — is checked with `pnpm run release:verify-tag <tag> --verify-signature` and pushed. It reports nothing to do only when every expected tag is on `origin`. The Release tag signature workflow then checks each pushed tag carries a signature; when a check fails, delete the tag locally and on `origin` and cut it again.
+4. Publish a GitHub Release for each tag, its notes the version's section of the plugin's `CHANGELOG.md`. Write them to a file, never a pipe, so a missing section stops the release instead of publishing empty notes:
+
+   ```bash
+   pnpm --silent run release:notes 0.6.0 > release-notes.md
+   gh release create inbrace-config@0.6.0 --verify-tag --title "inbrace-config 0.6.0" --notes-file release-notes.md
+   ```
+
+   `release-notes.md` is gitignored. The version is always passed, never read from `package.json`, so running it before the version pull request merges fails instead of printing the previous release.
 
 ## Opening a pull request
 
