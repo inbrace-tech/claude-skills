@@ -18,8 +18,8 @@
     },
     {
       "id": "P04",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). In 0.6.1 its kind moved from re-test to change, typed remove (#64): in the 2026-09-29 capability evaluation a held-out answer key required removing `MAX_THINKING_TOKENS=0`, every skill run kept it as a re-test by following this trap, and only the plain session with the doc links proposed the edit. The model-config page states outright that the setting has no effect on Sonnet 5.5, so nothing is left to re-test. The setting stays as already decided where the project records that it still serves another model, a Sonnet 5 fallback or an agent pinned to a model where it still turns thinking off, which the page's own exception list supports.",
+      "refs": { "docs": ["https://code.claude.com/docs/en/model-config#extended-thinking"], "inbrace-tech/claude-skills": [28, 64] }
     },
     {
       "id": "P05",
@@ -93,8 +93,8 @@
     },
     {
       "id": "P19",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (hooks → hooks, settings), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
-      "refs": { "inbrace-tech/claude-skills": [28, 61] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (hooks → hooks, settings), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.1 its kind moved from re-test to change for a per-call countdown or budget, which is removed or made rare (#64): in the 2026-09-29 capability evaluation a held-out answer key required that edit for a hook adding a per-tool-call budget countdown, and every skill run kept it as a re-test. The guide says outright not to add such a countdown in interactive sessions, while for other per-step context it says to send it less often only where the misread shows, so that case stays a re-test. The inference that a hook's context reaches the model right after the tool results became a passage of the hooks page, and the confidence rose from low to medium.",
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets", "https://code.claude.com/docs/en/hooks#posttooluse-decision-control"], "inbrace-tech/claude-skills": [28, 61, 64] }
     },
     {
       "id": "P20",

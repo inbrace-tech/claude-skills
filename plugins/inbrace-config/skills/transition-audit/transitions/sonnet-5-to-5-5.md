@@ -121,15 +121,18 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 
 ### P04 — Thinking turned off by a setting Sonnet 5.5 ignores
 
-- kind: re-test
+- kind: change
 - area: settings
 - signal: `MAX_THINKING_TOKENS` set to `0` in a settings `env`, or `alwaysThinkingEnabled: false`
-- applies when: settings of a project that runs Sonnet 5.5
-- change: These turned thinking off on Sonnet 5 and have no effect on Sonnet 5.5, whose thinking cannot be turned off in Claude Code; where the goal was less thinking, the lever is a lower effort level. Keep the setting where it still serves another model. List it under "Re-test only, no edit".
+- applies when: settings of a project that runs Sonnet 5.5, unless the project records that the setting still serves another model — a Sonnet 5 fallback, or an agent pinned to a model where it still turns thinking off — which is already decided
+- change: Remove the setting, typed remove: it turned thinking off on Sonnet 5 and has no effect on Sonnet 5.5, whose thinking cannot be turned off in Claude Code; where the goal was less thinking, the lever is a lower effort level, which P03 leaves to a re-test. Where the project's settings or agents name another model the setting still affects and no record says it serves that model, name that model in the note.
 - confidence: high
 - sweep: yes
 - source: https://code.claude.com/docs/en/model-config#extended-thinking
   passage: "You can't turn thinking off on Opus 5.5, Sonnet 5.5, or the Fable models … `alwaysThinkingEnabled`, and `MAX_THINKING_TOKENS=0` have no effect there"
+  verified: 2026-09-29
+- source: https://code.claude.com/docs/en/model-config#extended-thinking
+  passage: "which turns thinking off on the Anthropic API except on Opus 5.5, Sonnet 5.5, and Fable models"
   verified: 2026-09-29
 
 ### P05 — Sonnet 5 prompting delivered to Sonnet 5.5 by prefix
@@ -334,18 +337,22 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 
 ### P19 — Harness text after every tool result
 
-- kind: re-test
+- kind: change
 - area: hooks, settings
-- signal: a `PreToolUse` or `PostToolUse` hook whose script adds context or a message on every call of the tools it matches, or a token or budget countdown
-- applies when: interactive sessions; hook scripts are found by the plan's prefix search
-- change: Re-test: Sonnet 5.5 can treat a genuine user message that arrives right after tool results as a possible prompt injection, and the guide names per-step harness text and countdowns among the causes; send such text less often. List it under "Re-test only, no edit".
-- confidence: low
+- signal: a `PreToolUse` or `PostToolUse` hook that adds a token, budget or tool-call countdown on every call of the tools it matches, or whose script adds other context or a message on every such call
+- applies when: interactive sessions, where the user can type mid-turn; hook scripts are found by the plan's prefix search
+- change: For a countdown or per-call budget, remove it, typed remove, or where the project needs the limit, make the hook add it only rarely, typed rewrite: the guide says not to add one after tool results in interactive sessions, since Sonnet 5.5 can then treat a genuine user message as a possible prompt injection, and a hook's added context reaches the model beside the tool result. For other context added on every call, re-test instead: the guide names per-step harness text among the causes and says to send it less often where the misread shows; list it under "Re-test only, no edit".
+- confidence: medium
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets
   passage: "A token countdown that your harness adds after every tool result can cause this … having your harness add instructions or context after the tool results on every step"
   verified: 2026-09-29
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets
-  basis: inference: that a hook's added context reaches the model right after the tool results is not stated on any cached page.
+  passage: "If you see this reaction to a reminder of your own, send the reminder less often. … In interactive sessions where users can type mid-turn, don't add your own token or budget countdown after tool results."
+  verified: 2026-09-29
+- source: https://code.claude.com/docs/en/hooks#posttooluse-decision-control
+  passage: "String added to Claude's context alongside the tool result."
+  verified: 2026-09-29
 
 ### P20 — Blanket authorization
 
