@@ -196,6 +196,12 @@ The audit is the ten skill folders together — the commands, the orchestrator w
 
 A copied skill does not receive updates. Installing through the marketplace does.
 
+## Evaluations
+
+Each skill is measured, not asserted. The results are published whether an expectation held or not:
+
+- [2026-09-29: the transition-agnostic audit](docs/evaluations/2026-09-29-transition-audit.md). On a repository no version of the skill had seen, 0.6.0 found 32 of 35 items on average, against 25 for 0.5.1 and 29 for a plain session given the docs. It found every high-severity item, with no false positive, at about twice 0.5.1's cost.
+
 ## How the skills are written
 
 Each rule in a skill is one imperative sentence with a stable id, like `[N07]`. Beside every `SKILL.md`, a `SKILL.norms.json` records why each rule exists and the source behind it. Claude never loads that file on its own, so the history costs no context. CI checks that the two files list the same rules.
