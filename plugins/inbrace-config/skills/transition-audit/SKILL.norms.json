@@ -100,8 +100,8 @@
     {
       "id": "N17",
       "where": "Verify",
-      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#concurrent-subagent-limit"], "inbrace-tech/claude-skills": [34, 38] },
-      "what": "Every finding is refuted adversarially before the user sees it, which kept the per-transition audits free of false claims. Shards split by file, so the verifier's rule of merging only same file, line and id still sees every candidate duplicate, and run below Claude Code's concurrent subagent limit. Derived from `audit-sonnet-5-5` `N53` and `audit-opus-5-5` `N53` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#concurrent-subagent-limit"], "inbrace-tech/claude-skills": [34, 38, 77] },
+      "what": "Every finding is refuted adversarially before the user sees it, which kept the per-transition audits free of false claims. Shards split by file, so the verifier's rule of merging only same file, line and id still sees every candidate duplicate, and run below Claude Code's concurrent subagent limit. Derived from `audit-sonnet-5-5` `N53` and `audit-opus-5-5` `N53` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.1 `older residue` lines go under their own heading rather than the final list: they propose nothing, and in the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition they were read as findings and cost precision; the report still shows them apart, with `/claude-api prompt-audit` (#77)."
     },
     {
       "id": "N18",

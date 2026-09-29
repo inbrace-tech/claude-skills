@@ -35,7 +35,7 @@ metadata:
 ## Classify
 
 - [N13] Record a finding only where the text instructs the model how to behave, and skip a signal word in prose about something else — a pull request's scope, a delegation in the architecture, a checklist in a runbook.
-- [N14] Record an instruction that belongs to a transition older than the source model, such as those `<older_residue>` names, as `P00` with the status `older residue` and no proposed change.
+- [N14] Record an instruction that belongs to a transition older than the source model, such as those `<older_residue>` names, as `P00` with the status `older residue` and no proposed change, only with a passage showing it was written for a model older than the source — the source model's guide, or a section of the migration guide for older models, saying it is no longer needed — and record nothing without one; one the project already weighed is `already decided`, per [N20].
 - [N15] Never propose removing a safety rule, a confirmation step for a destructive or irreversible action, a permission boundary, a fact about the project, or an instruction its file says exists because of a measured failure; record anything whose purpose you cannot determine as `unclear` instead.
 - [N16] Record every finding in Claude API code with the hand-off `/claude-api migrate <files> to <target id>` as its proposed change, and keep it out of what the audit edits, since Anthropic's `claude-api` skill migrates request code with the right syntax for each SDK and platform.
 - [N17] Treat the `description` in a skill's or agent's frontmatter as routing text, where calibrated urgency is legitimate, and judge wording only in text that shapes behaviour.
@@ -44,6 +44,7 @@ metadata:
 - [N20] Record as `already decided`, with no proposed change, a finding the project states it already evaluated for the target model, citing where; record a decision made once for every file as one line naming the files it covers.
 - [N21] Before recording that an agent lacks an instruction, read the skills its frontmatter lists under `skills:`, as context and without auditing them again, and record nothing when one states it, since each is loaded in full into the agent at startup — unless that skill sets `disable-model-invocation: true` or cannot be read; read too the project memory the brief names, and record nothing when it states the instruction and the agent does not set `omitClaudeMd: true`, since a custom subagent loads that memory at startup.
 - [N22] Never record a finding for what the knowledge file's `<protected>` lists, or for what the target's own guide keeps or recommends.
+- [N24] Judge the model and effort the project runs with by what reaches everyone who runs it — its project, local and managed settings, the flags of its launch commands, the frontmatter of its files — and never let the user's `~/.claude/settings.json` clear a trap, make a finding `already decided` or lower it, since other developers, CI and headless runs never get that file; the note may say what it does on this machine.
 
 ## Close the stage
 

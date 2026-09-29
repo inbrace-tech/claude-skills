@@ -3,8 +3,8 @@
   "traps": [
     {
       "id": "P01",
-      "learned": "Added with the project-level recommendation of Opus 5.5 at `medium`, shared or local, since a top-level `effortLevel` in the user's settings does not count for Opus 5.5 (#7).",
-      "refs": { "inbrace-tech/claude-skills": [7] }
+      "learned": "Added with the project-level recommendation of Opus 5.5 at `medium`, shared or local, since a top-level `effortLevel` in the user's settings does not count for Opus 5.5 (#7). In 0.6.1 a level saved for Opus 5.5 in the user's settings stopped counting as already set: in the 2026-09-29 capability evaluation a run dismissed the trap on the auditor's own `modelSettings` entry, which the project's other developers and CI never get (#77).",
+      "refs": { "inbrace-tech/claude-skills": [7, 77] }
     },
     {
       "id": "P02",

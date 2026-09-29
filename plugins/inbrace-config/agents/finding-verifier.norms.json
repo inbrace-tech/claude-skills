@@ -78,6 +78,18 @@
       "where": "Verify",
       "refs": { "inbrace-tech/claude-skills": [66] },
       "what": "Added in 0.6.1. In the 2026-09-29 capability evaluation 11 notes of one run's final list cited a selector at one line when it sits at the line before it. The verifier corrected the line on 3 of them and left 8, since [N04] moves a finding's anchor and nothing asked it to check the other lines a note cites. No verdict changed, but a user following those notes lands one line off. Checking every cited `file:line` against the construct it names, and saying which one could not be confirmed, makes every line reference of the final list one the user can follow (#66)."
+    },
+    {
+      "id": "N14",
+      "where": "Verify",
+      "refs": { "docs": ["https://code.claude.com/docs/en/model-config#model-aliases", "https://platform.claude.com/docs/en/models/opus-5-5/migration-guide"], "inbrace-tech/claude-skills": [77] },
+      "what": "Added in 0.6.1. In the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition the verifier turned a raw `change` raising a CI pin of Claude Code below the target's documented minimum version into `re-test`, because the project said the pin existed after a measured failure; the Claude Code docs state the minimum outright, so the pin cannot stay and the local reason is only what to check when raising it. In another run it left a cost re-baseline the migration checklist asks for as `unclear`, having looked for the deciding passage only in the page the line cited. [N05] still protects instruction text a measured failure produced; a value the target's requirement rules out is not such text (#77)."
+    },
+    {
+      "id": "N15",
+      "where": "Verify",
+      "refs": { "inbrace-tech/claude-skills": [77] },
+      "what": "Added in 0.6.1. In the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition older-residue lines reached the final list with no proposed change: one with no passage at all, graded a false positive, and several whose passage the project had already weighed in a decision record, graded unsupported. The verifier now holds residue to the rule discovery records it by, and the session that started it files residue apart from the final list (#77)."
     }
   ]
 }

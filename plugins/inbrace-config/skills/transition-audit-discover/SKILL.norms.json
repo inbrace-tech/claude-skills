@@ -82,8 +82,8 @@
     {
       "id": "N14",
       "where": "Classify",
-      "refs": { "inbrace-tech/claude-skills": [34, 39] },
-      "what": "An instruction outdated before the source model is outside this transition's evidence; reporting it as residue, with no change, keeps the audit within what its sources support. The examples differ per transition, so they come from the knowledge file. Derived from `audit-sonnet-5-5` `N11` and `audit-opus-5-5` `N11` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #39)."
+      "refs": { "inbrace-tech/claude-skills": [34, 39, 77] },
+      "what": "An instruction outdated before the source model is outside this transition's evidence; reporting it as residue, with no change, keeps the audit within what its sources support. The examples differ per transition, so they come from the knowledge file. Derived from `audit-sonnet-5-5` `N11` and `audit-opus-5-5` `N11` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #39). In 0.6.1 a residue line needs a passage showing the instruction was written for a model older than the source: the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition graded a residue line with no passage as a false positive, and residue lines whose passage the project had already weighed in a decision record as unsupported, so the second kind is now `already decided` (#77)."
     },
     {
       "id": "N15",
@@ -138,6 +138,12 @@
       "where": "Close the stage",
       "refs": { "inbrace-tech/claude-skills": [34, 39] },
       "what": "Open discovery must say what it did not read, or its silence reads as a clean result; the account also shows how the docs were read, so an offline run is never taken for a verified one. Written for the transition-agnostic audit (#34, #39)."
+    },
+    {
+      "id": "N24",
+      "where": "Classify",
+      "refs": { "docs": ["https://code.claude.com/docs/en/settings#settings-files-and-who-they-affect"], "inbrace-tech/claude-skills": [77] },
+      "what": "Added in 0.6.1. In the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition one run dismissed a missing effort level because the auditor's own `~/.claude/settings.json` saved one for the target, and another kept a launch recipe with no effort flag as \"inherited from what the user saved\". The user settings file applies to that user on that machine; the other developers of the project, its CI and its headless runs never get it, so an audit that lets it settle a finding reports a configuration the project does not ship. The file stays context for explaining what the user sees today (#77)."
     }
   ]
 }

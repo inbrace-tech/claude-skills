@@ -94,7 +94,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 - area: memory, rules, agents, skills, commands, hooks, ci
 - signal: `model: claude-sonnet-5` in an agent's or skill's frontmatter; `claude-sonnet-5` in a launch command or dispatch recipe — a `--model` flag, a `model` argument to an Agent or workflow call, a brief template — which instructs how a session or agent starts even when written as prose
 - applies when: instruction files and the code that dispatches agents, unless the project records the pin as deliberate as already decided
-- change: Move the pin to `claude-sonnet-5-5` and leave its `effort:` to P03, or record why it stays. Where the pin or launch carries no explicit effort, say in the note that in Claude Code Sonnet 5 starts at `high` and Sonnet 5.5 at `medium`, so the move drops a level unless the user saved a level for Sonnet 5.5.
+- change: Move the pin to `claude-sonnet-5-5` and leave its `effort:` to P03, or record why it stays. Where the pin or launch carries no explicit effort, say in the note that in Claude Code Sonnet 5 starts at `high` and Sonnet 5.5 at `medium`, so the move drops a level for everyone who runs the project; a level the user saved for Sonnet 5.5 in `~/.claude/settings.json` covers only this machine.
 - confidence: medium
 - sweep: yes
 - context: user-settings
