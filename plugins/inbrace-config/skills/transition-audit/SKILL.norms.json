@@ -52,8 +52,8 @@
     {
       "id": "N09",
       "where": "Throughout the run",
-      "refs": { "inbrace-tech/claude-skills": [34, 38] },
-      "what": "Every decision goes through one question tool with a recommendation, and a session without the tool still gets the same question and changes nothing until answered. Derived from `audit-sonnet-5-5` `N33` and `audit-opus-5-5` `N33` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "inbrace-tech/claude-skills": [34, 38, 79] },
+      "what": "Every decision goes through one question tool with a recommendation, and a session without the tool still gets the same question and changes nothing until answered. Derived from `audit-sonnet-5-5` `N33` and `audit-opus-5-5` `N33` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.1 the numbered-list fallback was removed and [N15] decides a session without the tool: the plugin eval suite showed a headless run without `--scope` stopping correctly at the plan on both transitions but ending with a list of questions no one would answer, instead of the arguments that unblock it (#79)."
     },
     {
       "id": "N10",
@@ -88,8 +88,8 @@
     {
       "id": "N15",
       "where": "Throughout the run",
-      "refs": { "docs": ["https://code.claude.com/docs/en/headless"], "inbrace-tech/claude-skills": [34, 38] },
-      "what": "With no one to answer, the run must never change files; with the scope and mode given as arguments it still produces the report. Derived from `audit-sonnet-5-5` `N18` and `audit-opus-5-5` `N18` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/headless"], "inbrace-tech/claude-skills": [34, 38, 79] },
+      "what": "With no one to answer, the run must never change files; with the scope and mode given as arguments it still produces the report. Derived from `audit-sonnet-5-5` `N18` and `audit-opus-5-5` `N18` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.1 it became the only answer to a missing or denied `AskUserQuestion`, and its close names `--scope` and `--mode`, after [N09]'s numbered-list fallback took over headless runs on both transitions in the plugin eval suite (#79)."
     },
     {
       "id": "N16",
