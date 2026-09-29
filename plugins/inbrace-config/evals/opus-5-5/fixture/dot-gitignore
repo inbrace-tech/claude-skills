@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+reports/
+
+# Shared review rules, written by `review-rules sync` on install
+.claude/rules/shared/
+
+.claude/settings.local.json

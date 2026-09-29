@@ -1,0 +1,27 @@
+{
+  "name": "@example/contract-desk",
+  "version": "0.9.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/review/redline-loop.ts",
+    "build": "tsc --outDir dist",
+    "test": "vitest run",
+    "lint": "eslint src scripts && tsc --noEmit",
+    "check:agents": "node scripts/check-agent-models.mjs",
+    "digest": "node scripts/transcript-digest.mjs",
+    "postinstall": "review-rules sync --to .claude/rules/shared"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.95.0",
+    "fastify": "^5.2.0"
+  },
+  "devDependencies": {
+    "@example/review-rules": "^1.4.0",
+    "@types/node": "^22.10.0",
+    "eslint": "^9.17.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "model": "claude-sonnet-5",
+  "alwaysThinkingEnabled": false,
+  "env": {
+    "MAX_THINKING_TOKENS": "0",
+    "SUPPORTDESK_TOOL_BUDGET": "150"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(pnpm test:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm check:agents)",
+      "Bash(pnpm ticket:show:*)",
+      "Bash(pnpm logs:search:*)",
+      "Bash(uv run pytest:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)"
+    ],
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(pnpm deploy:*)",
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/claude-hooks/model-notes.mjs\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/claude-hooks/tool-budget.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}

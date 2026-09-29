@@ -1,0 +1,4 @@
+ANTHROPIC_API_KEY=sk-ant-FAKE-0000000000000000000000000000
+HELPDESK_BASE_URL=https://sandbox.help.example.com
+HELPDESK_TOKEN=hd-FAKE-0000000000
+BILLING_ADMIN_URL=https://billing-admin.example.com

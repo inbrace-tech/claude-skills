@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "model": "claude-opus-5",
+  "env": {
+    "CONTRACT_DESK_TENANT": "https://sandbox.contracts.example.com"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(pnpm test:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm check:agents)",
+      "Bash(pnpm clauses:*)",
+      "Bash(pnpm pdf:*)",
+      "Bash(uv run pytest:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)"
+    ],
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(pnpm deploy:*)",
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/claude-hooks/model-notes.mjs\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/claude-hooks/delegation-reminder.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}
