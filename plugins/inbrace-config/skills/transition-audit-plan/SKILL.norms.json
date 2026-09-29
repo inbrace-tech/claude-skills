@@ -1,0 +1,300 @@
+{
+  "surface": "plugins/inbrace-config/skills/transition-audit-plan/SKILL.md",
+  "norms": [
+    {
+      "id": "N01",
+      "where": "Before anything",
+      "refs": {
+        "docs": [
+          "https://code.claude.com/docs/en/skills#control-who-invokes-a-skill"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "A stage skill is model-invocable so the orchestrator can start it, which also lets Claude invoke it on an unrelated task; the run-file guard makes that cost one skill load. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N02",
+      "where": "Before anything",
+      "refs": {
+        "docs": [
+          "https://code.claude.com/docs/en/skills#skill-content-lifecycle"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "After compaction the orchestrator, the oldest skill of the run, is the first to be dropped; re-invoking it restores the run's standing rules. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N03",
+      "where": "Before anything",
+      "refs": {
+        "docs": [
+          "https://platform.claude.com/llms.txt"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "The traps are the largest part of a knowledge file and only the traps stage needs them, so the plan reads the file only down to them. A bootstrap has no knowledge file, so its docs come from the documentation index and the user confirms them. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N04",
+      "where": "Before anything",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "The root comes from the arguments, so a headless run needs no question for it. Derived from `audit-sonnet-5-5` `N01` and `audit-opus-5-5` `N01` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N05",
+      "where": "List",
+      "refs": {
+        "docs": [
+          "https://code.claude.com/docs/en/memory"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "The inventory follows a map of where model-dependent behaviour lives, not a list of what to find: the closed pattern table bounded discovery in #34's measurement, missing a price table, a guide index and the version floor. The areas for CI, setup and dependencies, and plugin and eval config are new; the rest come from the per-transition audits, without their clause reading model-dependent code only for named rows. Derived from `audit-sonnet-5-5` `N02` and `audit-opus-5-5` `N02` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N06",
+      "where": "List",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "Naming what is not audited, with its size, keeps the coverage honest and adds up to the tracked files, so nothing is silently skipped. Derived from `audit-sonnet-5-5` `N36` and `audit-opus-5-5` `N36` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N07",
+      "where": "List",
+      "refs": {
+        "docs": [
+          "https://code.claude.com/docs/en/model-config#adjust-effort-level"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "Some traps are explained by what the user's own settings do, such as a top-level effort level that does not apply to the target; the file is outside the root, so it is context only. Derived from `audit-sonnet-5-5` `N37` and `audit-opus-5-5` `N37` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N08",
+      "where": "List",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "`rg` skips dot-directories by default and returns nothing without an error, which once hid the whole `.claude/` tree. Derived from `audit-sonnet-5-5` `N03` and `audit-opus-5-5` `N03` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N09",
+      "where": "List",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "An edit to a generated, plugin-installed, main-checkout or symlinked-out file is overwritten or lands in another project. Derived from `audit-sonnet-5-5` `N04` and `audit-opus-5-5` `N04` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N10",
+      "where": "List",
+      "refs": {
+        "docs": [
+          "https://code.claude.com/docs/en/memory"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "A project that already evaluated the target should see its decisions respected, not re-proposed; that evaluation often lives outside the inventory or in the auto memory, under the main checkout's key in a worktree. Derived from `audit-sonnet-5-5` `N38` and `audit-opus-5-5` `N38` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N11",
+      "where": "List",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "An audit's edits are easiest to review and revert as one change on a clean branch. Derived from `audit-sonnet-5-5` `N19` and `audit-opus-5-5` `N19` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N12",
+      "where": "List",
+      "refs": {
+        "docs": [
+          "https://code.claude.com/docs/en/hooks#pretooluse",
+          "https://code.claude.com/docs/en/hooks#posttooluse"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "A hook, gate script or rule condition that matches the source id as a prefix also selects the target, delivering text written for the source; measured misses of this made it a search of its own. Its files are now read openly by discovery, not only for the rows that named them. Derived from `audit-sonnet-5-5` `N59` and `audit-opus-5-5` `N59` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N13",
+      "where": "List",
+      "refs": {
+        "docs": [
+          "https://code.claude.com/docs/en/hooks#pretooluse"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "A hook that requires `model` on Agent calls otherwise surfaces only as a refusal at dispatch. Derived from `audit-sonnet-5-5` `N57` and `audit-opus-5-5` `N57` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N14",
+      "where": "Measure",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "Measuring before reading makes the cost shown at the gate real. Bytes divided by three replaces the old divide-by-four: the Sonnet audit's 73,671 bytes measured 25,806 tokens, 2.85 bytes per token, so the old estimate ran about 30% low. Derived from `audit-sonnet-5-5` `N05` and `audit-opus-5-5` `N05` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N15",
+      "where": "Measure",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "Batches of at most 30,000 tokens keep each read within context and let findings be written before the next batch. Derived from `audit-sonnet-5-5` `N06` and `audit-opus-5-5` `N06` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N16",
+      "where": "Measure",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "Counting batches per area, as auditors are assigned per area, avoids an estimate that no dispatch can match. Derived from `audit-sonnet-5-5` `N56` and `audit-opus-5-5` `N56` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N17",
+      "where": "Measure",
+      "refs": {
+        "docs": [
+          "https://code.claude.com/docs/en/tools-reference#webfetch-tool-behavior"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "Discovery reads the docs raw, since WebFetch returns a small model's answer rather than the page and cannot support a verbatim passage; probing before the gate lets the user decide with the docs' cost and reachability known, and the offline path in hand. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N18",
+      "where": "Measure",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "Open discovery may follow leads outside the inventory; a budget approved at the gate keeps that bounded and visible. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N19",
+      "where": "Show the plan and ask",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "Two short tables let the user choose without reading the inventory; the batch counts read as a floor because grouping packs fewer tokens per batch than the estimate assumes. Derived from `audit-sonnet-5-5` `N07` and `audit-opus-5-5` `N07` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N20",
+      "where": "Show the plan and ask",
+      "refs": {
+        "docs": [
+          "https://code.claude.com/docs/en/sub-agents#what-loads-at-startup"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "The first gate is where the user decides what to spend, with scope and run mode as two questions; arguments can answer them for headless runs, but never with an option the gate would not offer. Derived from `audit-sonnet-5-5` `N39` and `audit-opus-5-5` `N39` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N21",
+      "where": "Show the plan and ask",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "A fixed recommendation rule keeps the advice consistent between runs; the skills area stays in scope when it holds text written for the source, where most of it usually lives. Derived from `audit-sonnet-5-5` `N46` and `audit-opus-5-5` `N46` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N22",
+      "where": "Show the plan and ask",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "Time estimates come from measured runs; in agents mode the slowest auditor sets a wave's time. Derived from `audit-sonnet-5-5` `N54` and `audit-opus-5-5` `N54` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N23",
+      "where": "Show the plan and ask",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "A cheap lexical pass is useful when the budget is small, as long as its limit is stated; with open discovery it covers only the known traps. Derived from `audit-sonnet-5-5` `N51` and `audit-opus-5-5` `N51` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N24",
+      "where": "Show the plan and ask",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          38
+        ]
+      },
+      "what": "The report and the run file keep the plan and every option's estimate, so the trail of what was approved starts at the plan. Derived from `audit-sonnet-5-5` `N50` and `audit-opus-5-5` `N50` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    }
+  ]
+}
