@@ -94,7 +94,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 - area: memory, rules, agents, skills, commands, hooks, ci
 - signal: `model: claude-sonnet-5` in an agent's or skill's frontmatter; `claude-sonnet-5` in a launch command or dispatch recipe — a `--model` flag, a `model` argument to an Agent or workflow call, a brief template — which instructs how a session or agent starts even when written as prose
 - applies when: instruction files and the code that dispatches agents, unless the project records the pin as deliberate as already decided
-- change: Move the pin to `claude-sonnet-5-5` and leave its `effort:` to P03, or record why it stays. Where the pin or launch carries no explicit effort, say in the note that in Claude Code Sonnet 5 starts at `high` and Sonnet 5.5 at `medium`, so the move drops a level unless the user saved a level for Sonnet 5.5.
+- change: Move the pin to `claude-sonnet-5-5` and leave its `effort:` to P03, or record why it stays. Where the pin or launch carries no explicit effort, say in the note that in Claude Code Sonnet 5 starts at `high` and Sonnet 5.5 at `medium`, so the move drops a level for everyone who runs the project; a level the user saved for Sonnet 5.5 in `~/.claude/settings.json` covers only this machine.
 - confidence: medium
 - sweep: yes
 - context: user-settings
@@ -121,15 +121,18 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 
 ### P04 — Thinking turned off by a setting Sonnet 5.5 ignores
 
-- kind: re-test
+- kind: change
 - area: settings
 - signal: `MAX_THINKING_TOKENS` set to `0` in a settings `env`, or `alwaysThinkingEnabled: false`
-- applies when: settings of a project that runs Sonnet 5.5
-- change: These turned thinking off on Sonnet 5 and have no effect on Sonnet 5.5, whose thinking cannot be turned off in Claude Code; where the goal was less thinking, the lever is a lower effort level. Keep the setting where it still serves another model. List it under "Re-test only, no edit".
+- applies when: settings of a project that runs Sonnet 5.5, unless the project records that the setting still serves another model — a Sonnet 5 fallback, or an agent pinned to a model where it still turns thinking off — which is already decided
+- change: Remove the setting, typed remove: it turned thinking off on Sonnet 5 and has no effect on Sonnet 5.5, whose thinking cannot be turned off in Claude Code; where the goal was less thinking, the lever is a lower effort level, which P03 leaves to a re-test. Where the project's settings or agents name another model the setting still affects and no record says it serves that model, name that model in the note.
 - confidence: high
 - sweep: yes
 - source: https://code.claude.com/docs/en/model-config#extended-thinking
   passage: "You can't turn thinking off on Opus 5.5, Sonnet 5.5, or the Fable models … `alwaysThinkingEnabled`, and `MAX_THINKING_TOKENS=0` have no effect there"
+  verified: 2026-09-29
+- source: https://code.claude.com/docs/en/model-config#extended-thinking
+  passage: "which turns thinking off on the Anthropic API except on Opus 5.5, Sonnet 5.5, and Fable models"
   verified: 2026-09-29
 
 ### P05 — Sonnet 5 prompting delivered to Sonnet 5.5 by prefix
@@ -168,9 +171,9 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 
 - kind: re-test
 - area: memory, rules, agents, skills, commands
-- signal: a statement of how the model behaves, in text Sonnet 5.5 reads or that a pin P02 moves would carry to it, that says (a) at `low` or `medium` effort the model scopes its work to what was asked; (b) `xhigh` is the recommended level for the hardest coding or agentic work; (c) an effort level produces the thinking it did on Sonnet 5; or (d) any other statement of how Sonnet 5 behaves, such as how it scales response length
+- signal: a statement of how the model behaves, in text Sonnet 5.5 reads or that a pin P02 moves would carry to it, that says (a) at `low` or `medium` effort the model scopes its work to what was asked; (b) `xhigh` is the recommended level for the hardest coding or agentic work; (c) an effort level produces the thinking it did on Sonnet 5; or (d) any other statement of how Sonnet 5 behaves, such as how it scales response length; and (e) a rule whose stated reason cites Sonnet 5 guidance, a Sonnet 5 tier skill or one of its norms, even where the citation still resolves
 - applies when: instruction text, not the prompting techniques `<protected>` keeps
-- change: Re-test, and re-ground any instruction that rests on the claim, citing the passage that contradicts it: (a) "The model tends to add tests, documentation, and small supporting files … It does this at every effort level, and more at higher effort", and "At `low` and `medium`, on long agentic tasks, it's more likely to stop and check in with the user before it finishes"; (b) "Reserve `xhigh` and `max` for work where you've measured a quality gain", and at those levels "it can start its own rounds of review and verification"; (c) "a level doesn't produce the same amount of thinking as the same level on Claude Sonnet 5"; (d) the migration guide's "re-evaluate model-specific prompt instructions against Prompting Claude Sonnet 5.5". List it under "Re-test only, no edit". Low confidence for (d), which no Sonnet 5.5 passage contradicts.
+- change: Re-test, and re-ground any instruction that rests on the claim, citing the passage that contradicts it, or for (e) re-anchor the reason on the Sonnet 5.5 guide or a reason that names no model, since the session that reads it now runs Sonnet 5.5: (a) "The model tends to add tests, documentation, and small supporting files … It does this at every effort level, and more at higher effort", and "At `low` and `medium`, on long agentic tasks, it's more likely to stop and check in with the user before it finishes"; (b) "Reserve `xhigh` and `max` for work where you've measured a quality gain", and at those levels "it can start its own rounds of review and verification"; (c) "a level doesn't produce the same amount of thinking as the same level on Claude Sonnet 5"; (d) and (e) the migration guide's "re-evaluate model-specific prompt instructions against Prompting Claude Sonnet 5.5". List it under "Re-test only, no edit". Low confidence for (d), which no Sonnet 5.5 passage contradicts.
 - confidence: medium
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#steer-initiative-and-scope
@@ -256,7 +259,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 - kind: optional
 - area: agents, skills, commands, memory
 - signal: long human-in-the-loop agentic work with no guidance on updates
-- applies when: agent and orchestrator prompts, unless the file points to where the project states its update guidance
+- applies when: agent and orchestrator prompts, unless the file points to where the project states its update guidance and that guidance, and the reason it gives, are not written for Sonnet 5; a pointer to Sonnet 5 guidance is P07's
 - change: Add a cadence, for example a line on what the model is about to do before its first tool call and a short recap at the end.
 - confidence: medium
 - sweep: no
@@ -334,18 +337,22 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 
 ### P19 — Harness text after every tool result
 
-- kind: re-test
+- kind: change
 - area: hooks, settings
-- signal: a `PreToolUse` or `PostToolUse` hook whose script adds context or a message on every call of the tools it matches, or a token or budget countdown
-- applies when: interactive sessions; hook scripts are found by the plan's prefix search
-- change: Re-test: Sonnet 5.5 can treat a genuine user message that arrives right after tool results as a possible prompt injection, and the guide names per-step harness text and countdowns among the causes; send such text less often. List it under "Re-test only, no edit".
-- confidence: low
+- signal: a `PreToolUse` or `PostToolUse` hook that adds a token, budget or tool-call countdown on every call of the tools it matches, or whose script adds other context or a message on every such call
+- applies when: interactive sessions, where the user can type mid-turn; hook scripts are found by the plan's prefix search
+- change: For a countdown or per-call budget, remove it, typed remove, or where the project needs the limit, make the hook add it only rarely, typed rewrite: the guide says not to add one after tool results in interactive sessions, since Sonnet 5.5 can then treat a genuine user message as a possible prompt injection, and a hook's added context reaches the model beside the tool result. For other context added on every call, re-test instead: the guide names per-step harness text among the causes and says to send it less often where the misread shows; list it under "Re-test only, no edit".
+- confidence: medium
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets
   passage: "A token countdown that your harness adds after every tool result can cause this … having your harness add instructions or context after the tool results on every step"
   verified: 2026-09-29
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets
-  basis: inference: that a hook's added context reaches the model right after the tool results is not stated on any cached page.
+  passage: "If you see this reaction to a reminder of your own, send the reminder less often. … In interactive sessions where users can type mid-turn, don't add your own token or budget countdown after tool results."
+  verified: 2026-09-29
+- source: https://code.claude.com/docs/en/hooks#posttooluse-decision-control
+  passage: "String added to Claude's context alongside the tool result."
+  verified: 2026-09-29
 
 ### P20 — Blanket authorization
 
@@ -458,7 +465,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 - area: api-code
 - signal: `computer_20251124`, `computer_20250124`, or the `fine-grained-tool-streaming-2025-05-14` header beside a toolset
 - applies when: API code on the Claude API or Google Cloud; `computer_20250124` on any platform
-- change: Hand off per the API hand-off rule. There the old tools return a 400 and the fix is `computer_toolset_20260801`, with `eager_input_streaming: true` per tool in place of the header; on Amazon Bedrock `computer_20251124` still works, so record no finding for it in Bedrock-only code.
+- change: Hand off per the API hand-off rule. There the old tools return a 400 and the fix is `computer_toolset_20260801`, with `eager_input_streaming: true` per tool in place of the header; on Amazon Bedrock `computer_20251124` still works, so record no finding for it in Bedrock-only code. Record a second line on the agent loop that runs the tool's calls — where it reads the action from `input.action`, handles only the first `tool_use` block, or returns results without `toolset_name` — since the toolset changes the loop as well as the declaration.
 - confidence: high
 - sweep: yes
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#computer-use-toolset
@@ -469,6 +476,9 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
   verified: 2026-09-29
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#computer-20251124-is-not-supported
   passage: "On Amazon Bedrock, Claude Sonnet 5.5 accepts the earlier `computer_20251124` tool."
+  verified: 2026-09-29
+- source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#computer-20251124-is-not-supported
+  passage: "Drop the beta header, replace the `tools` entry with `{"type": "computer_toolset_20260801"}`, and update your agent loop for member `tool_use` blocks, batch actions, and `toolset_name` on results."
   verified: 2026-09-29
 
 ### P29 — Advisor the executor rejects
@@ -630,9 +640,9 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P41 — Model docs that miss the Sonnet 5.5 guide
 
 - kind: change
-- area: model-dependent
+- area: model-dependent, memory, rules
 - signal: a prompting-guide index or per-model notes under the root that list the Sonnet 5 guide and not the Sonnet 5.5 guide, or that state Sonnet 5 behavior a Sonnet 5.5 source contradicts, such as running "with thinking disabled"
-- applies when: model-dependent code and docs
+- applies when: model-dependent code and docs, and model notes in memory and rules files — a paragraph naming the model the project runs, its effort or its thinking setting
 - change: Add the Sonnet 5.5 guide as a source and re-evaluate the model-specific statements against it, as the migration guide says; thinking cannot be turned off on Sonnet 5.5 in Claude Code.
 - confidence: medium
 - sweep: no
@@ -657,5 +667,23 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
   verified: 2026-09-29
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#text-between-tool-calls
   basis: inference: how Claude Code records those blocks in a session transcript is not documented.
+
+### P43 — Message sent to an agent while it works
+
+- kind: re-test
+- area: memory, rules, agents, skills, commands
+- signal: an instruction to message an agent or teammate while it is still working — a `SendMessage` to a running subagent or teammate, a rule to steer or redirect a background agent mid-task, a lead that forwards the user's words to a teammate partway through its turn
+- applies when: the agent that receives the message runs on Sonnet 5.5; not a message to an agent that has finished, which resumes it on a new turn
+- change: Re-test: Sonnet 5.5 can treat a genuine message that arrives while it is partway through a multistep turn as a possible prompt injection, and ignore it or ask for confirmation. Where the flow allows it, send the message once the agent has finished, which resumes it, and keep messages to a working agent rare. List it under "Re-test only, no edit".
+- confidence: low
+- sweep: no
+- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets
+  passage: "Sometimes it treats a genuine user message as a possible injection. … So can letting users send messages while the model is partway through a multistep turn"
+  verified: 2026-09-29
+- source: https://code.claude.com/docs/en/sub-agents#resume-subagents
+  passage: "When Claude sends a completed subagent a message with the `SendMessage` tool, the subagent resumes in the background without a new `Agent` invocation."
+  verified: 2026-09-29
+- source: https://code.claude.com/docs/en/agent-teams#context-and-communication
+  basis: inference: where Claude Code places a message that reaches a working agent, relative to its tool results, is not documented; the page says only that messages between teammates are delivered automatically.
 
 </traps>

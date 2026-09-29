@@ -8,8 +8,8 @@
     },
     {
       "id": "P02",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills, instructions → memory, rules, agents, skills, commands, hooks, ci), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
-      "refs": { "inbrace-tech/claude-skills": [28, 61] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills, instructions → memory, rules, agents, skills, commands, hooks, ci), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.1 its note stopped treating a level the user saved for Sonnet 5.5 as covering the project, after the Opus 5 → 5.5 evaluation showed a run settling effort on the auditor's own settings (#77).",
+      "refs": { "inbrace-tech/claude-skills": [28, 61, 77] }
     },
     {
       "id": "P03",
@@ -18,8 +18,8 @@
     },
     {
       "id": "P04",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). In 0.6.1 its kind moved from re-test to change, typed remove (#64): in the 2026-09-29 capability evaluation a held-out answer key required removing `MAX_THINKING_TOKENS=0`, every skill run kept it as a re-test by following this trap, and only the plain session with the doc links proposed the edit. The model-config page states outright that the setting has no effect on Sonnet 5.5, so nothing is left to re-test. The setting stays as already decided where the project records that it still serves another model, a Sonnet 5 fallback or an agent pinned to a model where it still turns thinking off, which the page's own exception list supports.",
+      "refs": { "docs": ["https://code.claude.com/docs/en/model-config#extended-thinking"], "inbrace-tech/claude-skills": [28, 64] }
     },
     {
       "id": "P05",
@@ -33,8 +33,8 @@
     },
     {
       "id": "P07",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
-      "refs": { "inbrace-tech/claude-skills": [28, 61] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.1, after the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition, which showed a rule whose stated reason cited the source model's tier skill passing because the citation resolved, the signal gained case (e) for such rationales (#78).",
+      "refs": { "inbrace-tech/claude-skills": [28, 61, 78] }
     },
     {
       "id": "P08",
@@ -63,8 +63,8 @@
     },
     {
       "id": "P13",
-      "learned": "Carried from the Opus audit's update-cadence row, first written in #2, and re-grounded in the Sonnet 5.5 guide in 0.5.0 (#28). Its areas became ids of the plan's map in #61 (agents → agents, skills, commands, memory), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
-      "refs": { "inbrace-tech/claude-skills": [2, 28, 61] }
+      "learned": "Carried from the Opus audit's update-cadence row, first written in #2, and re-grounded in the Sonnet 5.5 guide in 0.5.0 (#28). Its areas became ids of the plan's map in #61 (agents → agents, skills, commands, memory), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.1, after the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition, where a pointer to update guidance that rested on a source-model claim cleared the Opus counterpart, the pointer clears this trap only when the guidance is not written for Sonnet 5 (#78).",
+      "refs": { "inbrace-tech/claude-skills": [2, 28, 61, 78] }
     },
     {
       "id": "P14",
@@ -93,8 +93,8 @@
     },
     {
       "id": "P19",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (hooks → hooks, settings), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
-      "refs": { "inbrace-tech/claude-skills": [28, 61] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (hooks → hooks, settings), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.1 its kind moved from re-test to change for a per-call countdown or budget, which is removed or made rare (#64): in the 2026-09-29 capability evaluation a held-out answer key required that edit for a hook adding a per-tool-call budget countdown, and every skill run kept it as a re-test. The guide says outright not to add such a countdown in interactive sessions, while for other per-step context it says to send it less often only where the misread shows, so that case stays a re-test. The inference that a hook's context reaches the model right after the tool results became a passage of the hooks page, and the confidence rose from low to medium.",
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets", "https://code.claude.com/docs/en/hooks#posttooluse-decision-control"], "inbrace-tech/claude-skills": [28, 61, 64] }
     },
     {
       "id": "P20",
@@ -138,8 +138,8 @@
     },
     {
       "id": "P28",
-      "learned": "Carried from the Opus audit's row of the same name (P18 there), first written in #1 or #2, and re-grounded in the Sonnet 5.5 guides in 0.5.0 (#28).",
-      "refs": { "inbrace-tech/claude-skills": [2, 28] }
+      "learned": "Carried from the Opus audit's row of the same name (P18 there), first written in #1 or #2, and re-grounded in the Sonnet 5.5 guides in 0.5.0 (#28). In 0.6.1, after the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition, where runs located the computer-use change at the declaration only — as every arm did on the Sonnet held-out — the change records the agent loop as its own line (#78).",
+      "refs": { "inbrace-tech/claude-skills": [2, 28, 78] }
     },
     {
       "id": "P29",
@@ -203,13 +203,18 @@
     },
     {
       "id": "P41",
-      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28). In 0.6.1, after the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition, where a model note in `CLAUDE.md` escaped the Opus counterpart checked only in the model-dependent area, memory and rules joined the area (#78).",
+      "refs": { "inbrace-tech/claude-skills": [28, 78] }
     },
     {
       "id": "P42",
       "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28).",
       "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P43",
+      "learned": "Added in 0.6.1 as a sibling of P27 (#65). In the 2026-09-29 capability evaluation the calibrated harness held a skill that sends a message to a running agent mid-turn, and the traps stage recorded P27 as not checkable, since P27 covers only Claude API code and is a hand-off. The guide names messages that arrive while the model is partway through a multistep turn among the causes of the injection misread, so the risk also sits in instruction text. P27 stays an API hand-off and this trap covers the instruction areas. It is a re-test of low confidence, since the Claude Code docs do not say where a message to a working agent lands relative to its tool results.",
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets", "https://code.claude.com/docs/en/sub-agents#resume-subagents"], "inbrace-tech/claude-skills": [65] }
     }
   ]
 }

@@ -23,7 +23,7 @@
       "id": "N04",
       "where": "Start",
       "refs": { "docs": ["https://code.claude.com/docs/en/skills#skill-content-lifecycle", "https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 38, 57] },
-      "what": "Each stage is its own skill, so the run's state must live on disk: the stages read the run file to know they may run, and a resume after an interruption or a compaction reads it to know where to continue. Written for the transition-agnostic audit (#34, #38). In 0.6.1 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
+      "what": "Each stage is its own skill, so the run's state must live on disk: the stages read the run file to know they may run, and a resume after an interruption or a compaction reads it to know where to continue. Written for the transition-agnostic audit (#34, #38). In 0.6.0 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
     },
     {
       "id": "N05",
@@ -41,7 +41,7 @@
       "id": "N07",
       "where": "Start",
       "refs": { "inbrace-tech/claude-skills": [34, 38, 57], "docs": ["https://code.claude.com/docs/en/permission-modes"] },
-      "what": "The findings files the per-transition audits wrote have six fields and no run file; resuming one with the seven-field format would mix the two. Written for the transition-agnostic audit (#34, #38). In 0.6.1 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
+      "what": "The findings files the per-transition audits wrote have six fields and no run file; resuming one with the seven-field format would mix the two. Written for the transition-agnostic audit (#34, #38). In 0.6.0 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
     },
     {
       "id": "N08",
@@ -52,14 +52,14 @@
     {
       "id": "N09",
       "where": "Throughout the run",
-      "refs": { "inbrace-tech/claude-skills": [34, 38] },
-      "what": "Every decision goes through one question tool with a recommendation, and a session without the tool still gets the same question and changes nothing until answered. Derived from `audit-sonnet-5-5` `N33` and `audit-opus-5-5` `N33` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "inbrace-tech/claude-skills": [34, 38, 79] },
+      "what": "Every decision goes through one question tool with a recommendation, and a session without the tool still gets the same question and changes nothing until answered. Derived from `audit-sonnet-5-5` `N33` and `audit-opus-5-5` `N33` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.1 the numbered-list fallback was removed and [N15] decides a session without the tool: the plugin eval suite showed a headless run without `--scope` stopping correctly at the plan on both transitions but ending with a list of questions no one would answer, instead of the arguments that unblock it (#79)."
     },
     {
       "id": "N10",
       "where": "Throughout the run",
       "refs": { "inbrace-tech/claude-skills": [34, 38, 57], "docs": ["https://code.claude.com/docs/en/permission-modes"] },
-      "what": "The user reads the run, its questions and its files in their own language, while quoted text, paths, ids and commands stay exact so they can be searched and run. Derived from `audit-sonnet-5-5` `N34` and `audit-opus-5-5` `N34` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.1 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
+      "what": "The user reads the run, its questions and its files in their own language, while quoted text, paths, ids and commands stay exact so they can be searched and run. Derived from `audit-sonnet-5-5` `N34` and `audit-opus-5-5` `N34` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.0 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
     },
     {
       "id": "N11",
@@ -88,20 +88,20 @@
     {
       "id": "N15",
       "where": "Throughout the run",
-      "refs": { "docs": ["https://code.claude.com/docs/en/headless"], "inbrace-tech/claude-skills": [34, 38] },
-      "what": "With no one to answer, the run must never change files; with the scope and mode given as arguments it still produces the report. Derived from `audit-sonnet-5-5` `N18` and `audit-opus-5-5` `N18` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/headless"], "inbrace-tech/claude-skills": [34, 38, 79] },
+      "what": "With no one to answer, the run must never change files; with the scope and mode given as arguments it still produces the report. Derived from `audit-sonnet-5-5` `N18` and `audit-opus-5-5` `N18` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.1 it became the only answer to a missing or denied `AskUserQuestion`, and its close names `--scope` and `--mode`, after [N09]'s numbered-list fallback took over headless runs on both transitions in the plugin eval suite (#79)."
     },
     {
       "id": "N16",
       "where": "Findings file",
-      "refs": { "inbrace-tech/claude-skills": [34, 38, 57], "docs": ["https://code.claude.com/docs/en/permission-modes"] },
-      "what": "One line format for every stage and agent keeps findings comparable and lets the verifier correct them line by line; the seventh field, the doc passage behind each finding, is what open discovery rests on instead of a closed pattern table. Derived from `audit-sonnet-5-5` `N09` and `audit-opus-5-5` `N09` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.1 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
+      "refs": { "inbrace-tech/claude-skills": [34, 38, 57, 66], "docs": ["https://code.claude.com/docs/en/permission-modes"] },
+      "what": "One line format for every stage and agent keeps findings comparable and lets the verifier correct them line by line; the seventh field, the doc passage behind each finding, is what open discovery rests on instead of a closed pattern table. Derived from `audit-sonnet-5-5` `N09` and `audit-opus-5-5` `N09` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.0 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57). In 0.6.1 a `file:line` cited in the note follows the same rule as the anchor (#66): in the 2026-09-29 capability evaluation 11 notes of one run cited a selector one line below where it sits, and the verifier corrected only 3, so a user following the other 8 landed one line off. The rule sits in the format so that it also binds the adversarial pass a session makes when no verifier runs."
     },
     {
       "id": "N17",
       "where": "Verify",
-      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#concurrent-subagent-limit"], "inbrace-tech/claude-skills": [34, 38] },
-      "what": "Every finding is refuted adversarially before the user sees it, which kept the per-transition audits free of false claims. Shards split by file, so the verifier's rule of merging only same file, line and id still sees every candidate duplicate, and run below Claude Code's concurrent subagent limit. Derived from `audit-sonnet-5-5` `N53` and `audit-opus-5-5` `N53` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#concurrent-subagent-limit"], "inbrace-tech/claude-skills": [34, 38, 77] },
+      "what": "Every finding is refuted adversarially before the user sees it, which kept the per-transition audits free of false claims. Shards split by file, so the verifier's rule of merging only same file, line and id still sees every candidate duplicate, and run below Claude Code's concurrent subagent limit. Derived from `audit-sonnet-5-5` `N53` and `audit-opus-5-5` `N53` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.1 `older residue` lines go under their own heading rather than the final list: they propose nothing, and in the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition they were read as findings and cost precision; the report still shows them apart, with `/claude-api prompt-audit` (#77)."
     },
     {
       "id": "N18",

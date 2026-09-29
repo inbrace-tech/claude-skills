@@ -67,8 +67,8 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 - kind: setting
 - area: settings
 - signal: the project, local and managed settings leave `model` or a top-level `effortLevel` unset
-- applies when: the project runs on Opus 5 or Opus 5.5, and no settings file already sets an effort level with a model that resolves to Opus 5.5 — a level saved for that model counts as already set, such as `modelSettings["claude-opus-5-5"]` with an effort in the user's `~/.claude/settings.json`, where `/effort` and the `/model` picker save it, but a top-level `effortLevel` in the user's `~/.claude/settings.json` does not count as already set, since it does not apply to Opus 5.5; resolve aliases as the Claude Code docs do: `opus`, `opus[1m]` and `default` are Opus 5.5 on the Anthropic API, Claude Platform on AWS, Amazon Bedrock and Google Cloud, but other models on Microsoft Foundry, and `ANTHROPIC_DEFAULT_OPUS_MODEL`, when set, decides what `opus` means; record it once per project, on `.claude/settings.json`
-- change: Add `"model": "claude-opus-5-5"` and `"effortLevel": "medium"` to the project settings, in the file the user picks per the report stage's settings question; where the user's current model — in the user's, project or local settings, or this session's — carries the `[1m]` suffix, such as `opus[1m]`, propose `"model": "claude-opus-5-5[1m]"` instead, and say in one line that on the Anthropic API Opus 4.7 and later already run with the 1M window without the suffix, which keeps that context choice on other providers and plans. This is the skill's recommendation, not the guide's rule: Opus 5.5's `medium` matches or beats Opus 5 at `high` and costs less, and a top-level `effortLevel` in project settings applies to every model. Explain, from the user's settings read as context, what the user's own settings do today: a top-level `effortLevel` in `~/.claude/settings.json` does not count for Opus 5.5 while a level saved under `modelSettings["claude-opus-5-5"]` does. Type setting. Medium confidence unless the project sets neither `model` nor `effortLevel` and the user relies on a top-level `effortLevel` in `~/.claude/settings.json`, which Opus 5.5 ignores.
+- applies when: the project runs on Opus 5 or Opus 5.5, and no project, local or managed settings file already sets an effort level with a model that resolves to Opus 5.5; the user's `~/.claude/settings.json` never counts as already set, whether it saves a level under `modelSettings["claude-opus-5-5"]`, where `/effort` and the `/model` picker save it, or a top-level `effortLevel`, which does not apply to Opus 5.5, since the project's other developers and its CI never get that file; resolve aliases as the Claude Code docs do: `opus`, `opus[1m]` and `default` are Opus 5.5 on the Anthropic API, Claude Platform on AWS, Amazon Bedrock and Google Cloud, but other models on Microsoft Foundry, and `ANTHROPIC_DEFAULT_OPUS_MODEL`, when set, decides what `opus` means; record it once per project, on `.claude/settings.json`
+- change: Add `"model": "claude-opus-5-5"` and `"effortLevel": "medium"` to the project settings, in the file the user picks per the report stage's settings question; where the user's current model — in the user's, project or local settings, or this session's — carries the `[1m]` suffix, such as `opus[1m]`, propose `"model": "claude-opus-5-5[1m]"` instead, and say in one line that on the Anthropic API Opus 4.7 and later already run with the 1M window without the suffix, which keeps that context choice on other providers and plans. This is the skill's recommendation, not the guide's rule: Opus 5.5's `medium` matches or beats Opus 5 at `high` and costs less, and a top-level `effortLevel` in project settings applies to every model. Explain, from the user's settings read as context, what the user's own settings do today: a top-level `effortLevel` in `~/.claude/settings.json` does not count for Opus 5.5 while a level saved under `modelSettings["claude-opus-5-5"]` does, on this machine only. Type setting. Medium confidence unless the project sets neither `model` nor `effortLevel` and the user relies on a top-level `effortLevel` in `~/.claude/settings.json`, which Opus 5.5 ignores.
 - confidence: high
 - sweep: yes
 - context: user-settings
@@ -160,11 +160,14 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 
 - kind: re-test
 - area: memory, rules, agents, skills, commands
-- signal: conciseness, over-verification, scope, narration-cadence or correction-narration instructions written for Opus 5
-- applies when: any instruction file
-- change: Keep as the starting point and mark for re-testing. They may no longer be needed; do not delete them on this audit's word alone.
+- signal: conciseness, over-verification, scope, narration-cadence or correction-narration instructions written for Opus 5; a statement of what Opus 5 can do, such as the capability context of a tier skill — how well it coordinates subagents, how conservative its review prompts must be, a measurement left open on it; a rule whose stated reason cites Opus 5 guidance, an Opus 5 tier skill or one of its norms, even where the citation still resolves
+- applies when: any instruction file, one line per norm or paragraph of a tier skill written for Opus 5
+- change: Keep as the starting point and mark for re-testing. They may no longer be needed; do not delete them on this audit's word alone. Re-derive a capability statement from the Opus 5.5 guide's capabilities, re-run a measurement it leaves open on Opus 5.5, and re-anchor a rule's stated reason on the Opus 5.5 guide or a reason that names no model, since the session that reads it now runs Opus 5.5.
 - confidence: medium
 - sweep: no
+- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#capabilities-relevant-to-prompting
+  passage: "It also sustains long-running autonomous work better than Claude Opus 5 … Early testers also reported stronger code review, with more bugs caught than on Claude Opus 5 and fewer false alarms"
+  verified: 2026-09-29
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5
   passage: "Existing Claude Opus 5 prompts should perform well without changes, and the patterns in Prompting Claude Opus 5 remain a reasonable starting point."
   verified: 2026-09-29
@@ -193,7 +196,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 - kind: optional
 - area: agents, skills, commands, memory
 - signal: long human-in-the-loop agentic work with no guidance on updates
-- applies when: agent and orchestrator prompts, unless the file points to where the project states its update guidance
+- applies when: agent and orchestrator prompts, unless the file points to where the project states its update guidance and that guidance, and the reason it gives, are not written for Opus 5; a pointer to Opus 5 guidance is P07's
 - change: Add a cadence, for example a one-line intent before the first tool call and a short recap at the end.
 - confidence: medium
 - sweep: no
@@ -204,10 +207,10 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P10 — Unattended runs without a continuation plan
 
 - kind: change
-- area: agents, skills, commands, ci
-- signal: background or headless agents, no to-do tracking
-- applies when: unattended agents only
-- change: Add a checklist the model updates, auto-continue only when items are open and no blocker is stated, and cap continuations at 2–3. Opus 5.5 sometimes ends a turn with a text update instead of a tool call.
+- area: agents, skills, commands, ci, api-code
+- signal: background or headless agents, no to-do tracking; an API agent loop that runs with no user to answer and ends the task on a turn that ends with text, `stop_reason: "end_turn"`
+- applies when: unattended agents only — background or headless Claude Code runs, and API agent loops such as a scheduled or batch job; never a loop a person answers
+- change: Add a checklist the model updates, auto-continue only when items are open and no blocker is stated, and cap continuations at 2–3. Opus 5.5 sometimes ends a turn with a text update instead of a tool call. In API code, hand off per the API hand-off rule, naming the loop's exit on a text-only end of turn.
 - confidence: medium
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#unattended-agentic-runs
@@ -218,6 +221,9 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
   verified: 2026-09-29
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#unattended-agentic-runs
   passage: "stop after two or three automatic continuations on the same task rather than repeating them indefinitely"
+  verified: 2026-09-29
+- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#unattended-agentic-runs
+  passage: "An unattended agent loop that treats such a turn as the end of the task stops running there."
   verified: 2026-09-29
 
 ### P11 — Multi-app agents that act without looking
@@ -320,7 +326,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 - area: api-code
 - signal: `computer_20251124`
 - applies when: API code on the Claude API or Google Cloud
-- change: Hand off per the API hand-off rule. There the old tool returns a 400 and the fix is `computer_toolset_20260801`; on Amazon Bedrock it still works, so record no finding for Bedrock-only code.
+- change: Hand off per the API hand-off rule. There the old tool returns a 400 and the fix is `computer_toolset_20260801`; on Amazon Bedrock it still works, so record no finding for Bedrock-only code. Record a second line on the agent loop that runs the tool's calls — where it reads the action from `input.action`, handles only the first `tool_use` block, or returns results without `toolset_name` — since the toolset changes the loop as well as the declaration.
 - confidence: high
 - sweep: yes
 - source: https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5#computer-20251124-is-not-supported
@@ -328,6 +334,9 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
   verified: 2026-09-29
 - source: https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5#computer-20251124-is-not-supported
   passage: "On Amazon Bedrock, the earlier `computer_20251124` tool continues to work on Claude Opus 5.5 as it does on Claude Opus 5, so no change is needed there."
+  verified: 2026-09-29
+- source: https://platform.claude.com/docs/en/models/opus-5-5/migration-guide#computer-use-toolset
+  passage: "In your agent loop, handle member `tool_use` blocks (the action is the block's `name`, not `input.action`), several of them per turn, and echo `toolset_name` on every result."
   verified: 2026-09-29
 
 ### P19 — History edited between requests
@@ -448,9 +457,9 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P27 — Model docs that miss the Opus 5.5 guide
 
 - kind: change
-- area: model-dependent
+- area: model-dependent, memory, rules
 - signal: a prompting-guide index or per-model notes under the root that list the Opus 5 guide and not the Opus 5.5 guide, or that state Opus 5 behavior a Opus 5.5 source contradicts, such as running "with thinking disabled"
-- applies when: model-dependent code and docs
+- applies when: model-dependent code and docs, and model notes in memory and rules files — a paragraph naming the model the project runs, its effort or its thinking setting
 - change: Add the Opus 5.5 guide as a source and re-evaluate the model-specific statements against it, as the migration guide says; thinking cannot be turned off on Opus 5.5 in Claude Code.
 - confidence: medium
 - sweep: no
