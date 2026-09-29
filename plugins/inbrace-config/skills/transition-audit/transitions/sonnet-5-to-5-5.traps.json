@@ -210,6 +210,11 @@
       "id": "P42",
       "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28).",
       "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P43",
+      "learned": "Added in 0.6.1 as a sibling of P27 (#65). In the 2026-09-29 capability evaluation the calibrated harness held a skill that sends a message to a running agent mid-turn, and the traps stage recorded P27 as not checkable, since P27 covers only Claude API code and is a hand-off. The guide names messages that arrive while the model is partway through a multistep turn among the causes of the injection misread, so the risk also sits in instruction text. P27 stays an API hand-off and this trap covers the instruction areas. It is a re-test of low confidence, since the Claude Code docs do not say where a message to a working agent lands relative to its tool results.",
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets", "https://code.claude.com/docs/en/sub-agents#resume-subagents"], "inbrace-tech/claude-skills": [65] }
     }
   ]
 }

@@ -665,4 +665,22 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#text-between-tool-calls
   basis: inference: how Claude Code records those blocks in a session transcript is not documented.
 
+### P43 — Message sent to an agent while it works
+
+- kind: re-test
+- area: memory, rules, agents, skills, commands
+- signal: an instruction to message an agent or teammate while it is still working — a `SendMessage` to a running subagent or teammate, a rule to steer or redirect a background agent mid-task, a lead that forwards the user's words to a teammate partway through its turn
+- applies when: the agent that receives the message runs on Sonnet 5.5; not a message to an agent that has finished, which resumes it on a new turn
+- change: Re-test: Sonnet 5.5 can treat a genuine message that arrives while it is partway through a multistep turn as a possible prompt injection, and ignore it or ask for confirmation. Where the flow allows it, send the message once the agent has finished, which resumes it, and keep messages to a working agent rare. List it under "Re-test only, no edit".
+- confidence: low
+- sweep: no
+- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets
+  passage: "Sometimes it treats a genuine user message as a possible injection. … So can letting users send messages while the model is partway through a multistep turn"
+  verified: 2026-09-29
+- source: https://code.claude.com/docs/en/sub-agents#resume-subagents
+  passage: "When Claude sends a completed subagent a message with the `SendMessage` tool, the subagent resumes in the background without a new `Agent` invocation."
+  verified: 2026-09-29
+- source: https://code.claude.com/docs/en/agent-teams#context-and-communication
+  basis: inference: where Claude Code places a message that reaches a working agent, relative to its tool results, is not documented; the page says only that messages between teammates are delivered automatically.
+
 </traps>
