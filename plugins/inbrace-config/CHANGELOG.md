@@ -2,6 +2,38 @@
 
 The plugin was named `claude-config` before 0.4.0.
 
+## 0.6.0
+
+### Minor Changes
+
+- The audit checks every known trap's doc passage against the page as it reads today, and reports traps whose passage changed as possibly stale, quoting the current text. ([#45](https://github.com/inbrace-tech/claude-skills/pull/45) by [@ropdias](https://github.com/ropdias))
+
+- When a run learns something the audit's knowledge lacks, the close invites you to contribute it: a generic, anonymised issue draft, shown first and sent only if you choose. ([#45](https://github.com/inbrace-tech/claude-skills/pull/45) by [@ropdias](https://github.com/ropdias))
+
+- One audit for every model transition, `/inbrace-config:audit-model-transition <source> <target>`, reads today's docs, explores freely, then checks known traps; the Opus and Sonnet commands run it. ([#45](https://github.com/inbrace-tech/claude-skills/pull/45) by [@ropdias](https://github.com/ropdias))
+
+### Patch Changes
+
+- The plan's cost estimate counts every part of a run from measured runs — fixed load, docs, files, findings and verifiers — and states the cost in dollars. ([#60](https://github.com/inbrace-tech/claude-skills/pull/60) by [@ropdias](https://github.com/ropdias))
+
+- The audit writes each run to `.model-audits/<target>-<date>/`, ignored by git, instead of the protected `.claude/`, so it runs without per-file prompts and headless. ([#58](https://github.com/inbrace-tech/claude-skills/pull/58) by [@ropdias](https://github.com/ropdias))
+
+- Both audits now propose the exact-or-longest-prefix selector fix for prefix-delivered prompting (P05, P22) as a change you can apply; re-testing the delivered text stays a re-test. ([#33](https://github.com/inbrace-tech/claude-skills/pull/33) by [@ropdias](https://github.com/ropdias))
+
+- Rewrite the plugin's norm and trap histories in the repository's one-line `refs` layout; no norm, trap or behaviour changes. ([#45](https://github.com/inbrace-tech/claude-skills/pull/45) by [@ropdias](https://github.com/ropdias))
+
+- Add the discover stage of the coming transition-agnostic audit, which judges files against today's docs, and let batch-auditor work from its digest; the current audits are unchanged. ([#45](https://github.com/inbrace-tech/claude-skills/pull/45) by [@ropdias](https://github.com/ropdias))
+
+- Add the orchestrator and plan stage of the coming transition-agnostic audit; no command starts them yet, so nothing changes for users. ([#45](https://github.com/inbrace-tech/claude-skills/pull/45) by [@ropdias](https://github.com/ropdias))
+
+- Add the report and apply stages of the coming transition-agnostic audit; no command starts them yet. ([#45](https://github.com/inbrace-tech/claude-skills/pull/45) by [@ropdias](https://github.com/ropdias))
+
+- Add the known-traps stage of the coming transition-agnostic audit, and let finding-verifier check each finding's doc passage and verify one shard of files. ([#45](https://github.com/inbrace-tech/claude-skills/pull/45) by [@ropdias](https://github.com/ropdias))
+
+- Add the knowledge files the coming transition-agnostic audit reads, for Opus 5 → 5.5 and Sonnet 5 → 5.5: every pattern row, with the doc passages it rests on. ([#45](https://github.com/inbrace-tech/claude-skills/pull/45) by [@ropdias](https://github.com/ropdias))
+
+- Known traps are checked in every area they apply to (a missed P13 in skills), and a run writes only inside its folder, reporting any file it left elsewhere. ([#62](https://github.com/inbrace-tech/claude-skills/pull/62) by [@ropdias](https://github.com/ropdias))
+
 ## 0.5.0
 
 - New skill, `/inbrace-config:audit-sonnet-5-5`, audits a setup for the move from Claude Sonnet 5 to Sonnet 5.5 with the same stages and gates as the Opus audit; it proposes the model `claude-sonnet-5-5` without writing an effort level, and the `batch-auditor` and `finding-verifier` agents now serve both audits, reading the transition from the brief.
