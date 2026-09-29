@@ -473,21 +473,30 @@ No norm is retired without a successor. The clauses dropped inside `N02` and `N5
 
 It never holds a file path, file name, line number, quoted project text, identifier, repository or remote name, branch, user name or code block from the audited project.
 
-**Sanitisation check, before showing it.** Build the forbidden set from the run: every path segment and file basename in the inventory (without extension too), the repository directory name, every `git remote -v` URL and its owner and repository, the current branch, `git config user.name` and `user.email`, and every quoted text field of the final list. Search the draft for each, case-insensitively. Any hit: rewrite the draft once and search again; a second hit: do not offer the draft, and say in the close that it could not be written generically. Tokens shorter than four characters and words of the map's vocabulary are exempt, so `hooks` or `CLAUDE` do not block every draft.
+**The offer is an invitation, made before any drafting.** The close first says, in the user's language:
 
-**Delivery.** The draft is shown in full in the chat. The repository sets `blank_issues_enabled: false` and uses issue forms, so a prefilled link needs a form: the implementation adds `.github/ISSUE_TEMPLATE/trap_report.yml` with the fields transition, trap or area, where it shows up (generic), doc passage, and plugin version. The link is `https://github.com/inbrace-tech/claude-skills/issues/new?template=trap_report.yml&title=…&<field>=…`, URL-encoded; above about 8,000 characters it drops the passages and says so.
+> This run found something the audit's knowledge doesn't cover yet. Improvements to this skill are very welcome, and each one helps everyone who uses it.
 
-**The consent question**, through `AskUserQuestion` per `N33`, exactly:
+Then it asks, through `AskUserQuestion` per `N33`, exactly:
 
-> Share this generic report with the public inbrace-tech/claude-skills repository, so the audit can learn it? The draft above holds no path, name or text from this project. Nothing is sent unless you choose to.
+> Would you like to contribute what this run learned? I can draft an issue for the public inbrace-tech/claude-skills repository in a moment — anonymised, with no path, name or text from your project — and I'll show it to you before anything is posted.
 
 | Option | Description |
 |---|---|
-| Give me a prefilled link (Recommended) | Nothing is sent: the link opens GitHub's issue form with the draft, and you review and submit it yourself. |
-| Open the issue now with `gh` | Runs `gh issue create` on the public repository, under your GitHub account. |
-| Don't share | Nothing is sent; the draft stays in the report file. |
+| Yes, give me a prefilled link (Recommended) | I draft it and show it here, then give you a link to GitHub's issue form with the draft filled in. Nothing is sent until you review it and submit it yourself. |
+| Yes, post it with `gh` | I draft it and show it here, then post it with `gh issue create` under your GitHub account once you confirm the draft. |
+| Not now | Nothing is drafted or sent. |
 
-The recommendation is the link because the person's own submit on GitHub is the last check. The `gh` option is offered only when `gh auth status` succeeds, and it runs only on that explicit choice.
+The link is recommended because the person's own submit on GitHub is the last check. The `gh` option is offered only when `gh auth status` succeeds. "Not now" leaves the run's findings where they already are, in the report file.
+
+**Drafting, after a yes.** The draft is built as above, then checked.
+
+**Sanitisation check, before showing it.** Build the forbidden set from the run: every path segment and file basename in the inventory (without extension too), the repository directory name, every `git remote -v` URL and its owner and repository, the current branch, `git config user.name` and `user.email`, and every quoted text field of the final list. Search the draft for each, case-insensitively. Any hit: rewrite the draft once and search again. A second hit: show nothing, post nothing, and say that the draft could not be written without details of the project. Tokens shorter than four characters and words of the map's vocabulary are exempt, so `hooks` or `CLAUDE` do not block every draft.
+
+**Showing and delivering.** The draft is shown in full in the chat before anything else happens:
+
+- **Link.** The repository sets `blank_issues_enabled: false` and uses issue forms, so a prefilled link needs a form. The implementation adds `.github/ISSUE_TEMPLATE/trap_report.yml`, with the fields transition, trap or area, where it shows up (generic), doc passage, and plugin version. The link is `https://github.com/inbrace-tech/claude-skills/issues/new?template=trap_report.yml&title=…&<field>=…`, URL-encoded; above about 8,000 characters it drops the passages and says so. Nothing is sent.
+- **`gh`.** After showing the draft, one more question per `N33`: "Post this issue to the public inbrace-tech/claude-skills repository under your GitHub account?", with the options "Post it" (recommended, since the user already chose this path), "Give me the link instead" and "Don't post". `gh issue create` runs only on "Post it", and the close prints the new issue's URL.
 
 ## 8. Migration and versioning
 
@@ -538,7 +547,7 @@ The maintainer measures; this design runs no model-calling evaluation. It states
 4. **Carrying the histories over needs a checker change.** Today's `check-norms` rejects a sidecar entry with no live norm and a citation of an undeclared id, so the retired ids need a `retired` record.
 5. **WebFetch cannot serve the drift check**; the docs say it is lossy by design. The design fetches raw Markdown with `curl`.
 6. **"The existing verifier, in parallel"** changes its duplicate-merging contract unless shards split by file; the design shards by file, and only above 40 findings.
-7. **The learning loop needs an issue form**, since the repository disables blank issues, and `gh issue create` posts publicly under the user's account; the consent question says so.
+7. **The learning loop needs an issue form**, since the repository disables blank issues, and `gh issue create` posts publicly under the user's account; the invitation says the draft is shown before anything is posted, and `gh` asks once more.
 8. **The acceptance compares unlike arms with one run each.** The plain session had no gates, verifier or apply stage, and the cost gap is mostly agents and cache re-reads, which open discovery does not remove. The design promises recall and agents-mode cost, not a plain session's cost.
 
 ## 11. Sources
