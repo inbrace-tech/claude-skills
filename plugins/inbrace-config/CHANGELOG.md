@@ -32,7 +32,7 @@ The plugin was named `claude-config` before 0.4.0.
 
 - Add the knowledge files the coming transition-agnostic audit reads, for Opus 5 → 5.5 and Sonnet 5 → 5.5: every pattern row, with the doc passages it rests on. ([#45](https://github.com/inbrace-tech/claude-skills/pull/45) by [@ropdias](https://github.com/ropdias))
 
-- Known traps are checked in every area they apply to (a missed P13 in skills), and a run writes only inside its folder, reporting any file it left elsewhere. ([#60](https://github.com/inbrace-tech/claude-skills/pull/60) by [@ropdias](https://github.com/ropdias))
+- Known traps are checked in every area they apply to (a missed P13 in skills), and a run writes only inside its folder, reporting any file it left elsewhere. ([#62](https://github.com/inbrace-tech/claude-skills/pull/62) by [@ropdias](https://github.com/ropdias))
 
 ## 0.5.0
 
