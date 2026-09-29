@@ -1,0 +1,26 @@
+name: nightly-review
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install -g @anthropic-ai/claude-code
+      - name: Re-check yesterday's extractions
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          claude -p \
+            --model claude-opus-5 \
+            --max-turns 60 \
+            --permission-mode acceptEdits \
+            "Use the nightly-auditor agent to re-check every clause file extracted in the last 24 hours, then write the discrepancies to reports/nightly.md"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nightly-report
+          path: reports/nightly.md

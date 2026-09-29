@@ -60,5 +60,6 @@ export default defineConfig({
     "vitest/prefer-called-exactly-once-with": "error",
   },
 
-  ignorePatterns: ["node_modules/**"],
+  // Eval fixtures are audit material: their code is planted with the very defects the audit must find.
+  ignorePatterns: ["node_modules/**", "plugins/*/evals/**"],
 });

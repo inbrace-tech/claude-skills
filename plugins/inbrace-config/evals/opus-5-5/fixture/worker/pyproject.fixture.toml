@@ -1,0 +1,12 @@
+[project]
+name = "contract-desk-worker"
+version = "0.9.0"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic[bedrock]>=0.70",
+    "rq>=2.1",
+    "pypdf>=5.1",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.3"]

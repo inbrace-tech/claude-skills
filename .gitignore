@@ -1,3 +1,5 @@
 node_modules/
 # `pnpm --silent run release:notes <version>` writes here for `gh release create --notes-file`.
 release-notes.md
+# `claude plugin eval` writes each run's report and JSON here; results are summarised in docs/evaluations/.
+plugins/*/evals/results/

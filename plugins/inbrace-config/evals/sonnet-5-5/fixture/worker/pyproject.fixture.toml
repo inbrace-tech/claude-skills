@@ -1,0 +1,13 @@
+[project]
+name = "supportdesk-worker"
+version = "0.14.2"
+requires-python = ">=3.12"
+dependencies = [
+  "anthropic>=0.71",
+  "pillow>=11.0",
+  "rq>=2.1",
+  "redis>=5.2",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.3"]
