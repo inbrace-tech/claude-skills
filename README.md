@@ -35,10 +35,12 @@ Every plugin and its skills are listed in [Skills](#skills) below. A skill start
 
 | Plugin | Skill | Mode | What it does |
 |---|---|---|---|
-| `inbrace-config` | `/inbrace-config:audit-opus-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Opus 5 to Opus 5.5. Lists, measures and searches the files to build its plan — a small fixed cost, about 30–40k tokens of context plus the project memory the session already loaded — then shows the plan with its estimated token cost and asks before auditing any file, asks again before each later costly stage, can run one `batch-auditor` agent per area in parallel, has every raw finding checked by the `finding-verifier` agent, which tries to refute it, summarizes in the chat what it would change, why, what the verifier discarded and what it recommends, asks what to apply with a recommendation, and applies only what you approve. Each pattern cites the official Anthropic guide it comes from. Arguments can pre-answer the plan gate and stop at the report — `--scope`, `--mode`, `--stop-at-report` — so it can run headless; no argument applies changes. |
-| `inbrace-config` | `/inbrace-config:audit-sonnet-5-5` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings and Claude API code for what changes from Claude Sonnet 5 to Sonnet 5.5, with the same stages, gates and agents as the Opus audit: it measures the files and shows the plan with its estimated token cost before auditing any file, asks again before each later costly stage, can run one `batch-auditor` agent per area in parallel, has every raw finding checked by the `finding-verifier` agent, summarizes in the chat what it would change and why, asks what to apply with a recommendation, and applies only what you approve. It proposes the model `claude-sonnet-5-5` where the project runs Sonnet 5 and never writes an effort level, leaving effort to a re-test against the guide's starting points. Each pattern cites the official Anthropic guide, the Claude Code documentation or, for its optional card rows, the Claude Sonnet 5.5 System Card. Arguments can pre-answer the plan gate and stop at the report — `--scope`, `--mode`, `--stop-at-report` — so it can run headless; no argument applies changes. |
+| `inbrace-config` | `/inbrace-config:audit-model-transition <source> <target>` | Command only | Audits `CLAUDE.md`, rules, agents, skills, settings, hooks, CI, Claude API code and model-dependent code and docs for what changes when a project moves from one Claude model to another, such as `sonnet-5 sonnet-5-5`. It reads today's Anthropic docs for the transition and explores the project guided by a map of where model-dependent behaviour lives, recording a finding only with the doc passage behind it; then it checks each of the transition's known traps — the edge cases earlier audits learned — against today's docs, flagging any whose passage changed, and applies them, adding what discovery missed. It lists and measures the files first — a small fixed cost, about 30–40k tokens of context plus the project memory the session already loaded — shows the plan with its estimated token cost and asks before reading any file, asks again before each later costly stage, can run one `batch-auditor` agent per area in parallel, has every raw finding checked by the `finding-verifier` agent against the file and the cached doc page, summarizes in the chat what it would change and why, asks what to apply with a recommendation, and applies only what you approve. Arguments can pre-answer the plan gate and stop at the report — `--scope`, `--mode`, `--stop-at-report` — so it can run headless; no argument applies changes. A transition with no knowledge file yet runs on the docs alone. |
+| `inbrace-config` | `/inbrace-config:audit-opus-5-5` | Command only | The same audit for Claude Opus 5 → Opus 5.5, with its known traps. It proposes Opus 5.5 at `medium` effort in the project settings, shared or local as you choose. Same arguments, without the models. |
+| `inbrace-config` | `/inbrace-config:audit-sonnet-5-5` | Command only | The same audit for Claude Sonnet 5 → Sonnet 5.5, with its known traps. It proposes the model `claude-sonnet-5-5` where the project runs Sonnet 5 and never writes an effort level, leaving effort to a re-test against the guide's starting points. Same arguments, without the models. |
+| `inbrace-config` | `transition-audit`, `transition-audit-plan`, `-discover`, `-drift`, `-traps`, `-report`, `-apply` | Stage | The audit's orchestrator and stages. They run only when one of the commands above starts them: each is out of the `/` menu, and stops at once when the audit's run file does not name it as the next stage. |
 
-`inbrace-config` also ships two agents, which only the audits start: `batch-auditor`, one per area of the setup when you choose to run an audit in parallel agents, and `finding-verifier`, which checks the raw findings at the end of every run and returns the final list. Both read files and return text; neither can edit or write anything.
+`inbrace-config` also ships two agents, which only the audit starts: `batch-auditor`, one per area of the setup when you choose to run an audit in parallel agents, and `finding-verifier`, which checks the raw findings at the end of every run and returns the final list. Both read files and return text; neither can edit or write anything.
 
 ## Install, step by step
 
@@ -81,11 +83,12 @@ For the audit, `user` is the right choice — **Install for you (user scope)** i
 ### 4. Run the audit
 
 ```text
+/inbrace-config:audit-model-transition <source> <target> [path]
 /inbrace-config:audit-opus-5-5 [path]
 /inbrace-config:audit-sonnet-5-5 [path]
 ```
 
-Run the one for the model transition your project is making.
+Name the transition your project is making, as `sonnet-5 sonnet-5-5`, or use the command for it. The audit fetches the current Anthropic docs with `curl`, so it needs network access to `platform.claude.com` and `code.claude.com`; without it, the plan says so and offers to run on the passages the audit recorded, marked as not re-verified. When a run learns something the audit does not know yet, the close invites you to contribute it: it drafts a generic issue for this repository, with nothing from your project, shows it to you, and sends nothing unless you choose to.
 
 Arguments can answer the plan's questions in advance, in any order: `--scope full|reduced|quick`, `--mode session|agents`, and `--stop-at-report`, which ends the run with the report. The plan is still shown, an option the plan would not offer stops the run with the reason, and no argument applies changes:
 
@@ -156,10 +159,9 @@ Claude Code ships Anthropic's [`claude-api` skill](https://platform.claude.com/d
 |---|---|
 | `/claude-api migrate <scope> to claude-opus-5-5`, or `to claude-sonnet-5-5` | Code that calls the Claude API: model IDs, request parameters that now return errors, SDK syntax in each language |
 | `/claude-api prompt-audit` | Dated prompt patterns across model generations, independent of one transition |
-| `/inbrace-config:audit-opus-5-5` | What Claude Code reads as instructions (`CLAUDE.md`, rules, agents, skills, settings), checked against the Opus 5 → 5.5 guide |
-| `/inbrace-config:audit-sonnet-5-5` | The same instruction surface, checked against the Sonnet 5 → 5.5 guide |
+| `/inbrace-config:audit-model-transition`, `audit-opus-5-5`, `audit-sonnet-5-5` | What Claude Code reads as instructions (`CLAUDE.md`, rules, agents, skills, settings, hooks) and the project's model-dependent code and docs, checked against the transition's current guides and known traps |
 
-The audits never edit API code. Each lists what it finds there and gives you the `/claude-api migrate` command to run, and points to `/claude-api prompt-audit` for instructions older than the model it moves from, Opus 5 or Sonnet 5.
+The audits never edit API code. Each lists what it finds there and gives you the `/claude-api migrate` command to run, and points to `/claude-api prompt-audit` for instructions older than the model it moves from.
 
 ## Skills load only what they need
 
@@ -169,8 +171,9 @@ Installing a plugin does not load its skills into every conversation. A skill's 
 |---|---|---|
 | Command only | You, by typing its slash command | Nothing |
 | Default | You, or Claude when the task matches | Its one-line description |
+| Stage | Only the audit, once you started it | Its one-line description |
 
-The Skills table above says which mode each skill uses. One-shot or side-effecting skills, like the audit, are command only.
+The Skills table above says which mode each skill uses. One-shot or side-effecting skills, like the audit, are command only. The audit's stages are skills Claude invokes, so they can hand the run to each other and resume after a compaction; that is why their one-line descriptions stay in context while the plugin is enabled, about 200 tokens for the seven. Each one stops at once unless an audit you started names it as the next stage.
 
 Agents are different: while a plugin is enabled, the one-line description of each agent it ships stays in context, so Claude knows the agent exists. `inbrace-config` ships two, `batch-auditor` and `finding-verifier`, each with a single short sentence.
 
@@ -180,14 +183,14 @@ Each skill is a plain folder with a `SKILL.md`, following the [Agent Skills](htt
 
 ```bash
 # for you, in every project
-cp -r plugins/inbrace-config/skills/audit-opus-5-5 ~/.claude/skills/   # or audit-sonnet-5-5
+for s in audit-model-transition audit-opus-5-5 audit-sonnet-5-5 transition-audit transition-audit-plan transition-audit-discover transition-audit-drift transition-audit-traps transition-audit-report transition-audit-apply; do
+  cp -r plugins/inbrace-config/skills/$s ~/.claude/skills/
+done
 cp plugins/inbrace-config/agents/batch-auditor.md plugins/inbrace-config/agents/finding-verifier.md ~/.claude/agents/
-# for one repository, shared with your team
-cp -r plugins/inbrace-config/skills/audit-opus-5-5 .claude/skills/   # or audit-sonnet-5-5
-cp plugins/inbrace-config/agents/batch-auditor.md plugins/inbrace-config/agents/finding-verifier.md .claude/agents/
+# for one repository, shared with your team: the same, into .claude/skills/ and .claude/agents/
 ```
 
-The skill alone runs the whole audit in your session. Copy the agent files too only to use agents: `batch-auditor.md` for the parallel mode and `finding-verifier.md` for the final check; without them the audit offers only the in-session mode and checks its findings itself. Outside the plugin the agents are called `batch-auditor` and `finding-verifier`, without the `inbrace-config:` prefix.
+The audit is the ten skill folders together — the commands, the orchestrator with its `transitions/` knowledge files, and the stages — and runs in your session. Copy the agent files too only to use agents: `batch-auditor.md` for the parallel mode and `finding-verifier.md` for the final check; without them the audit offers only the in-session mode and checks its findings itself. Outside the plugin the skills and agents are called without the `inbrace-config:` prefix, and Claude Code asks once before each stage, since the pre-approval in each skill names the prefixed skill.
 
 A copied skill does not receive updates. Installing through the marketplace does.
 

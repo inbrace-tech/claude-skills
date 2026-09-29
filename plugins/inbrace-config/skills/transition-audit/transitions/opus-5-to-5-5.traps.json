@@ -1,0 +1,145 @@
+{
+  "transition": "plugins/inbrace-config/skills/transition-audit/transitions/opus-5-to-5-5.md",
+  "traps": [
+    {
+      "id": "P01",
+      "learned": "Added with the project-level recommendation of Opus 5.5 at `medium`, shared or local, since a top-level `effortLevel` in the user's settings does not count for Opus 5.5 (#7).",
+      "refs": { "inbrace-tech/claude-skills": [7] }
+    },
+    {
+      "id": "P02",
+      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1).",
+      "refs": { "inbrace-tech/claude-skills": [1] }
+    },
+    {
+      "id": "P03",
+      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1).",
+      "refs": { "inbrace-tech/claude-skills": [1] }
+    },
+    {
+      "id": "P04",
+      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1).",
+      "refs": { "inbrace-tech/claude-skills": [1] }
+    },
+    {
+      "id": "P05",
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
+      "refs": { "inbrace-tech/claude-skills": [2] }
+    },
+    {
+      "id": "P06",
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
+      "refs": { "inbrace-tech/claude-skills": [2] }
+    },
+    {
+      "id": "P07",
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
+      "refs": { "inbrace-tech/claude-skills": [2] }
+    },
+    {
+      "id": "P08",
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
+      "refs": { "inbrace-tech/claude-skills": [2] }
+    },
+    {
+      "id": "P09",
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
+      "refs": { "inbrace-tech/claude-skills": [2] }
+    },
+    {
+      "id": "P10",
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
+      "refs": { "inbrace-tech/claude-skills": [2] }
+    },
+    {
+      "id": "P11",
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
+      "refs": { "inbrace-tech/claude-skills": [2] }
+    },
+    {
+      "id": "P12",
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
+      "refs": { "inbrace-tech/claude-skills": [2] }
+    },
+    {
+      "id": "P13",
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
+      "refs": { "inbrace-tech/claude-skills": [2] }
+    },
+    {
+      "id": "P14",
+      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1).",
+      "refs": { "inbrace-tech/claude-skills": [1] }
+    },
+    {
+      "id": "P15",
+      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1).",
+      "refs": { "inbrace-tech/claude-skills": [1] }
+    },
+    {
+      "id": "P16",
+      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1).",
+      "refs": { "inbrace-tech/claude-skills": [1] }
+    },
+    {
+      "id": "P17",
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
+      "refs": { "inbrace-tech/claude-skills": [2] }
+    },
+    {
+      "id": "P18",
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
+      "refs": { "inbrace-tech/claude-skills": [2] }
+    },
+    {
+      "id": "P19",
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
+      "refs": { "inbrace-tech/claude-skills": [2] }
+    },
+    {
+      "id": "P20",
+      "learned": "Added when the audit began reporting agents and skills still pinned to Opus 5 (#6).",
+      "refs": { "inbrace-tech/claude-skills": [6] }
+    },
+    {
+      "id": "P21",
+      "learned": "Added with the effort re-derivation for files moved to Opus 5.5, since Opus 5.5's `medium` matches or beats Opus 5 at `high` (#7).",
+      "refs": { "inbrace-tech/claude-skills": [7] }
+    },
+    {
+      "id": "P22",
+      "learned": "Added after a run missed Opus 5 prompting that a hook delivered to Opus 5.5 by matching the model id's prefix (#27); the exact-or-longest-prefix selector fix became an applicable change in #33.",
+      "refs": { "inbrace-tech/claude-skills": [27, 33] }
+    },
+    {
+      "id": "P23",
+      "learned": "Added in 0.5.0 with the rows for skills preloaded through `skills:` into an agent whose pin moves (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P24",
+      "learned": "Added in 0.5.0 after a capability evaluation found the Claude Code version floor outside the table (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P25",
+      "learned": "Added in 0.5.0 from Claude Code's automatic model fallback, which re-runs flagged requests on another model (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P26",
+      "learned": "Added in 0.5.0 after a capability evaluation found a price table outside the table (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P27",
+      "learned": "Added in 0.5.0 after a capability evaluation found a prompting-guide index outside the table (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P28",
+      "learned": "Added in 0.5.0 from the migration guide's note that text between tool calls arrives as thinking blocks, for parsers that keep only text blocks (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    }
+  ]
+}

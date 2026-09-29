@@ -4,8 +4,8 @@
     {
       "id": "N01",
       "where": "Read",
-      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [21, 28] },
-      "what": "Added in 0.4.4 with the agent. A subagent starts with only its own system prompt and the prompt it is given, and this agent sets `omitClaudeMd: true`, so the brief is everything it knows about the project: the pattern table, the line format and the rules it checks each finding against. Reading it before the findings keeps a finding from being judged without them. See #21. In 0.5.0 the agent serves every inbrace-config audit skill, `audit-sonnet-5-5` as well as `audit-opus-5-5`, so it no longer names Opus: the brief carries the project's evaluation for the target model it names, which the verifier reads before the findings. See #28."
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [21, 28, 42] },
+      "what": "Added in 0.4.4 with the agent. A subagent starts with only its own system prompt and the prompt it is given, and this agent sets `omitClaudeMd: true`, so the brief is everything it knows about the project: the pattern table, the line format and the rules it checks each finding against. Reading it before the findings keeps a finding from being judged without them. See #21. In 0.5.0 the agent serves every inbrace-config audit skill, `audit-sonnet-5-5` as well as `audit-opus-5-5`, so it no longer names Opus: the brief carries the project's evaluation for the target model it names, which the verifier reads before the findings. See #28. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
     },
     {
       "id": "N02",
@@ -16,14 +16,14 @@
     {
       "id": "N03",
       "where": "Verify",
-      "refs": { "inbrace-tech/claude-skills": [21] },
-      "what": "Added in 0.4.4. The verifier's job is adversarial: it starts from the assumption that a finding may be wrong and looks for the evidence that disproves it — a misquoted line, prose that does not instruct the model, a row whose condition does not hold, a decision the project already made. The maintainer chose refutation over confirmation because the raw findings of the 0.4.3 test were mostly wrong in exactly those ways. See #21."
+      "refs": { "inbrace-tech/claude-skills": [21, 42] },
+      "what": "Added in 0.4.4. The verifier's job is adversarial: it starts from the assumption that a finding may be wrong and looks for the evidence that disproves it — a misquoted line, prose that does not instruct the model, a row whose condition does not hold, a decision the project already made. The maintainer chose refutation over confirmation because the raw findings of the 0.4.3 test were mostly wrong in exactly those ways. See #21. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
     },
     {
       "id": "N04",
       "where": "Verify",
-      "refs": { "inbrace-tech/claude-skills": [21, 25, 28] },
-      "what": "Added in 0.4.4. The verifier corrects rather than only accepting or rejecting, so the session receives a final list it can write and present without triaging it again. Every final status is named, and `already decided` and `discarded` carry where and why, so the user can see the reason in the chat. See #21. In 0.4.7 the final statuses include `optional`, which [N10] gives the findings of the rows the brief marks as optional. See #25. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — the correction also moves a finding to the line that carries its row's signal, since both runs anchored the same findings on a function head and a nearby setting. See #28."
+      "refs": { "inbrace-tech/claude-skills": [21, 25, 28, 42] },
+      "what": "Added in 0.4.4. The verifier corrects rather than only accepting or rejecting, so the session receives a final list it can write and present without triaging it again. Every final status is named, and `already decided` and `discarded` carry where and why, so the user can see the reason in the chat. See #21. In 0.4.7 the final statuses include `optional`, which [N10] gives the findings of the rows the brief marks as optional. See #25. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — the correction also moves a finding to the line that carries its row's signal, since both runs anchored the same findings on a function head and a nearby setting. See #28. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
     },
     {
       "id": "N05",
@@ -58,8 +58,20 @@
     {
       "id": "N10",
       "where": "Verify",
-      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5"], "inbrace-tech/claude-skills": [25] },
-      "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) an elapsed-time signal the Opus 5.5 guide only offers was proposed as an ordinary change. The brief marks the rows the guide frames as optional; the verifier gives their findings the status `optional` and caps their confidence at medium, so the final list keeps optional advice apart from the changes the guide states outright. See #25."
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5"], "inbrace-tech/claude-skills": [25, 42] },
+      "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) an elapsed-time signal the Opus 5.5 guide only offers was proposed as an ordinary change. The brief marks the rows the guide frames as optional; the verifier gives their findings the status `optional` and caps their confidence at medium, so the final list keeps optional advice apart from the changes the guide states outright. See #25. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
+    },
+    {
+      "id": "N11",
+      "where": "Verify",
+      "refs": { "docs": ["https://code.claude.com/docs/en/tools-reference#webfetch-tool-behavior"], "inbrace-tech/claude-skills": [34, 40] },
+      "what": "Added in the transition-agnostic audit. Discovery records a finding only with the doc passage behind it, instead of a row of a closed table (#34), so the passage is what the verifier must check: it must occur in the raw page the run cached and must support the finding. A passage recalled from memory or paraphrased is what open discovery risks, and discarding it keeps the precision the table gave. The norm applies only to lines with a doc field, so the per-transition audits keep working until they become entry points (#40)."
+    },
+    {
+      "id": "N12",
+      "where": "Verify",
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#concurrent-subagent-limit"], "inbrace-tech/claude-skills": [34, 40] },
+      "what": "Added in the transition-agnostic audit. Above 40 raw findings the session starts one verifier per group of files, all at once, below Claude Code's concurrent subagent limit. Each verifier keeps to its files, and a file is never split across shards, so its merge of duplicates on the same file, line and id still sees every candidate (#34, #40)."
     }
   ]
 }

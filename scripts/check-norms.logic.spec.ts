@@ -1,11 +1,22 @@
 // Tests for check-norms' pure rules, with strings and no file system (`pnpm test`).
 
 import {
+  AGENT_MAX_BYTES,
+  KNOWLEDGE_MAX_BYTES,
   agentNames,
   blankCodeRegions,
+  byteLength,
   checkCorpus,
+  checkKnowledge,
   checkSurface,
+  declaredMaxBytes,
   definedNorms,
+  isIsoDate,
+  knowledgeSlugs,
+  parseTraps,
+  sidecarLayoutErrors,
+  sizeErrors,
+  trapsSidecarPathFor,
   extractCitations,
   extractHeadings,
   normaliseWhere,
@@ -429,5 +440,163 @@ describe("check-norms rules", () => {
   it("blankCodeRegions keeps lines and columns, and leaves an unterminated backtick as prose", () => {
     expect(blankCodeRegions("a `b` c\n``` x")).toBe("a     c\n     ");
     expect(blankCodeRegions("a `b c")).toBe("a `b c");
+  });
+});
+
+describe("sidecar layout in check-norms", () => {
+  it("fails a sidecar not in the canonical layout, naming the file and the command to run", () => {
+    const value = { surface: "s/SKILL.md", norms: [{ id: "N01", where: "W", refs: { "o/r": [1] }, what: "Why." }] };
+    expect(sidecarLayoutErrors("s/SKILL.norms.json", JSON.stringify(value, null, 2))).toStrictEqual([
+      "s/SKILL.norms.json: not in the sidecar layout; run `pnpm run format:sidecars`",
+    ]);
+    const canonical = '{\n  "surface": "s/SKILL.md",\n  "norms": [\n    {\n      "id": "N01",\n      "where": "W",\n      "refs": { "o/r": [1] },\n      "what": "Why."\n    }\n  ]\n}\n';
+    expect(sidecarLayoutErrors("s/SKILL.norms.json", canonical)).toStrictEqual([]);
+  });
+});
+
+describe("size ceilings", () => {
+  const skillWith = (metadata: string, body = "Body.\n"): string => `---\nname: s\ndescription: d\n${metadata}---\n\n# S\n\n${body}`;
+
+  it("declaredMaxBytes reads metadata.max-bytes, and nothing else", () => {
+    expect(declaredMaxBytes(skillWith("metadata:\n  max-bytes: 14000\n"))).toBe(14000);
+    expect(declaredMaxBytes(skillWith("metadata:\n  owner: x\n  max-bytes: 200\n"))).toBe(200);
+    expect(declaredMaxBytes(skillWith(""))).toBeNull();
+    expect(declaredMaxBytes(skillWith("max-bytes: 10\n"))).toBeNull();
+    expect(declaredMaxBytes(skillWith("metadata:\n  owner: x\nother:\n  max-bytes: 10\n"))).toBeNull();
+    expect(declaredMaxBytes("# No frontmatter\n")).toBeNull();
+    expect(declaredMaxBytes(skillWith("metadata:\n  max-bytes: 14k\n"))).toBe("14k");
+  });
+
+  it("a skill over its declared ceiling fails; within it, or with none, it passes", () => {
+    const big = skillWith("metadata:\n  max-bytes: 100\n", "x".repeat(200));
+    expect(sizeErrors("s/SKILL.md", big, "skill")).toStrictEqual([`s/SKILL.md: ${byteLength(big)} bytes, over its metadata.max-bytes of 100`]);
+    expect(sizeErrors("s/SKILL.md", skillWith("metadata:\n  max-bytes: 1000\n"), "skill")).toStrictEqual([]);
+    expect(sizeErrors("s/SKILL.md", skillWith("", "x".repeat(100_000)), "skill")).toStrictEqual([]);
+  });
+
+  it("a max-bytes that is not a positive integer fails", () => {
+    expect(sizeErrors("s/SKILL.md", skillWith("metadata:\n  max-bytes: 0\n"), "skill")).toStrictEqual(['s/SKILL.md: metadata.max-bytes "0" is not a positive integer']);
+  });
+
+  it("an agent is held to the fixed ceiling", () => {
+    expect(sizeErrors("a.md", "x".repeat(AGENT_MAX_BYTES), "agent")).toStrictEqual([]);
+    expect(sizeErrors("a.md", "x".repeat(AGENT_MAX_BYTES + 1), "agent")).toHaveLength(1);
+  });
+
+  it("byteLength counts UTF-8 bytes, as wc -c does", () => {
+    expect(byteLength("—")).toBe(3);
+  });
+});
+
+describe("knowledge files", () => {
+  const PATH = "plugins/p/skills/t/transitions/a-to-b.md";
+  const SIDECAR = "plugins/p/skills/t/transitions/a-to-b.traps.json";
+
+  const TRAP = [
+    "### P01 — A trap",
+    "",
+    "- kind: change",
+    "- area: settings",
+    "- signal: `x`",
+    "- applies when: always",
+    "- change: do y",
+    "- confidence: high",
+    "- sweep: yes",
+    "- source: https://example.com/doc#a",
+    '  passage: "the doc says so"',
+    "  verified: 2026-09-29",
+  ].join("\n");
+
+  const FRONT = "---\ntransition: a-to-b\ntitle: A → B\nsource: { name: A }\ntarget: { name: B }\nclaude-code-floor: v2.1.0\nverified: 2026-09-29\n---\n";
+
+  const file = (traps: string = TRAP, front: string = FRONT): string => `${front}\n<docs>\n</docs>\n\n<traps>\n\n${traps}\n\n</traps>\n`;
+  const sidecar = (traps: object[] = [{ id: "P01", learned: "Why.", refs: {} }], transition: string = PATH): string => JSON.stringify({ transition, traps });
+  const check = (source: string | null = file(), sidecarText: string | null = sidecar()): string[] => checkKnowledge({ path: PATH, sidecarPath: SIDECAR, source, sidecarText });
+
+  it("a consistent knowledge file passes", () => {
+    expect(check()).toStrictEqual([]);
+  });
+
+  it("parseTraps reads fields and sources, with indented lines under each source", () => {
+    const traps = parseTraps(file(`${TRAP}\n- source: https://example.com/b\n  basis: inference: a reason`));
+    expect(traps).toHaveLength(1);
+    expect(traps?.[0]?.id).toBe("P01");
+    expect(traps?.[0]?.fields.get("applies when")).toBe("always");
+    expect(traps?.[0]?.sources).toStrictEqual([
+      { url: "https://example.com/doc#a", passage: "the doc says so", verified: "2026-09-29", basis: null },
+      { url: "https://example.com/b", passage: null, verified: null, basis: "inference: a reason" },
+    ]);
+    expect(parseTraps("no block")).toBeNull();
+  });
+
+  it("a transition that differs from the file name fails", () => {
+    expect(check(file(TRAP, FRONT.replace("transition: a-to-b", "transition: a-to-c")))).toStrictEqual([`${PATH}: transition is "a-to-c", expected "a-to-b"`]);
+  });
+
+  it("a missing frontmatter key, or a verified that is not a date, fails", () => {
+    expect(check(file(TRAP, FRONT.replace("title: A → B\n", "")))).toStrictEqual([`${PATH}: frontmatter has no "title"`]);
+    expect(check(file(TRAP, FRONT.replace("verified: 2026-09-29", "verified: 2026-02-30")))).toStrictEqual([`${PATH}: verified "2026-02-30" is not a date as YYYY-MM-DD`]);
+  });
+
+  it("a file with no <traps> block fails", () => {
+    expect(check(`${FRONT}\nNothing.\n`, sidecar([]))).toStrictEqual([`${PATH}: has no <traps> block`]);
+  });
+
+  it("a malformed or duplicated trap id fails", () => {
+    expect(check(file(TRAP.replace("P01", "P1")), sidecar([]))).toContain(`${PATH}:15: trap id P1 is not P followed by two digits`);
+    expect(check(file(`${TRAP}\n\n${TRAP}`))).toContain(`${PATH}:28: trap P01 is defined more than once`);
+  });
+
+  it("a missing field, or a value outside its enum, fails", () => {
+    expect(check(file(TRAP.replace("- area: settings\n", "")))).toStrictEqual([`${PATH}:15: P01 has no "area"`]);
+    expect(check(file(TRAP.replace("- kind: change", "- kind: maybe")))).toStrictEqual([
+      `${PATH}:15: P01 "kind" is "maybe", not one of change, re-test, optional, hand-off, setting`,
+    ]);
+    expect(check(file(TRAP.replace("- sweep: yes", "- sweep: sometimes")))).toHaveLength(1);
+    expect(check(file(TRAP.replace("- confidence: high", "- confidence: certain")))).toHaveLength(1);
+  });
+
+  it("a trap with no source, a non-https source, or a source with neither passage nor basis fails", () => {
+    const [head] = TRAP.split("\n- source:");
+    expect(check(file(head))).toStrictEqual([`${PATH}:15: P01 has no source`]);
+    expect(check(file(TRAP.replace("https://example.com/doc#a", "http://example.com")))).toStrictEqual([`${PATH}:15: P01 source 1 is not an https URL`]);
+    expect(check(file(`${head}\n- source: https://example.com`))).toStrictEqual([`${PATH}:15: P01 source 1 has neither a "passage" nor a "basis"`]);
+  });
+
+  it("a passage without a verified date fails; a basis needs none", () => {
+    expect(check(file(TRAP.replace("  verified: 2026-09-29", "")))).toStrictEqual([`${PATH}:15: P01 source 1 has a passage but no "verified" date as YYYY-MM-DD`]);
+    const [head] = TRAP.split("\n- source:");
+    expect(check(file(`${head}\n- source: https://example.com\n  basis: system-card p.60 §6.2.1`))).toStrictEqual([]);
+  });
+
+  it("the sidecar and the traps must match both ways, under the file's path", () => {
+    expect(check(file(), sidecar([]))).toStrictEqual([`${PATH}: P01 has no entry in a-to-b.traps.json`]);
+    expect(check(file(), sidecar([{ id: "P01", learned: "Why.", refs: {} }, { id: "P02", learned: "Why.", refs: {} }]))).toStrictEqual([
+      `${SIDECAR}: P02 matches no trap in a-to-b.md`,
+    ]);
+    expect(check(file(), sidecar(undefined, "elsewhere.md"))).toStrictEqual([`${SIDECAR}: transition is "elsewhere.md", expected "${PATH}"`]);
+    expect(check(file(), null)).toStrictEqual([`${PATH}: has no a-to-b.traps.json`]);
+    expect(check(null, sidecar())).toStrictEqual([`${SIDECAR}: has no a-to-b.md beside it`]);
+  });
+
+  it("a sidecar entry needs learned and refs in the norm sidecars' shape", () => {
+    expect(check(file(), sidecar([{ id: "P01", learned: "", refs: {} }]))).toStrictEqual([`${SIDECAR}: P01 has no "learned"`]);
+    expect(check(file(), sidecar([{ id: "P01", learned: "Why.", refs: { docs: ["http://x"] } }]))).toStrictEqual([`${SIDECAR}: P01 "refs.docs" must be an array of https URLs`]);
+    expect(check(file(), "[]")).toStrictEqual([`${SIDECAR}: must be a JSON object`]);
+  });
+
+  it("a knowledge file over its ceiling fails", () => {
+    expect(check(`${file()}${"x".repeat(KNOWLEDGE_MAX_BYTES)}`)[0]).toMatch(/over the 57000-byte ceiling for a knowledge file/);
+  });
+
+  it("knowledgeSlugs pairs files by slug, keeping an orphan sidecar", () => {
+    expect(knowledgeSlugs(["a.md", "a.traps.json", "b.traps.json", "notes.txt"])).toStrictEqual(["a", "b"]);
+    expect(trapsSidecarPathFor("x/a.md")).toBe("x/a.traps.json");
+  });
+
+  it("isIsoDate accepts only real calendar dates", () => {
+    expect(isIsoDate("2026-09-29")).toBe(true);
+    expect(isIsoDate("2026-13-01")).toBe(false);
+    expect(isIsoDate("29/09/2026")).toBe(false);
   });
 });

@@ -11,7 +11,7 @@
     {
       "name": "inbrace-config",
       "source": "./plugins/inbrace-config",
-      "description": "Audit a Claude Code setup for model transitions — Claude Opus 5 to Opus 5.5, and Claude Sonnet 5 to Sonnet 5.5: report, ask, then apply only what you approve."
+      "description": "Audit a Claude Code setup for a model transition — reads today's Anthropic docs, explores the project, checks the known traps (Opus 5 to 5.5, Sonnet 5 to 5.5): report, ask, then apply only what you approve."
     }
   ]
 }

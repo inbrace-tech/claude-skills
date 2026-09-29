@@ -1,0 +1,23 @@
+{
+  "surface": "plugins/inbrace-config/skills/audit-model-transition/SKILL.md",
+  "norms": [
+    {
+      "id": "N01",
+      "where": "Start",
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#pass-arguments-to-skills"], "inbrace-tech/claude-skills": [34, 42] },
+      "what": "One command for every transition: the source and target come first, so a new transition is a new knowledge file, not a new skill (#34). The rest of the arguments keep the grammar the per-transition audits had. Written for the transition-agnostic audit (#34, #42)."
+    },
+    {
+      "id": "N02",
+      "where": "Start",
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#available-string-substitutions"], "inbrace-tech/claude-skills": [34, 42] },
+      "what": "The slug names the knowledge file; saying whether it exists tells the user, before any cost, whether the known traps will run or the audit rests on the docs alone. Written for the transition-agnostic audit (#34, #42)."
+    },
+    {
+      "id": "N03",
+      "where": "Start",
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#control-who-invokes-a-skill"], "inbrace-tech/claude-skills": [34, 42] },
+      "what": "The command is `disable-model-invocation: true` so only the user starts an audit; the orchestrator it invokes is model-invocable, since Claude Code blocks Claude's call to a `disable-model-invocation` skill. Written for the transition-agnostic audit (#34, #42)."
+    }
+  ]
+}

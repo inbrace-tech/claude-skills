@@ -1,0 +1,215 @@
+{
+  "transition": "plugins/inbrace-config/skills/transition-audit/transitions/sonnet-5-to-5-5.md",
+  "traps": [
+    {
+      "id": "P01",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P02",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P03",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P04",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P05",
+      "learned": "Written in 0.5.0 from the Opus audit's prefix-delivery row (#28); the exact-or-longest-prefix selector fix became an applicable change in #33.",
+      "refs": { "inbrace-tech/claude-skills": [28, 33] }
+    },
+    {
+      "id": "P06",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P07",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P08",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P09",
+      "learned": "Carried from the Opus audit's row of the same name (P04 there), first written in #1 or #2, and re-grounded in the Sonnet 5.5 guides in 0.5.0 (#28).",
+      "refs": { "inbrace-tech/claude-skills": [1, 2, 28] }
+    },
+    {
+      "id": "P10",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P11",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P12",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P13",
+      "learned": "Carried from the Opus audit's update-cadence row, first written in #2, and re-grounded in the Sonnet 5.5 guide in 0.5.0 (#28).",
+      "refs": { "inbrace-tech/claude-skills": [2, 28] }
+    },
+    {
+      "id": "P14",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P15",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P16",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P17",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P18",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P19",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P20",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P21",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P22",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P23",
+      "learned": "Carried from the Opus audit's row of the same name (P17 there), first written in #1 or #2, and re-grounded in the Sonnet 5.5 guides in 0.5.0 (#28).",
+      "refs": { "inbrace-tech/claude-skills": [2, 28] }
+    },
+    {
+      "id": "P24",
+      "learned": "Carried from the Opus audit's row of the same name (P19 there), first written in #1 or #2, and re-grounded in the Sonnet 5.5 guides in 0.5.0 (#28).",
+      "refs": { "inbrace-tech/claude-skills": [2, 28] }
+    },
+    {
+      "id": "P25",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P26",
+      "learned": "Carried from the Opus audit's row of the same name (P08 there), first written in #1 or #2, and re-grounded in the Sonnet 5.5 guides in 0.5.0 (#28).",
+      "refs": { "inbrace-tech/claude-skills": [2, 28] }
+    },
+    {
+      "id": "P27",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P28",
+      "learned": "Carried from the Opus audit's row of the same name (P18 there), first written in #1 or #2, and re-grounded in the Sonnet 5.5 guides in 0.5.0 (#28).",
+      "refs": { "inbrace-tech/claude-skills": [2, 28] }
+    },
+    {
+      "id": "P29",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P30",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P31",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P32",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P33",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P34",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P35",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P36",
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P37",
+      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P38",
+      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P39",
+      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P40",
+      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P41",
+      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P42",
+      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28).",
+      "refs": { "inbrace-tech/claude-skills": [28] }
+    }
+  ]
+}
