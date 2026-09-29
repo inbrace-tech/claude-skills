@@ -1,0 +1,39 @@
+name: Trap report
+description: Something a model-transition audit found that its knowledge did not cover yet, written generically
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The transition audit drafts this report for you at the end of a run, from generic text only. Before submitting, check it holds nothing from your project: no path, file name, identifier, quoted text or repository name.
+  - type: input
+    id: transition
+    attributes:
+      label: Transition
+      description: The model transition the audit ran, e.g. sonnet-5-to-5-5
+    validations:
+      required: true
+  - type: input
+    id: trap
+    attributes:
+      label: Trap or area
+      description: The known trap this concerns (e.g. P40), or the area of the setup where something new showed up (e.g. price tables)
+    validations:
+      required: true
+  - type: textarea
+    id: where
+    attributes:
+      label: Where it shows up
+      description: Where in a project this appears, in generic words — never a path or text from your project
+    validations:
+      required: true
+  - type: textarea
+    id: passage
+    attributes:
+      label: Doc passage
+      description: The Anthropic documentation URL and the passage, verbatim, that the finding rests on, or that changed
+  - type: input
+    id: version
+    attributes:
+      label: Plugin version
+      description: e.g. inbrace-config 0.6.0

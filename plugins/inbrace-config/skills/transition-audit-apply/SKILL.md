@@ -30,10 +30,30 @@ metadata:
 - [N09] Where the audit ran, make the next step the knowledge file's `<next_step>`, since the guides' advice is a starting point the project's own measurements confirm.
 - [N10] Where this session can publish an artifact, offer in the close to publish the report as one for sharing, and publish only if the user accepts.
 
+## Learning loop, only with the user's consent
+
+- [N11] Offer the learning loop at the close only when the run audited files and learned something the knowledge file lacks — a `D` line the verifier kept as `change` or `re-test`, a drift line other than `holds`, or a bootstrap run — and never in a headless run or after a cancelled plan.
+- [N12] Make the offer an invitation, before any drafting: say, in the user's language, "This run found something the audit's knowledge doesn't cover yet. Improvements to this skill are very welcome, and each one helps everyone who uses it.", then ask "Would you like to contribute what this run learned? I can draft an issue for the public inbrace-tech/claude-skills repository in a moment — anonymised, with no path, name or text from your project — and I'll show it to you before anything is posted." with the options of `<consent>`, offering the `gh` option only when `gh auth status` succeeds:
+
+<consent>
+
+| Option | Description |
+|---|---|
+| Yes, give me a prefilled link (Recommended) | I draft it and show it here, then give you a link to GitHub's issue form with the draft filled in. Nothing is sent until you review it and submit it yourself. |
+| Yes, post it with `gh` | I draft it and show it here, then post it with `gh issue create` under your GitHub account once you confirm the draft. |
+| Not now | Nothing is drafted or sent. |
+
+</consent>
+
+- [N13] After a yes, build the draft only from the transition's slug and the plugin version, trap ids and drift verdicts, doc URLs with passages that match the cached page, the area names of the plan's `<map>`, and one generic sentence per item in that map's words, such as "a hook script that selects instruction text by matching a model id prefix"; never write into it a path, file name, line number, identifier, quoted text, code, repository, remote, branch or person's name from the audited project.
+- [N14] Before showing the draft, search it, ignoring case, for every path segment and file name of the inventory, with and without extension, the root directory's name, each `git remote -v` URL with its owner and repository, the current branch, `git config user.name` and `user.email`, and every quoted text of the final list — leaving out words shorter than four letters and the map's own words; on a match, rewrite the draft once and search again, and on a second match show nothing, post nothing, and say the draft could not be written without details of the project.
+- [N15] Show the draft in full in the chat before anything else, then deliver it as chosen: for the link, `https://github.com/inbrace-tech/claude-skills/issues/new?template=trap_report.yml` with `title`, `transition`, `trap`, `where`, `passage` and `version` URL-encoded, dropping `passage` and saying so when the link would pass about 8,000 characters, and sending nothing; for `gh`, ask once more "Post this issue to the public inbrace-tech/claude-skills repository under your GitHub account?", with the options "Post it" (recommended, since the user chose this path), "Give me the link instead" and "Don't post", run `gh issue create --repo inbrace-tech/claude-skills --label enhancement` with the draft only on "Post it", and print the new issue's URL.
+
 ## Sources
 
 - `/usage` and `/cost`: https://code.claude.com/docs/en/costs#track-your-costs and https://code.claude.com/docs/en/commands
 - How each round trip re-reads the context from cache: https://code.claude.com/docs/en/prompt-caching#how-the-cache-is-organized
 - Anthropic's Claude API skill and its `prompt-audit` subcommand: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/claude-api-skill
+- GitHub issue forms, and filling their fields with URL query parameters: https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms and https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/creating-an-issue
 
 **Every `[N<NN>]` above is one norm, and why it exists lives in [`SKILL.norms.json`](SKILL.norms.json), which nothing loads automatically.** Open it when a step is doubted.

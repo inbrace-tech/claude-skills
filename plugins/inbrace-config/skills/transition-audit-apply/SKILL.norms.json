@@ -120,6 +120,64 @@
         ]
       },
       "what": "A shared report helps a team decide, but publishing is the user's choice. Derived from `audit-sonnet-5-5` `N14` and `audit-opus-5-5` `N14` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
+    },
+    {
+      "id": "N11",
+      "where": "Learning loop, only with the user's consent",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          44
+        ]
+      },
+      "what": "Added with the learning loop. A run that learned something the knowledge file lacks — a finding outside the known traps, a trap whose passage changed, or a transition with no knowledge yet — is how the audit improves; nothing else is worth an offer. A headless run has no one to consent, and a cancelled plan learned nothing (#34, #44)."
+    },
+    {
+      "id": "N12",
+      "where": "Learning loop, only with the user's consent",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          44
+        ]
+      },
+      "what": "The maintainer asked for an invitation, not a form step: the close says that improvements are welcome and help everyone, and asks whether the user wants to contribute, anonymised, before anything is drafted. The link is recommended because the user's own submit on GitHub is the last check. The `gh` option needs a logged-in `gh` and posts publicly under the user's account, so it is offered only when that works (#34, #44)."
+    },
+    {
+      "id": "N13",
+      "where": "Learning loop, only with the user's consent",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          44
+        ]
+      },
+      "what": "The audited project may be private and this repository is public, so the draft is built by allow-list, never by redacting a copy: only the transition, trap ids, verified public doc text and the map's generic vocabulary go in (#34, #44)."
+    },
+    {
+      "id": "N14",
+      "where": "Learning loop, only with the user's consent",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          44
+        ]
+      },
+      "what": "A mechanical search for the project's own names catches what the allow-list might let through in the generic sentences. Short words and the map's vocabulary are exempt so that words like `hooks` do not block every draft. After two failures nothing is shown, since a draft that leaks once is not safe to offer (#34, #44)."
+    },
+    {
+      "id": "N15",
+      "where": "Learning loop, only with the user's consent",
+      "refs": {
+        "docs": [
+          "https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms"
+        ],
+        "inbrace-tech/claude-skills": [
+          34,
+          44
+        ]
+      },
+      "what": "The user sees the draft in full before anything is posted, and the `gh` path, which posts publicly under their account, asks a second time; the maintainer approved both confirmations. The repository sets `blank_issues_enabled: false`, so the prefilled link opens the `trap_report.yml` issue form, whose field ids are the link's query parameters; a URL too long for the browser drops the passages (#34, #44)."
     }
   ]
 }

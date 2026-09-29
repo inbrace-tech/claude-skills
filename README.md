@@ -88,7 +88,7 @@ For the audit, `user` is the right choice — **Install for you (user scope)** i
 /inbrace-config:audit-sonnet-5-5 [path]
 ```
 
-Name the transition your project is making, as `sonnet-5 sonnet-5-5`, or use the command for it. The audit fetches the current Anthropic docs with `curl`, so it needs network access to `platform.claude.com` and `code.claude.com`; without it, the plan says so and offers to run on the passages the audit recorded, marked as not re-verified.
+Name the transition your project is making, as `sonnet-5 sonnet-5-5`, or use the command for it. The audit fetches the current Anthropic docs with `curl`, so it needs network access to `platform.claude.com` and `code.claude.com`; without it, the plan says so and offers to run on the passages the audit recorded, marked as not re-verified. When a run learns something the audit does not know yet, the close invites you to contribute it: it drafts a generic issue for this repository, with nothing from your project, shows it to you, and sends nothing unless you choose to.
 
 Arguments can answer the plan's questions in advance, in any order: `--scope full|reduced|quick`, `--mode session|agents`, and `--stop-at-report`, which ends the run with the report. The plan is still shown, an option the plan would not offer stops the run with the reason, and no argument applies changes:
 
