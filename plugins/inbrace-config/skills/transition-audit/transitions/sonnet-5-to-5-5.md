@@ -171,9 +171,9 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 
 - kind: re-test
 - area: memory, rules, agents, skills, commands
-- signal: a statement of how the model behaves, in text Sonnet 5.5 reads or that a pin P02 moves would carry to it, that says (a) at `low` or `medium` effort the model scopes its work to what was asked; (b) `xhigh` is the recommended level for the hardest coding or agentic work; (c) an effort level produces the thinking it did on Sonnet 5; or (d) any other statement of how Sonnet 5 behaves, such as how it scales response length
+- signal: a statement of how the model behaves, in text Sonnet 5.5 reads or that a pin P02 moves would carry to it, that says (a) at `low` or `medium` effort the model scopes its work to what was asked; (b) `xhigh` is the recommended level for the hardest coding or agentic work; (c) an effort level produces the thinking it did on Sonnet 5; or (d) any other statement of how Sonnet 5 behaves, such as how it scales response length; and (e) a rule whose stated reason cites Sonnet 5 guidance, a Sonnet 5 tier skill or one of its norms, even where the citation still resolves
 - applies when: instruction text, not the prompting techniques `<protected>` keeps
-- change: Re-test, and re-ground any instruction that rests on the claim, citing the passage that contradicts it: (a) "The model tends to add tests, documentation, and small supporting files … It does this at every effort level, and more at higher effort", and "At `low` and `medium`, on long agentic tasks, it's more likely to stop and check in with the user before it finishes"; (b) "Reserve `xhigh` and `max` for work where you've measured a quality gain", and at those levels "it can start its own rounds of review and verification"; (c) "a level doesn't produce the same amount of thinking as the same level on Claude Sonnet 5"; (d) the migration guide's "re-evaluate model-specific prompt instructions against Prompting Claude Sonnet 5.5". List it under "Re-test only, no edit". Low confidence for (d), which no Sonnet 5.5 passage contradicts.
+- change: Re-test, and re-ground any instruction that rests on the claim, citing the passage that contradicts it, or for (e) re-anchor the reason on the Sonnet 5.5 guide or a reason that names no model, since the session that reads it now runs Sonnet 5.5: (a) "The model tends to add tests, documentation, and small supporting files … It does this at every effort level, and more at higher effort", and "At `low` and `medium`, on long agentic tasks, it's more likely to stop and check in with the user before it finishes"; (b) "Reserve `xhigh` and `max` for work where you've measured a quality gain", and at those levels "it can start its own rounds of review and verification"; (c) "a level doesn't produce the same amount of thinking as the same level on Claude Sonnet 5"; (d) and (e) the migration guide's "re-evaluate model-specific prompt instructions against Prompting Claude Sonnet 5.5". List it under "Re-test only, no edit". Low confidence for (d), which no Sonnet 5.5 passage contradicts.
 - confidence: medium
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#steer-initiative-and-scope
@@ -259,7 +259,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 - kind: optional
 - area: agents, skills, commands, memory
 - signal: long human-in-the-loop agentic work with no guidance on updates
-- applies when: agent and orchestrator prompts, unless the file points to where the project states its update guidance
+- applies when: agent and orchestrator prompts, unless the file points to where the project states its update guidance and that guidance, and the reason it gives, are not written for Sonnet 5; a pointer to Sonnet 5 guidance is P07's
 - change: Add a cadence, for example a line on what the model is about to do before its first tool call and a short recap at the end.
 - confidence: medium
 - sweep: no
@@ -465,7 +465,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 - area: api-code
 - signal: `computer_20251124`, `computer_20250124`, or the `fine-grained-tool-streaming-2025-05-14` header beside a toolset
 - applies when: API code on the Claude API or Google Cloud; `computer_20250124` on any platform
-- change: Hand off per the API hand-off rule. There the old tools return a 400 and the fix is `computer_toolset_20260801`, with `eager_input_streaming: true` per tool in place of the header; on Amazon Bedrock `computer_20251124` still works, so record no finding for it in Bedrock-only code.
+- change: Hand off per the API hand-off rule. There the old tools return a 400 and the fix is `computer_toolset_20260801`, with `eager_input_streaming: true` per tool in place of the header; on Amazon Bedrock `computer_20251124` still works, so record no finding for it in Bedrock-only code. Record a second line on the agent loop that runs the tool's calls — where it reads the action from `input.action`, handles only the first `tool_use` block, or returns results without `toolset_name` — since the toolset changes the loop as well as the declaration.
 - confidence: high
 - sweep: yes
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#computer-use-toolset
@@ -476,6 +476,9 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
   verified: 2026-09-29
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#computer-20251124-is-not-supported
   passage: "On Amazon Bedrock, Claude Sonnet 5.5 accepts the earlier `computer_20251124` tool."
+  verified: 2026-09-29
+- source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#computer-20251124-is-not-supported
+  passage: "Drop the beta header, replace the `tools` entry with `{"type": "computer_toolset_20260801"}`, and update your agent loop for member `tool_use` blocks, batch actions, and `toolset_name` on results."
   verified: 2026-09-29
 
 ### P29 — Advisor the executor rejects
@@ -637,9 +640,9 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P41 — Model docs that miss the Sonnet 5.5 guide
 
 - kind: change
-- area: model-dependent
+- area: model-dependent, memory, rules
 - signal: a prompting-guide index or per-model notes under the root that list the Sonnet 5 guide and not the Sonnet 5.5 guide, or that state Sonnet 5 behavior a Sonnet 5.5 source contradicts, such as running "with thinking disabled"
-- applies when: model-dependent code and docs
+- applies when: model-dependent code and docs, and model notes in memory and rules files — a paragraph naming the model the project runs, its effort or its thinking setting
 - change: Add the Sonnet 5.5 guide as a source and re-evaluate the model-specific statements against it, as the migration guide says; thinking cannot be turned off on Sonnet 5.5 in Claude Code.
 - confidence: medium
 - sweep: no
