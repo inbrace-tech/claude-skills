@@ -16,21 +16,6 @@
       "what": "Added in 0.4.3 with the agent. A subagent starts with only its own system prompt and the prompt it is given, not the session's conversation, so the files and the brief named in that prompt are everything it knows about the batch. The agent sets `omitClaudeMd: true`, so the project facts it needs arrive through the brief, not the project memory; reading the brief before the first file keeps a file from being classified without them. See #12. In 0.4.4 the agent receives every batch of one area instead of a single batch, and reads them in order, one at a time, so each batch is classified with only its own files and the brief in view. See #21."
     },
     {
-      "id": "N02",
-      "where": "Classify",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/sub-agents"
-        ],
-        "inbrace-tech/claude-skills": [
-          12,
-          21,
-          28
-        ]
-      },
-      "what": "Added in 0.4.3. The agent carries no pattern table of its own: the skill that starts it passes the table, the norms that apply to a batch and the project facts, so one copy of each lives in the skill and a change there reaches the agent without editing it. The facts are named because they change a classification: in the large-harness test that led to this agent, `sonnet` subagents marked as older residue a filter the project had already decided on, and proposed a P12 by inference. See #12. In 0.4.4 the norms it receives are called the rules in its brief, since the brief is the one thing the skill passes. See #21. In 0.5.0 the agent serves every inbrace-config audit skill, `audit-sonnet-5-5` as well as `audit-opus-5-5`, so it no longer names Opus: the project fact it names is the project's evaluation for the target model the brief names, and the brief of each skill states its transition, source and target model. See #28."
-    },
-    {
       "id": "N03",
       "where": "Classify",
       "refs": {
@@ -56,17 +41,18 @@
           21
         ]
       },
-      "what": "Added in 0.4.3, after review of the pull request. The agent first said to return findings \"in the `[N09]` line format\", citing a norm of the skill; an agent does not see the skill that starts it, and a norm id is only meaningful inside the surface that defines it, so the agent now owns its return contract. The contract is wrapped in `<return_contract>` so it reads as material to use exactly, and it is the one owner of the finding line: the skill's findings file, its [audit-opus-5-5#N09], uses the same line and points here instead of restating it, which keeps a subagent's lines and the session's own lines identical and lets the session append them as they are. The clean-batch line is fixed so the session can tell a clean batch from an empty or failed return. See #12. In 0.4.4 the line format moves to the skill that starts the agent, which passes it in the brief: reading the contract from the agent file meant reading a file in the plugin cache, outside the session's working directories, which raised a permission prompt in every run. The `<return_contract>` stays here and fixes what the agent owns — one line naming each batch, then its finding lines or the clean-batch line, and nothing else — while the fields of a line come from the brief. See #21."
+      "what": "Added in 0.4.3, after review of the pull request. The agent first said to return findings \"in the `[N09]` line format\", citing a norm of the skill; an agent does not see the skill that starts it, and a norm id is only meaningful inside the surface that defines it, so the agent now owns its return contract. The contract is wrapped in `<return_contract>` so it reads as material to use exactly, and it is the one owner of the finding line: the skill's findings file, its `audit-opus-5-5` `N09` (removed in 0.6.0; history in git), uses the same line and points here instead of restating it, which keeps a subagent's lines and the session's own lines identical and lets the session append them as they are. The clean-batch line is fixed so the session can tell a clean batch from an empty or failed return. See #12. In 0.4.4 the line format moves to the skill that starts the agent, which passes it in the brief: reading the contract from the agent file meant reading a file in the plugin cache, outside the session's working directories, which raised a permission prompt in every run. The `<return_contract>` stays here and fixes what the agent owns — one line naming each batch, then its finding lines or the clean-batch line, and nothing else — while the fields of a line come from the brief. See #21."
     },
     {
       "id": "N05",
       "where": "Classify",
       "refs": {
         "inbrace-tech/claude-skills": [
-          21
+          21,
+          42
         ]
       },
-      "what": "Added in 0.4.4. In the live test of 0.4.3 on a large harness — 113 files, 23 batches, 23 subagents — none of the 10 raw findings survived as a change: 7 were already decided by the project and 3 were protected phrases, which the session and the verifier then had to discard. A model upgrade changes nothing about a project's safety rules, confirmations, permission boundaries or facts, so the agent records no finding for them rather than leaving the filtering to a later step. See #21."
+      "what": "Added in 0.4.4. In the live test of 0.4.3 on a large harness — 113 files, 23 batches, 23 subagents — none of the 10 raw findings survived as a change: 7 were already decided by the project and 3 were protected phrases, which the session and the verifier then had to discard. A model upgrade changes nothing about a project's safety rules, confirmations, permission boundaries or facts, so the agent records no finding for them rather than leaving the filtering to a later step. See #21. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
     },
     {
       "id": "N06",
@@ -97,10 +83,11 @@
           "https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents"
         ],
         "inbrace-tech/claude-skills": [
-          25
+          25,
+          42
         ]
       },
-      "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) the auditors proposed the same missing-instruction addition in three agents that each already loaded the rule through a skill named in their `skills:` frontmatter. The sub-agents page says each listed skill's full content is injected into the subagent at startup, so the rule is present in the agent; a skill with `disable-model-invocation: true` cannot be preloaded and a missing one is skipped, so those keep the finding. The agent reads the listed skills only when such a finding depends on them, since the skill usually sits in another auditor's batches. See #25."
+      "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) the auditors proposed the same missing-instruction addition in three agents that each already loaded the rule through a skill named in their `skills:` frontmatter. The sub-agents page says each listed skill's full content is injected into the subagent at startup, so the rule is present in the agent; a skill with `disable-model-invocation: true` cannot be preloaded and a missing one is skipped, so those keep the finding. The agent reads the listed skills only when such a finding depends on them, since the skill usually sits in another auditor's batches. See #25. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
     },
     {
       "id": "N09",
@@ -111,10 +98,11 @@
         ],
         "inbrace-tech/claude-skills": [
           34,
-          39
+          39,
+          42
         ]
       },
-      "what": "Added in the transition-agnostic audit. The per-transition audits pass a pattern table, and a capability evaluation found that table acting as the boundary of the search: the audit missed items outside it that a session reading the docs found (#34). The new audit passes instead a digest of what changed, each item with its doc passage, and the agent judges files against it. A finding exists only where a passage supports it, which keeps precision while letting discovery reach what no table names. The norm applies only when the brief carries a digest, so the per-transition audits keep working until they become entry points (#39)."
+      "what": "Added in the transition-agnostic audit. The per-transition audits pass a pattern table, and a capability evaluation found that table acting as the boundary of the search: the audit missed items outside it that a session reading the docs found (#34). The new audit passes instead a digest of what changed, each item with its doc passage, and the agent judges files against it. A finding exists only where a passage supports it, which keeps precision while letting discovery reach what no table names. The norm applies only when the brief carries a digest, so the per-transition audits keep working until they become entry points (#39). In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
     },
     {
       "id": "N10",
@@ -122,10 +110,11 @@
       "refs": {
         "inbrace-tech/claude-skills": [
           34,
-          39
+          39,
+          42
         ]
       },
-      "what": "Added in the transition-agnostic audit. Every finding quotes the doc passage behind it, so the verifier can check that passage against the cached page and the user sees why the finding exists (#34). Auditors run in parallel, so each numbers its discovery findings from `D01`, and the session renumbers them into the run's sequence as it appends them (#39)."
+      "what": "Added in the transition-agnostic audit. Every finding quotes the doc passage behind it, so the verifier can check that passage against the cached page and the user sees why the finding exists (#34). Auditors run in parallel, so each numbers its discovery findings from `D01`, and the session renumbers them into the run's sequence as it appends them (#39). In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
     }
   ]
 }
