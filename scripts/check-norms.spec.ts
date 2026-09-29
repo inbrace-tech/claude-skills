@@ -5,6 +5,7 @@ import { spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { serialiseSidecar } from "./sidecar-layout.logic.ts";
 
 describe("check-norms, end to end", () => {
   const entry = (id: string, overrides: Record<string, unknown> = {}): Record<string, unknown> => ({ id, where: "Stage 1", refs: {}, what: "Why it exists.", ...overrides });
@@ -56,7 +57,7 @@ describe("check-norms, end to end", () => {
     const dir = join(root, "plugins", "p", "agents");
     mkdirSync(dir, { recursive: true });
     writeFileSync(join(dir, "a.md"), "- [N01] a\n");
-    writeFileSync(join(dir, "a.norms.json"), JSON.stringify({ surface: "plugins/p/agents/a.md", norms: [entry("N01")] }));
+    writeFileSync(join(dir, "a.norms.json"), serialiseSidecar({ surface: "plugins/p/agents/a.md", norms: [entry("N01")] }));
     writeFileSync(join(dir, "orphan.norms.json"), "{}");
 
     const result = run(root);
@@ -83,7 +84,7 @@ describe("check-norms, end to end", () => {
     const front = "---\ntransition: a-to-b\ntitle: A → B\nsource: { name: A }\ntarget: { name: B }\nclaude-code-floor: v2.1.0\nverified: 2026-09-29\n---\n";
     const trap = "### P01 — A trap\n\n- kind: change\n- area: settings\n- signal: x\n- applies when: always\n- change: y\n- confidence: high\n- sweep: no\n- source: https://example.com\n  basis: inference: a reason\n";
     writeFileSync(join(dir, "a-to-b.md"), `${front}\n<traps>\n\n${trap}\n</traps>\n`);
-    writeFileSync(join(dir, "a-to-b.traps.json"), JSON.stringify({ transition: "plugins/p/skills/t/transitions/a-to-b.md", traps: [{ id: "P01", learned: "Why.", refs: {} }] }));
+    writeFileSync(join(dir, "a-to-b.traps.json"), serialiseSidecar({ transition: "plugins/p/skills/t/transitions/a-to-b.md", traps: [{ id: "P01", learned: "Why.", refs: {} }] }));
 
     const passing = run(root);
     expect(passing.stderr).toBe("");

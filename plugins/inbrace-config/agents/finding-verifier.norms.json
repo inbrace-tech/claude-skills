@@ -4,151 +4,73 @@
     {
       "id": "N01",
       "where": "Read",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/sub-agents"
-        ],
-        "inbrace-tech/claude-skills": [
-          21,
-          28,
-          42
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [21, 28, 42] },
       "what": "Added in 0.4.4 with the agent. A subagent starts with only its own system prompt and the prompt it is given, and this agent sets `omitClaudeMd: true`, so the brief is everything it knows about the project: the pattern table, the line format and the rules it checks each finding against. Reading it before the findings keeps a finding from being judged without them. See #21. In 0.5.0 the agent serves every inbrace-config audit skill, `audit-sonnet-5-5` as well as `audit-opus-5-5`, so it no longer names Opus: the brief carries the project's evaluation for the target model it names, which the verifier reads before the findings. See #28. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
     },
     {
       "id": "N02",
       "where": "Read",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          21
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [21] },
       "what": "Added in 0.4.4. In the live test of 0.4.3 on a large harness — 113 files, 23 batches, 23 subagents — none of the 10 raw findings survived as a change: 7 were already decided by the project and 3 were protected phrases; a finding is refuted by what the file and the project's decision records say, not by the raw line alone, so the agent reads both before judging. See #21."
     },
     {
       "id": "N03",
       "where": "Verify",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          21,
-          42
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [21, 42] },
       "what": "Added in 0.4.4. The verifier's job is adversarial: it starts from the assumption that a finding may be wrong and looks for the evidence that disproves it — a misquoted line, prose that does not instruct the model, a row whose condition does not hold, a decision the project already made. The maintainer chose refutation over confirmation because the raw findings of the 0.4.3 test were mostly wrong in exactly those ways. See #21. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
     },
     {
       "id": "N04",
       "where": "Verify",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          21,
-          25,
-          28,
-          42
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [21, 25, 28, 42] },
       "what": "Added in 0.4.4. The verifier corrects rather than only accepting or rejecting, so the session receives a final list it can write and present without triaging it again. Every final status is named, and `already decided` and `discarded` carry where and why, so the user can see the reason in the chat. See #21. In 0.4.7 the final statuses include `optional`, which [N10] gives the findings of the rows the brief marks as optional. See #25. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — the correction also moves a finding to the line that carries its row's signal, since both runs anchored the same findings on a function head and a nearby setting. See #28. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
     },
     {
       "id": "N05",
       "where": "Verify",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          21
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [21] },
       "what": "Added in 0.4.4. Three of the ten raw findings of the 0.4.3 large-harness test were protected phrases. A model upgrade changes nothing about a project's safety rules, confirmations, permission boundaries or facts, so a finding that would remove one is discarded, with the reason, whatever its pattern. See #21."
     },
     {
       "id": "N06",
       "where": "Verify",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/plugins/components#frontmatter-fields-in-plugin-agents"
-        ],
-        "inbrace-tech/claude-skills": [
-          21
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/plugins/components#frontmatter-fields-in-plugin-agents"], "inbrace-tech/claude-skills": [21] },
       "what": "Added in 0.4.4. \"Correct\" applies to the findings: the frontmatter grants only `Read, Grep, Glob`, which the plugin components page lists among the fields a plugin agent supports, and the norm states the same limit so the agent does not look for a way around it. The session that started it writes the findings file. See #21."
     },
     {
       "id": "N07",
       "where": "Return",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          21,
-          28
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [21, 28] },
       "what": "Added in 0.4.4. The session reports what the verifier discarded or reclassified, with counts and examples, so every raw finding has to come back as a line, and a corrected line has to say what it was. The line format itself comes from the brief, since the skill owns it; the contract here fixes the order, the merges and that nothing is dropped. See #21. In 0.5.0, after two runs on a seeded synthetic repository with a hidden answer key — recall 98.3% and 93.2%, precision 100%, every seeded negative held, detection agreement 94.9% and anchored-line agreement 87.3% between the runs — the contract merges only exact duplicates — the same file, line and pattern — and keeps every other line a raw line referenced, since one run merged neighbouring and co-firing findings into another line and dropped their line references. See #28."
     },
     {
       "id": "N08",
       "where": "Verify",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          22
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [22] },
       "what": "Added in 0.4.5. In the live test of 0.4.4 on a large harness — 6 auditors by area and 1 verifier, 15 raw findings of which 1 stayed a change — the verifier cited a project control rule, a file that needs explicit approval before it is edited, and called that file \"outside the worktree\" when it sat inside it. The rule was the evidence; the location was an inference the verifier had not checked, and it misled the reader of the final list. The maintainer closed the fix: cite the rule as the project states it and say nothing about where the file sits. See #22."
     },
     {
       "id": "N09",
       "where": "Verify",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents"
-        ],
-        "inbrace-tech/claude-skills": [
-          25,
-          28,
-          30
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents"], "inbrace-tech/claude-skills": [25, 28, 30] },
       "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) three agents were each proposed a missing-instruction addition that a skill in their `skills:` frontmatter already stated. The sub-agents page says each listed skill's full content is injected into the subagent at startup, so the finding is refuted by the skill, which the verifier opens before judging; a skill with `disable-model-invocation: true` cannot be preloaded and a missing one is skipped, so those findings stand. See #25. In 0.5.0, after four seeded runs split three ways over a rule stated in project memory, the verifier also discards a missing-instruction finding the project memory settles for an agent that does not set `omitClaudeMd: true`. The sub-agents page's \"What loads at startup\" section and the `omitClaudeMd` field description say a custom subagent loads the project's CLAUDE.md hierarchy unless the field is set; one passage of the same page says CLAUDE.md files \"still load through the normal message flow\" even with it, so the rule rests on the majority of the page and the finding it decides carries medium confidence. See #28 and #30."
     },
     {
       "id": "N10",
       "where": "Verify",
-      "refs": {
-        "docs": [
-          "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5"
-        ],
-        "inbrace-tech/claude-skills": [
-          25,
-          42
-        ]
-      },
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5"], "inbrace-tech/claude-skills": [25, 42] },
       "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) an elapsed-time signal the Opus 5.5 guide only offers was proposed as an ordinary change. The brief marks the rows the guide frames as optional; the verifier gives their findings the status `optional` and caps their confidence at medium, so the final list keeps optional advice apart from the changes the guide states outright. See #25. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
     },
     {
       "id": "N11",
       "where": "Verify",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/tools-reference#webfetch-tool-behavior"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          40
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/tools-reference#webfetch-tool-behavior"], "inbrace-tech/claude-skills": [34, 40] },
       "what": "Added in the transition-agnostic audit. Discovery records a finding only with the doc passage behind it, instead of a row of a closed table (#34), so the passage is what the verifier must check: it must occur in the raw page the run cached and must support the finding. A passage recalled from memory or paraphrased is what open discovery risks, and discarding it keeps the precision the table gave. The norm applies only to lines with a doc field, so the per-transition audits keep working until they become entry points (#40)."
     },
     {
       "id": "N12",
       "where": "Verify",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/sub-agents#concurrent-subagent-limit"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          40
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#concurrent-subagent-limit"], "inbrace-tech/claude-skills": [34, 40] },
       "what": "Added in the transition-agnostic audit. Above 40 raw findings the session starts one verifier per group of files, all at once, below Claude Code's concurrent subagent limit. Each verifier keeps to its files, and a file is never split across shards, so its merge of duplicates on the same file, line and id still sees every candidate (#34, #40)."
     }
   ]

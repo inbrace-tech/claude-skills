@@ -4,6 +4,8 @@
 // Per-surface definitions and cross-references are read line by line, fences included, so a surface
 // never shows a norm id in an example; the corpus checks blank code first.
 
+import { inSidecarLayout } from "./sidecar-layout.logic.ts";
+
 /** A line that tries to define a norm; any digit count matches, so `[N1]` is reported, not read as prose. */
 export const DEFINITION = /^- \[(N\d+)\] /;
 
@@ -475,6 +477,14 @@ export function checkCorpus({ surfaces, markdown }: CorpusInput): CorpusResult {
 
   // A bare id cited twice in one field is one note, not two.
   return { errors, notes: [...new Set(notes)] };
+}
+
+// ---------------------------------------------------------------------------
+// Sidecar layout: every sidecar in the canonical serialisation, so hand edits and generated ones read alike.
+
+/** What is wrong with a sidecar's layout: not the canonical serialisation of its own content. */
+export function sidecarLayoutErrors(sidecarPath: string, sidecarText: string): string[] {
+  return inSidecarLayout(sidecarText) ? [] : [`${sidecarPath}: not in the sidecar layout; run \`pnpm run format:sidecars\``];
 }
 
 // ---------------------------------------------------------------------------

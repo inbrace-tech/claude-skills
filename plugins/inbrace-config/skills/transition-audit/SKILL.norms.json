@@ -4,230 +4,109 @@
     {
       "id": "N01",
       "where": "Start",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/skills#control-who-invokes-a-skill"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#control-who-invokes-a-skill"], "inbrace-tech/claude-skills": [34, 38] },
       "what": "The orchestrator is `user-invocable: false` so the entry commands and the stages can invoke it through the Skill tool, which Claude Code blocks for a `disable-model-invocation` skill; the price is that Claude can also invoke it on its own, and no frontmatter keeps it out of unrelated tasks. The guard makes a mistaken invocation cost one skill load and change nothing. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N02",
       "where": "Start",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/skills#pass-arguments-to-skills"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#pass-arguments-to-skills"], "inbrace-tech/claude-skills": [34, 38] },
       "what": "The arguments answer the plan gate and stop the run at the report, so the audit can run headless and in a plugin eval suite; no argument approves applying changes. The grammar is unchanged from the per-transition audits; the transition itself now comes first, passed by the entry point. Derived from `audit-sonnet-5-5` `N63` and `audit-opus-5-5` `N63` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N03",
       "where": "Start",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/skills#available-string-substitutions"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#available-string-substitutions"], "inbrace-tech/claude-skills": [34, 38] },
       "what": "A new transition is a new knowledge file, not a new skill. Resolving it beside the orchestrator with `${CLAUDE_SKILL_DIR}` works both from the plugin and in a copied install, where `${CLAUDE_PLUGIN_ROOT}` is not substituted. With no file, the audit still runs on the docs alone, so it is useful before the knowledge exists. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N04",
       "where": "Start",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/skills#skill-content-lifecycle"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#skill-content-lifecycle"], "inbrace-tech/claude-skills": [34, 38] },
       "what": "Each stage is its own skill, so the run's state must live on disk: the stages read the run file to know they may run, and a resume after an interruption or a compaction reads it to know where to continue. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N05",
       "where": "Start",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/skills#skill-content-lifecycle"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#skill-content-lifecycle"], "inbrace-tech/claude-skills": [34, 38] },
       "what": "The flow is split into stage skills so each stays within the size a skill keeps after compaction and loads only when reached: a run cancelled at the plan loads only the entry, this skill and the plan. The name the Skill tool lists differs between the plugin and a copied install. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N06",
       "where": "Start",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/skills#skill-content-lifecycle"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#skill-content-lifecycle"], "inbrace-tech/claude-skills": [34, 38] },
       "what": "A long audit can be interrupted by an API error or compacted; after compaction only the first 5,000 tokens of each re-attached skill survive, in a shared 25,000, oldest dropped first, and the orchestrator is the oldest skill of the run. Continuing from the files on disk avoids redoing finished batches or edits. Derived from `audit-sonnet-5-5` `N47` and `audit-opus-5-5` `N47` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N07",
       "where": "Start",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 38] },
       "what": "The findings files the per-transition audits wrote have six fields and no run file; resuming one with the seven-field format would mix the two. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N08",
       "where": "Throughout the run",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 38] },
       "what": "The user sees where the run is and what comes next at every stage, in plain text that every session can show; the title comes from the knowledge file so no stage names a model. Derived from `audit-sonnet-5-5` `N32` and `audit-opus-5-5` `N32` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N09",
       "where": "Throughout the run",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 38] },
       "what": "Every decision goes through one question tool with a recommendation, and a session without the tool still gets the same question and changes nothing until answered. Derived from `audit-sonnet-5-5` `N33` and `audit-opus-5-5` `N33` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N10",
       "where": "Throughout the run",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 38] },
       "what": "The user reads the run, its questions and its files in their own language, while quoted text, paths, ids and commands stay exact so they can be searched and run. Derived from `audit-sonnet-5-5` `N34` and `audit-opus-5-5` `N34` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N11",
       "where": "Throughout the run",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 38] },
       "what": "Progress lines in batches let the user follow a long run without reading findings. Derived from `audit-sonnet-5-5` `N35` and `audit-opus-5-5` `N35` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N12",
       "where": "Throughout the run",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/costs#track-your-costs",
-          "https://code.claude.com/docs/en/prompt-caching#how-the-cache-is-organized"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/costs#track-your-costs", "https://code.claude.com/docs/en/prompt-caching#how-the-cache-is-organized"], "inbrace-tech/claude-skills": [34, 38] },
       "what": "Transparency before spending: every costly step is approved with its cost, and the footer says why the harness and the bill show several times these figures, measured on real runs. Derived from `audit-sonnet-5-5` `N49` and `audit-opus-5-5` `N49` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N13",
       "where": "Throughout the run",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 38] },
       "what": "The report shows that every spend was shown and approved, including gates the arguments answered. Derived from `audit-sonnet-5-5` `N50` and `audit-opus-5-5` `N50` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N14",
       "where": "Throughout the run",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 38] },
       "what": "Improvised options at a gate were seen to confuse the decision and escape the cost rules; only the options the stages define are offered. Derived from `audit-sonnet-5-5` `N52` and `audit-opus-5-5` `N52` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N15",
       "where": "Throughout the run",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/headless"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/headless"], "inbrace-tech/claude-skills": [34, 38] },
       "what": "With no one to answer, the run must never change files; with the scope and mode given as arguments it still produces the report. Derived from `audit-sonnet-5-5` `N18` and `audit-opus-5-5` `N18` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N16",
       "where": "Findings file",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 38] },
       "what": "One line format for every stage and agent keeps findings comparable and lets the verifier correct them line by line; the seventh field, the doc passage behind each finding, is what open discovery rests on instead of a closed pattern table. Derived from `audit-sonnet-5-5` `N09` and `audit-opus-5-5` `N09` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N17",
       "where": "Verify",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/sub-agents#concurrent-subagent-limit"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#concurrent-subagent-limit"], "inbrace-tech/claude-skills": [34, 38] },
       "what": "Every finding is refuted adversarially before the user sees it, which kept the per-transition audits free of false claims. Shards split by file, so the verifier's rule of merging only same file, line and id still sees every candidate duplicate, and run below Claude Code's concurrent subagent limit. Derived from `audit-sonnet-5-5` `N53` and `audit-opus-5-5` `N53` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     },
     {
       "id": "N18",
       "where": "Verify",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/sub-agents#choose-a-model"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          38
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#choose-a-model"], "inbrace-tech/claude-skills": [34, 38] },
       "what": "Some projects' hooks refuse an Agent call without `model`; `opus` then resolves to the session's Opus model, and the agent's pinned effort may not hold. Derived from `audit-sonnet-5-5` `N55` and `audit-opus-5-5` `N55` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     }
   ]

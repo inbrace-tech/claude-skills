@@ -4,156 +4,79 @@
     {
       "id": "N01",
       "where": "Before anything",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/skills#control-who-invokes-a-skill"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#control-who-invokes-a-skill"], "inbrace-tech/claude-skills": [34, 41] },
       "what": "A stage skill is model-invocable so the orchestrator can start it, which also lets Claude invoke it on an unrelated task; the run-file guard makes that cost one skill load. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N02",
       "where": "Before anything",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/skills#skill-content-lifecycle"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#skill-content-lifecycle"], "inbrace-tech/claude-skills": [34, 41] },
       "what": "After compaction the orchestrator, the oldest skill of the run, is the first to be dropped; re-invoking it restores the run's standing rules. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N03",
       "where": "Report",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "The report file keeps everything the chat leaves out, so the user reads little to decide and loses nothing; discovery findings and the coverage account get sections of their own, since open discovery must show what it found beyond the known traps and what it did not read. Derived from `audit-sonnet-5-5` `N13` and `audit-opus-5-5` `N13` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N04",
       "where": "Report",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "The user should understand each change without opening a file, in a fixed form; empty headings are noise in the chat and stay in the file. Derived from `audit-sonnet-5-5` `N15` and `audit-opus-5-5` `N15` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N05",
       "where": "Report",
-      "refs": {
-        "docs": [
-          "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/claude-api-skill"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "docs": ["https://platform.claude.com/docs/en/agents-and-tools/agent-skills/claude-api-skill"], "inbrace-tech/claude-skills": [34, 41] },
       "what": "Instructions older than the source model and request code are outside what this audit edits; Anthropic's claude-api skill handles both. Derived from `audit-sonnet-5-5` `N29` and `audit-opus-5-5` `N29` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N06",
       "where": "Report",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "A diff for changes the user may decline wastes context; it is written only for what is approved. Derived from `audit-sonnet-5-5` `N16` and `audit-opus-5-5` `N16` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N07",
       "where": "Decide",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "The user decides what changes, with a recommendation chosen by a fixed ordered rule, so the advice is consistent; a coupling an isolated edit would break is the case that must never be applied blind. Derived from `audit-sonnet-5-5` `N17` and `audit-opus-5-5` `N17` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N08",
       "where": "Decide",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/settings"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/settings"], "inbrace-tech/claude-skills": [34, 41] },
       "what": "Writing the project's model is a team decision: shared settings fix it for everyone who opens the project, and a public repository fixes it for every contributor. The proposal differs per transition, so it comes from the knowledge file. Derived from `audit-sonnet-5-5` `N48` and `audit-opus-5-5` `N48` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N09",
       "where": "Decide",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "\"Apply every change\" must mean only what the audit edits, never items the user must act on elsewhere or only re-test. Derived from `audit-sonnet-5-5` `N42` and `audit-opus-5-5` `N42` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N10",
       "where": "Decide",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "Choosing by type lets the user take the safe part of a table without reading each line. Derived from `audit-sonnet-5-5` `N43` and `audit-opus-5-5` `N43` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N11",
       "where": "Decide",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "With nothing to decide, a question only costs a round trip. Derived from `audit-sonnet-5-5` `N44` and `audit-opus-5-5` `N44` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N12",
       "where": "Decide",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "The decision section keeps the gates approved after the report, so the report reads as one trail of what was shown and approved. Derived from `audit-sonnet-5-5` `N50` and `audit-opus-5-5` `N50` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N13",
       "where": "Report",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          43
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 43] },
       "what": "Added with the drift stage. A changed or vanished passage marks its trap as possibly stale in the report, so the knowledge never silently outlives the docs; the user, and the maintainers through the learning loop, see what the page says now (#34, #43)."
     }
   ]

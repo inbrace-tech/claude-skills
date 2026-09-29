@@ -14,6 +14,7 @@ import {
   isIsoDate,
   knowledgeSlugs,
   parseTraps,
+  sidecarLayoutErrors,
   sizeErrors,
   trapsSidecarPathFor,
   extractCitations,
@@ -439,6 +440,17 @@ describe("check-norms rules", () => {
   it("blankCodeRegions keeps lines and columns, and leaves an unterminated backtick as prose", () => {
     expect(blankCodeRegions("a `b` c\n``` x")).toBe("a     c\n     ");
     expect(blankCodeRegions("a `b c")).toBe("a `b c");
+  });
+});
+
+describe("sidecar layout in check-norms", () => {
+  it("fails a sidecar not in the canonical layout, naming the file and the command to run", () => {
+    const value = { surface: "s/SKILL.md", norms: [{ id: "N01", where: "W", refs: { "o/r": [1] }, what: "Why." }] };
+    expect(sidecarLayoutErrors("s/SKILL.norms.json", JSON.stringify(value, null, 2))).toStrictEqual([
+      "s/SKILL.norms.json: not in the sidecar layout; run `pnpm run format:sidecars`",
+    ]);
+    const canonical = '{\n  "surface": "s/SKILL.md",\n  "norms": [\n    {\n      "id": "N01",\n      "where": "W",\n      "refs": { "o/r": [1] },\n      "what": "Why."\n    }\n  ]\n}\n';
+    expect(sidecarLayoutErrors("s/SKILL.norms.json", canonical)).toStrictEqual([]);
   });
 });
 

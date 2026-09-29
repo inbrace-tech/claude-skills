@@ -11,6 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "check-norms": "node scripts/check-norms.ts",
+    "format:sidecars": "node scripts/format-sidecars.ts",
     "check-version": "node scripts/sync-plugin-version.ts --check",
     "changeset": "changeset",
     "release:version": "node scripts/release-version.ts",

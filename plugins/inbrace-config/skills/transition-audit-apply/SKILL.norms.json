@@ -4,179 +4,91 @@
     {
       "id": "N01",
       "where": "Before anything",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/skills#control-who-invokes-a-skill"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#control-who-invokes-a-skill"], "inbrace-tech/claude-skills": [34, 41] },
       "what": "A stage skill is model-invocable so the orchestrator can start it, which also lets Claude invoke it on an unrelated task; the run-file guard makes that cost one skill load. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N02",
       "where": "Before anything",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/skills#skill-content-lifecycle"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#skill-content-lifecycle"], "inbrace-tech/claude-skills": [34, 41] },
       "what": "After compaction the orchestrator, the oldest skill of the run, is the first to be dropped; re-invoking it restores the run's standing rules. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N03",
       "where": "Apply",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "The report records what the audit changed, not only what it found, and a resume after an interruption continues from the last recorded edit. Derived from `audit-sonnet-5-5` `N24` and `audit-opus-5-5` `N24` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N04",
       "where": "Apply",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "Seeing the diff first is the safe path when a coupling or a low-confidence change is involved. Derived from `audit-sonnet-5-5` `N21` and `audit-opus-5-5` `N21` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N05",
       "where": "Apply",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "A test, hook or script can depend on the exact text being removed; removing it would break the project. Derived from `audit-sonnet-5-5` `N30` and `audit-opus-5-5` `N30` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N06",
       "where": "Apply",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "Only the approved set changes, and a read-only file is changed where it is produced, or the edit is overwritten or lands in another project. Derived from `audit-sonnet-5-5` `N20` and `audit-opus-5-5` `N20` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N07",
       "where": "Apply",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "An edit can reintroduce what a trap or the docs flag, or remove something protected; checking after applying catches both. Derived from `audit-sonnet-5-5` `N22` and `audit-opus-5-5` `N22` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N08",
       "where": "Close",
-      "refs": {
-        "docs": [
-          "https://code.claude.com/docs/en/costs#track-your-costs",
-          "https://code.claude.com/docs/en/prompt-caching#how-the-cache-is-organized"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "docs": ["https://code.claude.com/docs/en/costs#track-your-costs", "https://code.claude.com/docs/en/prompt-caching#how-the-cache-is-organized"], "inbrace-tech/claude-skills": [34, 41] },
       "what": "Every run ends with the same close, so the user always sees what changed, what did not, and why the harness shows more tokens than the estimate. Derived from `audit-sonnet-5-5` `N45` and `audit-opus-5-5` `N45` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N09",
       "where": "Close",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "The guides' advice is a starting point; the project's own measurements confirm it. The step differs per transition, so it comes from the knowledge file. Derived from `audit-sonnet-5-5` `N23` and `audit-opus-5-5` `N23` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N10",
       "where": "Close",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          41
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 41] },
       "what": "A shared report helps a team decide, but publishing is the user's choice. Derived from `audit-sonnet-5-5` `N14` and `audit-opus-5-5` `N14` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
       "id": "N11",
       "where": "Learning loop, only with the user's consent",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          44
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 44] },
       "what": "Added with the learning loop. A run that learned something the knowledge file lacks — a finding outside the known traps, a trap whose passage changed, or a transition with no knowledge yet — is how the audit improves; nothing else is worth an offer. A headless run has no one to consent, and a cancelled plan learned nothing (#34, #44)."
     },
     {
       "id": "N12",
       "where": "Learning loop, only with the user's consent",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          44
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 44] },
       "what": "The maintainer asked for an invitation, not a form step: the close says that improvements are welcome and help everyone, and asks whether the user wants to contribute, anonymised, before anything is drafted. The link is recommended because the user's own submit on GitHub is the last check. The `gh` option needs a logged-in `gh` and posts publicly under the user's account, so it is offered only when that works (#34, #44)."
     },
     {
       "id": "N13",
       "where": "Learning loop, only with the user's consent",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          44
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 44] },
       "what": "The audited project may be private and this repository is public, so the draft is built by allow-list, never by redacting a copy: only the transition, trap ids, verified public doc text and the map's generic vocabulary go in (#34, #44)."
     },
     {
       "id": "N14",
       "where": "Learning loop, only with the user's consent",
-      "refs": {
-        "inbrace-tech/claude-skills": [
-          34,
-          44
-        ]
-      },
+      "refs": { "inbrace-tech/claude-skills": [34, 44] },
       "what": "A mechanical search for the project's own names catches what the allow-list might let through in the generic sentences. Short words and the map's vocabulary are exempt so that words like `hooks` do not block every draft. After two failures nothing is shown, since a draft that leaks once is not safe to offer (#34, #44)."
     },
     {
       "id": "N15",
       "where": "Learning loop, only with the user's consent",
-      "refs": {
-        "docs": [
-          "https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms"
-        ],
-        "inbrace-tech/claude-skills": [
-          34,
-          44
-        ]
-      },
+      "refs": { "docs": ["https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms"], "inbrace-tech/claude-skills": [34, 44] },
       "what": "The user sees the draft in full before anything is posted, and the `gh` path, which posts publicly under their account, asks a second time; the maintainer approved both confirmations. The repository sets `blank_issues_enabled: false`, so the prefilled link opens the `trap_report.yml` issue form, whose field ids are the link's query parameters; a URL too long for the browser drops the passages (#34, #44)."
     }
   ]

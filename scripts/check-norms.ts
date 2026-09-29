@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Checks that every skill and agent in the norm format (`- [Nxx]` items in SKILL.md or
-// agents/<name>.md) agrees with its `.norms.json` sidecar, that every surface fits its size ceiling,
+// agents/<name>.md) agrees with its `.norms.json` sidecar, that every sidecar is in the canonical layout
+// of sidecar-layout.logic.ts, that every surface fits its size ceiling,
 // and that every knowledge file (`skills/<skill>/transitions/<slug>.md`) agrees with its format and
 // its `.traps.json` sidecar. The rules live in check-norms.logic.ts; this file finds the files and
 // reports. Run from the repository root: `pnpm run check-norms`.
@@ -14,6 +15,7 @@ import {
   checkKnowledge,
   checkSurface,
   knowledgeSlugs,
+  sidecarLayoutErrors,
   sidecarPathFor,
   sizeErrors,
   toRepoPath,
@@ -109,6 +111,8 @@ for (const { kind, path: surfacePath } of surfaces()) {
   };
   inputs.push(input);
   if (input.surface !== null) errors.push(...sizeErrors(input.surfacePath, input.surface, kind));
+  // An orphan sidecar is reported as such; its layout is judged once it has a surface.
+  if (input.surface !== null && input.sidecarText !== null) errors.push(...sidecarLayoutErrors(input.sidecarPath, input.sidecarText));
   const result = checkSurface(input);
   if (!result.inFormat) continue;
   checked[kind] += 1;
@@ -117,6 +121,8 @@ for (const { kind, path: surfacePath } of surfaces()) {
 
 const knowledge = knowledgeFiles();
 for (const path of knowledge) {
+  const trapsText = readIfPresent(trapsSidecarPathFor(path));
+  if (trapsText !== null && existsSync(path)) errors.push(...sidecarLayoutErrors(toRepoPath(relative(root, trapsSidecarPathFor(path)), sep), trapsText));
   errors.push(
     ...checkKnowledge({
       path: toRepoPath(relative(root, path), sep),
