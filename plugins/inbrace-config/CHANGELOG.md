@@ -2,6 +2,26 @@
 
 The plugin was named `claude-config` before 0.4.0.
 
+## 0.6.1
+
+### Patch Changes
+
+- Without `AskUserQuestion`, the audit closes as a headless run naming `--scope` and `--mode` instead of listing its questions. ([#82](https://github.com/inbrace-tech/claude-skills/pull/82) by [@ropdias](https://github.com/ropdias))
+
+- Known traps now cover the computer-use agent loop, unattended API agent loops, source-model rationales and capability claims, and model notes in memory files. ([#81](https://github.com/inbrace-tech/claude-skills/pull/81) by [@ropdias](https://github.com/ropdias))
+
+- The Sonnet 5.5 audit flags instructions that message an agent while it works, a risk P27 covered only in Claude API code. ([#73](https://github.com/inbrace-tech/claude-skills/pull/73) by [@ropdias](https://github.com/ropdias))
+
+- Adds a local `claude plugin eval` suite for the Sonnet 5.5 and Opus 5.5 audits: seeded fixtures and deterministic graders from their keys. ([#83](https://github.com/inbrace-tech/claude-skills/pull/83) by [@ropdias](https://github.com/ropdias))
+
+- When a project refuses the close's cleanup, the audit leaves the working files, names them and never retries the deletion another way. ([#75](https://github.com/inbrace-tech/claude-skills/pull/75) by [@ropdias](https://github.com/ropdias))
+
+- The Sonnet 5.5 audit proposes removing `MAX_THINKING_TOKENS=0` and a per-tool-call countdown hook instead of listing them as re-tests. ([#72](https://github.com/inbrace-tech/claude-skills/pull/72) by [@ropdias](https://github.com/ropdias))
+
+- Findings no longer rest on the user's own settings, the verifier keeps documented requirements as changes, and older residue stays out of the final list. ([#80](https://github.com/inbrace-tech/claude-skills/pull/80) by [@ropdias](https://github.com/ropdias))
+
+- The finding verifier checks and corrects every `file:line` a finding cites, in its notes as well as its anchor. ([#74](https://github.com/inbrace-tech/claude-skills/pull/74) by [@ropdias](https://github.com/ropdias))
+
 ## 0.6.0
 
 ### Minor Changes
