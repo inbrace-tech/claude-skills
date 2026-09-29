@@ -13,12 +13,12 @@ metadata:
 
 ## Before anything
 
-- [N01] Run only when the run file under `.claude/audits/` names this stage as next, and otherwise stop at once, saying this skill runs only inside the model-transition audit.
+- [N01] Run only when the run file in the run's folder under `.model-audits/` names this stage as next, and otherwise stop at once, saying this skill runs only inside the model-transition audit.
 - [N02] Where the orchestrator's norms are no longer in context, as after a compaction, invoke `transition-audit` with `--resume` and stop.
 
 ## Compare
 
-- [N03] For every `source` of every trap in the knowledge file that has a `passage`, take the page — the URL without its `#anchor` — from the raw pages discovery cached under `.claude/audits/docs/<YYYY-MM-DD>/`, or fetch it now with `curl -fsSL <url>.md` into that directory; a source with only a `basis` has nothing to compare and gets the verdict `basis`.
+- [N03] For every `source` of every trap in the knowledge file that has a `passage`, take the page — the URL without its `#anchor` — from the raw pages discovery cached in `docs/` in the run's folder, or fetch it now with `curl -fsSL <url>.md` into that directory; a source with only a `basis` has nothing to compare and gets the verdict `basis`.
 - [N04] Compare with the commands of `<drift_commands>`, never by reading the page, so the verdict is the same on every run and the page stays out of context: normalise the page and each fragment of the passage — split on `…` — the same way, and find each fragment's offset in the normalised page.
 
 <drift_commands>

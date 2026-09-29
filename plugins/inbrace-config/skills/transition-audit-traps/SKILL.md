@@ -13,7 +13,7 @@ metadata:
 
 ## Before anything
 
-- [N01] Run only when the run file under `.claude/audits/` names this stage as next, and otherwise stop at once, saying this skill runs only inside the model-transition audit.
+- [N01] Run only when the run file in the run's folder under `.model-audits/` names this stage as next, and otherwise stop at once, saying this skill runs only inside the model-transition audit.
 - [N02] Where the orchestrator's norms are no longer in context, as after a compaction, invoke `transition-audit` with `--resume` and stop.
 - [N03] Read the whole knowledge file the run file names, its `<traps>` included; in a quick sweep, which has no discovery, first write the run's brief as `transition-audit-discover` describes it, reading that skill's `SKILL.md` beside this one's directory for the brief's contents and its "Classify" norms.
 

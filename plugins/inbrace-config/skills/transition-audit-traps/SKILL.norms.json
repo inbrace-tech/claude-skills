@@ -4,8 +4,8 @@
     {
       "id": "N01",
       "where": "Before anything",
-      "refs": { "docs": ["https://code.claude.com/docs/en/skills#control-who-invokes-a-skill"], "inbrace-tech/claude-skills": [34, 40] },
-      "what": "A stage skill is model-invocable so the orchestrator can start it, which also lets Claude invoke it on an unrelated task; the run-file guard makes that cost one skill load. Written for the transition-agnostic audit (#34, #40)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#control-who-invokes-a-skill", "https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 40, 57] },
+      "what": "A stage skill is model-invocable so the orchestrator can start it, which also lets Claude invoke it on an unrelated task; the run-file guard makes that cost one skill load. Written for the transition-agnostic audit (#34, #40). In 0.6.1 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
     },
     {
       "id": "N02",

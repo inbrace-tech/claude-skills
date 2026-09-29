@@ -4,8 +4,8 @@
     {
       "id": "N01",
       "where": "Before anything",
-      "refs": { "docs": ["https://code.claude.com/docs/en/skills#control-who-invokes-a-skill"], "inbrace-tech/claude-skills": [34, 41] },
-      "what": "A stage skill is model-invocable so the orchestrator can start it, which also lets Claude invoke it on an unrelated task; the run-file guard makes that cost one skill load. Written for the transition-agnostic audit (#34, #41)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#control-who-invokes-a-skill", "https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 41, 57] },
+      "what": "A stage skill is model-invocable so the orchestrator can start it, which also lets Claude invoke it on an unrelated task; the run-file guard makes that cost one skill load. Written for the transition-agnostic audit (#34, #41). In 0.6.1 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
     },
     {
       "id": "N02",
@@ -16,8 +16,8 @@
     {
       "id": "N03",
       "where": "Report",
-      "refs": { "inbrace-tech/claude-skills": [34, 41] },
-      "what": "The report file keeps everything the chat leaves out, so the user reads little to decide and loses nothing; discovery findings and the coverage account get sections of their own, since open discovery must show what it found beyond the known traps and what it did not read. Derived from `audit-sonnet-5-5` `N13` and `audit-opus-5-5` `N13` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
+      "refs": { "inbrace-tech/claude-skills": [34, 41, 57], "docs": ["https://code.claude.com/docs/en/permission-modes"] },
+      "what": "The report file keeps everything the chat leaves out, so the user reads little to decide and loses nothing; discovery findings and the coverage account get sections of their own, since open discovery must show what it found beyond the known traps and what it did not read. Derived from `audit-sonnet-5-5` `N13` and `audit-opus-5-5` `N13` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41). In 0.6.1 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
     },
     {
       "id": "N04",
