@@ -144,6 +144,17 @@
         ]
       },
       "what": "The decision section keeps the gates approved after the report, so the report reads as one trail of what was shown and approved. Derived from `audit-sonnet-5-5` `N50` and `audit-opus-5-5` `N50` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
+    },
+    {
+      "id": "N13",
+      "where": "Report",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          43
+        ]
+      },
+      "what": "Added with the drift stage. A changed or vanished passage marks its trap as possibly stale in the report, so the knowledge never silently outlives the docs; the user, and the maintainers through the learning loop, see what the page says now (#34, #43)."
     }
   ]
 }

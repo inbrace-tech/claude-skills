@@ -2,7 +2,7 @@
 name: transition-audit
 description: Runs the stages of a model-transition audit. Use only when an inbrace-config audit command starts it, or to resume one.
 user-invocable: false
-allowed-tools: Skill(inbrace-config:transition-audit-plan) Skill(inbrace-config:transition-audit-discover) Skill(inbrace-config:transition-audit-traps) Skill(inbrace-config:transition-audit-report) Skill(inbrace-config:transition-audit-apply)
+allowed-tools: Skill(inbrace-config:transition-audit-plan) Skill(inbrace-config:transition-audit-discover) Skill(inbrace-config:transition-audit-drift) Skill(inbrace-config:transition-audit-traps) Skill(inbrace-config:transition-audit-report) Skill(inbrace-config:transition-audit-apply)
 metadata:
   max-bytes: 14000
 ---
@@ -28,7 +28,7 @@ $ARGUMENTS
 
 - [N03] Take the knowledge file as `${CLAUDE_SKILL_DIR}/transitions/<slug>.md`; where none exists, run a bootstrap, which the plan states: its docs come from the index at `https://platform.claude.com/llms.txt`, confirmed by the user at the first gate, and it has no known-traps stage.
 - [N04] Keep the run file, `.claude/audits/<target>-<YYYY-MM-DD>.run.md` under the audit root, where `<target>` is the target model id without `claude-`: write it before the plan with the slug, the knowledge file's absolute path or "bootstrap", the root and the arguments, and after every stage record the stage finished, the stage next and each gate answered, since each stage reads it to know it may run.
-- [N05] Run the stages in the order of `<stages>`, invoking each through the Skill tool by the name it lists — `inbrace-config:transition-audit-plan` from the plugin, `transition-audit-plan` when copied — after setting it as next in the run file; a quick sweep skips discover, and a run cancelled at the plan, stopped at the report or headless goes straight to apply for its close.
+- [N05] Run the stages in the order of `<stages>`, invoking each through the Skill tool by the name it lists — `inbrace-config:transition-audit-plan` from the plugin, `transition-audit-plan` when copied — after setting it as next in the run file; a quick sweep skips discover, a bootstrap skips drift and known traps, and a run cancelled at the plan, stopped at the report or headless goes straight to apply for its close.
 
 <stages>
 
@@ -36,10 +36,11 @@ $ARGUMENTS
 |---|---|---|
 | 1 | Plan: list, measure, check the docs, confirm | `transition-audit-plan` |
 | 2 | Discover: read the docs and the files | `transition-audit-discover` |
-| 3 | Known traps: add what discovery missed | `transition-audit-traps` |
-| 4 | Verify: an agent tries to refute every finding | `finding-verifier`, per [N17] |
-| 5 | Report and decide | `transition-audit-report` |
-| 6 | Apply, verify, close | `transition-audit-apply` |
+| 3 | Drift: check the known traps against today's docs | `transition-audit-drift` |
+| 4 | Known traps: add what discovery missed | `transition-audit-traps` |
+| 5 | Verify: an agent tries to refute every finding | `finding-verifier`, per [N17] |
+| 6 | Report and decide | `transition-audit-report` |
+| 7 | Apply, verify, close | `transition-audit-apply` |
 
 </stages>
 

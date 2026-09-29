@@ -24,6 +24,7 @@ metadata:
 - [N06] Otherwise look for the trap: for a trap whose `sweep` is `yes`, search its signal across the areas it names, naming `.claude` explicitly, and read the lines around each match; for the others, read the files of its areas that the inventory holds, within the reading estimate the user approved; record each finding with the trap's id and `trap` in its `<doc>` field.
 - [N07] Correct a discovery line that a trap contradicts — one proposing to change what `<protected>` keeps, or a change where the trap says re-test — giving it the trap's status and ending its note with `(was: <what it said>)`.
 - [N08] Give a finding from a trap whose `kind` is `optional` the status `optional` and a confidence no higher than medium, so it is shown apart from the changes the docs state outright.
+- [N11] Give a finding from a trap whose drift line is not `holds` a confidence no higher than medium, and end its note with "possibly stale: <verdict> since <verified>", so the user sees that the passage behind it has changed or could not be checked.
 - [N09] Give a finding from a `re-test` trap the status `re-test`, and from a `hand-off` trap the hand-off to `/claude-api migrate`; leave a `setting` trap's file choice to the report stage's question.
 
 ## Close the stage

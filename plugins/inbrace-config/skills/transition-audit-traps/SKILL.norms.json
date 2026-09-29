@@ -119,6 +119,17 @@
         ]
       },
       "what": "The report must show that every trap the per-transition audits checked was checked again, so nothing they caught goes unchecked. Written for the transition-agnostic audit (#34, #40)."
+    },
+    {
+      "id": "N11",
+      "where": "Check each trap",
+      "refs": {
+        "inbrace-tech/claude-skills": [
+          34,
+          43
+        ]
+      },
+      "what": "Added with the drift stage. A trap whose passage has changed, vanished or could not be checked may no longer hold, so its findings are capped at medium and say so, while the trap is still applied: nothing the earlier audits checked goes unchecked (#34, #43)."
     }
   ]
 }
