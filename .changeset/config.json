@@ -1,11 +1,12 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "inbrace-tech/claude-skills" }],
+  "changelog": ["@changesets/changelog-github", { "repo": "inbrace-tech/claude-skills", "template": "\n\n- {summary} ({pull} by {authors})" }],
   "commit": false,
   "fixed": [],
   "linked": [],
   "baseBranch": "main",
   "changedFilePatterns": ["**", "!CHANGELOG.md", "!package.json", "!.claude-plugin/plugin.json"],
   "ignore": [],
+  "updateInternalDependencies": "patch",
   "privatePackages": { "version": true, "tag": true }
 }
