@@ -30,4 +30,4 @@ claude plugin validate --strict plugins/<plugin>/skills
 claude plugin validate --strict plugins/<plugin>/agents
 ```
 
-A change under `plugins/<plugin>/` adds a changeset (`pnpm changeset`). Releases are the maintainer's, never an agent's unless asked: `pnpm run release:version`, `pnpm run release`, `pnpm run release:verify-tag <tag> [--verify-signature]` and `pnpm --silent run release:notes <version>`, as `CONTRIBUTING.md` › Versions describes.
+A change under `plugins/<plugin>/` adds a changeset (`pnpm changeset`). Releases are the maintainer's, never an agent's unless asked: `pnpm run release:version` (`scripts/release-version.ts`), `pnpm run release` (`scripts/release-tag.ts`), `pnpm run release:verify-tag <tag> [--verify-signature]` and `pnpm --silent run release:notes <version>`, as `CONTRIBUTING.md` › Versions describes.

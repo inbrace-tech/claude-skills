@@ -1,4 +1,5 @@
-// The pure rules behind release.ts: git state, environment and tag lists in, decisions out.
+// The pure rules behind release-tag.ts: plugin packages, tag lists and the environment in, the tags
+// to check or push and the environment that signs them out.
 
 /** An environment as `process.env` holds it. */
 export type Env = Readonly<Record<string, string | undefined>>;
@@ -18,40 +19,33 @@ export function signedTagEnv(env: Env): Record<string, string | undefined> {
   };
 }
 
-/** Which release step is about to run: `version` consumes changesets, `tag` tags what a merged version pull request set. */
-export type Stage = "version" | "tag";
-
-/** What a release step saw before changing anything. */
-export interface ReleaseState {
-  /** `git status --porcelain`. */
-  porcelain: string;
-  /** `git rev-parse HEAD` and `git rev-parse origin/main`, after fetching origin. */
-  head: string;
-  originMain: string;
-  /** Pending changeset file names in `.changeset/`. */
-  pendingChangesets: readonly string[];
-}
-
-/**
- * Why `stage` must not start, each saying what it saw; empty when the checkout is an up-to-date,
- * clean `main` with changesets to consume (`version`) or none left (`tag`).
- */
-export function releasePreconditions(stage: Stage, { porcelain, head, originMain, pendingChangesets }: ReleaseState): string[] {
-  const errors: string[] = [];
-  if (porcelain.trim() !== "") errors.push(`the working tree has changes:\n${porcelain.trimEnd()}\nrun it on a clean checkout`);
-  if (head !== originMain) {
-    const why = stage === "tag" ? "a tag names the merged commit" : "the version pull request starts from the latest main";
-    errors.push(`HEAD is ${head} but origin/main is ${originMain}; ${why}, so check out origin/main`);
-  }
-  if (stage === "tag" && pendingChangesets.length > 0) {
-    errors.push(`pending changesets in .changeset/ (${pendingChangesets.join(", ")}): the version pull request that consumes them is not merged yet`);
-  }
-  if (stage === "version" && pendingChangesets.length === 0) errors.push("no pending changeset in .changeset/: there is nothing to release");
-  return errors;
-}
-
 /** The tag Changesets gives a workspace package's version (not the `v<version>` of a single-package repository). */
 export const releaseTag = (name: string, version: string): string => `${name}@${version}`;
+
+/** One plugin's package.json: its repository path and text. */
+export interface PackageFile {
+  path: string;
+  text: string;
+}
+
+/** `<name>@<version>` for each plugin package, the tags a release must have on origin, or why one cannot be read. */
+export function expectedTags(packages: readonly PackageFile[]): { tags: string[]; errors: string[] } {
+  const tags: string[] = [];
+  const errors: string[] = [];
+  for (const { path, text } of packages) {
+    let pkg: unknown;
+    try {
+      pkg = JSON.parse(text);
+    } catch {
+      errors.push(`${path}: not valid JSON`);
+      continue;
+    }
+    const { name, version } = (typeof pkg === "object" && pkg !== null ? pkg : {}) as { name?: unknown; version?: unknown };
+    if (typeof name === "string" && name !== "" && typeof version === "string" && version !== "") tags.push(releaseTag(name, version));
+    else errors.push(`${path}: needs a "name" and a "version"`);
+  }
+  return { tags, errors };
+}
 
 /** Tag names in `git ls-remote --tags` output, peeled `^{}` lines folded into their tag. */
 export function lsRemoteTags(output: string): Set<string> {
@@ -63,7 +57,7 @@ export function lsRemoteTags(output: string): Set<string> {
   return tags;
 }
 
-/** What `release tag` does with each expected tag. */
+/** What release-tag does with each expected tag. */
 export interface TagPlan {
   /** On origin already: fetch it and check it is annotated and signed. */
   published: string[];
@@ -83,3 +77,7 @@ export function planTags(expected: readonly string[], remote: ReadonlySet<string
   }
   return plan;
 }
+
+/** What to do about a tag on origin that is not signed. */
+export const unsignedRemedy = (tag: string): string =>
+  `${tag} is on origin but not a signed tag: delete it (\`git push origin :refs/tags/${tag}\` and \`git tag --delete ${tag}\`), then run \`pnpm run release\` again`;
