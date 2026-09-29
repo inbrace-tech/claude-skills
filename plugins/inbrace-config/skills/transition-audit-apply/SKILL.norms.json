@@ -94,8 +94,14 @@
     {
       "id": "N16",
       "where": "Close",
-      "refs": { "docs": ["https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 57] },
-      "what": "Added in 0.6.1 with the move to `.model-audits/` (#57). A finished run needs only its report and findings; the docs cache, digest, brief and run file are working files that would otherwise pile up in the project. A run that stopped early keeps them, since `--resume` reads them (#34)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 57, 61] },
+      "what": "Added in 0.6.1 with the move to `.model-audits/` (#57). A finished run needs only its report and findings; the docs cache, digest, brief and run file are working files that would otherwise pile up in the project. A run that stopped early keeps them, since `--resume` reads them (#34). The working files now include `status-before.txt`, deleted only after the stray-file check (#61)."
+    },
+    {
+      "id": "N17",
+      "where": "Close",
+      "refs": { "inbrace-tech/claude-skills": [34, 61] },
+      "what": "Added after a graded run's report called the tree clean while two files it had written sat at the project's root. Comparing the root's status with the plan's record shows every file the run created or changed outside its folder and the approved edits, so the user can remove them; the close never claims a clean tree without that check (#34, #61)."
     }
   ]
 }

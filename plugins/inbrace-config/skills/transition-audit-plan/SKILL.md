@@ -24,20 +24,20 @@ metadata:
 
 <map>
 
-| Area | What to list |
-|---|---|
-| Memory | `CLAUDE.md`, `CLAUDE.local.md`, `AGENTS.md` and every file they import through `@path` |
-| Rules | the Markdown under `.claude/rules/` |
-| Agents | the Markdown under `.claude/agents/` |
-| Skills | the Markdown under `.claude/skills/` |
-| Commands | the Markdown under `.claude/commands/`, `.claude/templates/` and `.claude/triggers/`, and any Markdown a listed file tells the model to read or copy, such as a brief or dispatch template |
-| Settings | `.claude/settings.json` and `.claude/settings.local.json` |
-| Hooks and scripts | the scripts the settings' `hooks` run, and gate or check scripts that pick instruction text or check a model id, per [N12] |
-| CI and automation | workflow files that run `claude`, pass `--model` or `--effort`, set model variables, or run evals |
-| Claude API code | code that calls the Claude API, per `<api_signals>` |
-| Model-dependent code and docs | code naming the source id as a string literal, such as a price table or a model selector; docs that name the source guide or id, such as a guide index or per-model notes; code that parses model output or a session transcript |
-| Setup and dependencies | the README and setup scripts that state the Claude Code version the project needs, and manifests pinning the Anthropic SDK or Claude Code |
-| Plugin and eval config | a plugin manifest, marketplace or eval suite of the project that names a model |
+| Area | Id | What to list |
+|---|---|---|
+| Memory | `memory` | `CLAUDE.md`, `CLAUDE.local.md`, `AGENTS.md` and every file they import through `@path` |
+| Rules | `rules` | the Markdown under `.claude/rules/` |
+| Agents | `agents` | the Markdown under `.claude/agents/` |
+| Skills | `skills` | the Markdown under `.claude/skills/` |
+| Commands | `commands` | the Markdown under `.claude/commands/`, `.claude/templates/` and `.claude/triggers/`, and any Markdown a listed file tells the model to read or copy, such as a brief or dispatch template |
+| Settings | `settings` | `.claude/settings.json` and `.claude/settings.local.json` |
+| Hooks and scripts | `hooks` | the scripts the settings' `hooks` run, and gate or check scripts that pick instruction text or check a model id, per [N12] |
+| CI and automation | `ci` | workflow files that run `claude`, pass `--model` or `--effort`, set model variables, or run evals |
+| Claude API code | `api-code` | code that calls the Claude API, per `<api_signals>` |
+| Model-dependent code and docs | `model-dependent` | code naming the source id as a string literal, such as a price table or a model selector; docs that name the source guide or id, such as a guide index or per-model notes; code that parses model output or a session transcript |
+| Setup and dependencies | `setup` | the README and setup scripts that state the Claude Code version the project needs, and manifests pinning the Anthropic SDK or Claude Code |
+| Plugin and eval config | `plugin-config` | a plugin manifest, marketplace or eval suite of the project that names a model |
 
 </map>
 
@@ -111,6 +111,7 @@ wc -c CLAUDE.md CLAUDE.local.md AGENTS.md <every file they import through @path>
 - [N21] Recommend one option per question, with its reason in the option's description: full scope up to ten batches, and above that the reduced scope when it saves a batch, unless the skills area holds a skill written for the source model — its name or title names it, or [N12] finds it delivered by a prefix match — or holds more than half of the batches; agents mode when the recommended scope still has more than ten batches, this session otherwise; never the quick sweep at ten batches or fewer.
 - [N22] Estimate time from measured runs: in this session one to two minutes per batch; in agents, per wave, the slowest auditor's batch count times one to two minutes; plus about two to three minutes for the verifier and one for the docs.
 - [N23] Offer the quick sweep as a scope, estimated per [N25] with its fixed load, its findings and its verifier, and the lines around the matches as its inventory, stating its limit: it runs in this session with no discovery, checks the known traps against today's docs, searches the root for the signals of the traps whose `sweep` is `yes` and reads only the lines around each match, so it misses what needs the surrounding context and anything no trap names.
+- [N26] Before the first gate, record the root's `git status --porcelain --untracked-files=all` in `status-before.txt` in the run's folder — or, outside a git repository, the sorted list of files under the root — so the close can tell which files the run created or changed.
 - [N24] Record the plan and the gate's answers, with every option's estimate, in the report file and the run file, and set the next stage.
 
 ## Sources

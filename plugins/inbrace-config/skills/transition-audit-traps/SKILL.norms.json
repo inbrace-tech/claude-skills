@@ -34,8 +34,8 @@
     {
       "id": "N06",
       "where": "Check each trap",
-      "refs": { "inbrace-tech/claude-skills": [34, 40] },
-      "what": "Discovery can miss a known edge case; looking for each trap where it can occur adds it back. Lexical traps are found by search, the others by reading their areas, within what the user approved. Written for the transition-agnostic audit (#34, #40)."
+      "refs": { "inbrace-tech/claude-skills": [34, 40, 61] },
+      "what": "Discovery can miss a known edge case; looking for each trap where it can occur adds it back. Lexical traps are found by search, the others by reading their areas, within what the user approved. Written for the transition-agnostic audit (#34, #40). After grading a full-scope run of `main` (a289710) on a seeded project against its sealed answer key — recall 96.6% primary, 89.8% strict, precision 100% — a planted P13 in a skill was missed: the trap's area named only agents and the stage read only those files. Areas are now ids of the plan's map, each trap lists every area its \"applies when\" covers, check-norms rejects an unknown id, and the clean line names the areas read (#61)."
     },
     {
       "id": "N07",
@@ -58,8 +58,8 @@
     {
       "id": "N10",
       "where": "Close the stage",
-      "refs": { "inbrace-tech/claude-skills": [34, 40] },
-      "what": "The report must show that every trap the per-transition audits checked was checked again, so nothing they caught goes unchecked. Written for the transition-agnostic audit (#34, #40)."
+      "refs": { "inbrace-tech/claude-skills": [34, 40, 61] },
+      "what": "The report must show that every trap the per-transition audits checked was checked again, so nothing they caught goes unchecked. Written for the transition-agnostic audit (#34, #40). After grading a full-scope run of `main` (a289710) on a seeded project against its sealed answer key — recall 96.6% primary, 89.8% strict, precision 100% — a planted P13 in a skill was missed: the trap's area named only agents and the stage read only those files. Areas are now ids of the plan's map, each trap lists every area its \"applies when\" covers, check-norms rejects an unknown id, and the clean line names the areas read (#61)."
     },
     {
       "id": "N11",

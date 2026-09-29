@@ -28,8 +28,8 @@
     {
       "id": "N05",
       "where": "List",
-      "refs": { "docs": ["https://code.claude.com/docs/en/memory"], "inbrace-tech/claude-skills": [34, 38] },
-      "what": "The inventory follows a map of where model-dependent behaviour lives, not a list of what to find: the closed pattern table bounded discovery in #34's measurement, missing a price table, a guide index and the version floor. The areas for CI, setup and dependencies, and plugin and eval config are new; the rest come from the per-transition audits, without their clause reading model-dependent code only for named rows. Derived from `audit-sonnet-5-5` `N02` and `audit-opus-5-5` `N02` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/memory"], "inbrace-tech/claude-skills": [34, 38, 61] },
+      "what": "The inventory follows a map of where model-dependent behaviour lives, not a list of what to find: the closed pattern table bounded discovery in #34's measurement, missing a price table, a guide index and the version floor. The areas for CI, setup and dependencies, and plugin and eval config are new; the rest come from the per-transition audits, without their clause reading model-dependent code only for named rows. Derived from `audit-sonnet-5-5` `N02` and `audit-opus-5-5` `N02` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). The map's areas gained ids, which the knowledge files' trap areas use (#61)."
     },
     {
       "id": "N06",
@@ -150,6 +150,12 @@
       "where": "Measure",
       "refs": { "inbrace-tech/claude-skills": [34, 59] },
       "what": "Added after the gate's estimate proved far too low. The old estimate was the inventory times one to three, plus 30–40k for the skills, but the inventory is a small part of a run: the fixed load (harness, the audit's own skills, the knowledge file) is ~75–85k, the docs ~30k, each finding costs its writing, relabelling, verification and report entry, and every verifier loads its own base and opens the cached pages to check passages. Each row's coefficients come from two runs of this audit at full scope in session mode: a small seeded project (inventory ~18k tokens, 10 batches, 74 raw findings, 3 verifiers) whose gate said ~65k–125k and which spent ~243k tokens of context in the session and ~248k in the verifiers, US$7.90, 18 min; and a tiny throwaway project (~0.2k, 1 batch, 8 findings, 1 verifier) whose gate said ~30–40k and which spent ~116k and ~40k, US$2.16, 4.5 min. Recomputed from what each plan knew, the rows bracket both: ~221k–565k against ~490k, and ~148k–201k against ~156k. The range is wide because the number of findings is unknown until the files are read (#34, #59)."
+    },
+    {
+      "id": "N26",
+      "where": "Show the plan and ask",
+      "refs": { "inbrace-tech/claude-skills": [34, 61] },
+      "what": "Added with the close's stray-file check (#61). The close can only tell which files the run created or changed when it knows the root's state before the run, including files the user had already left untracked; the record lives in the run's folder (#34)."
     }
   ]
 }

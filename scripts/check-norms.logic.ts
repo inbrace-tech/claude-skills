@@ -565,6 +565,25 @@ export const TRAP_ENUMS: Readonly<Record<string, readonly string[]>> = {
   sweep: ["yes", "no"],
 };
 
+/**
+ * The area ids a trap's `area` may list: the ids of the plan stage's `<map>`, so the known-traps stage
+ * knows exactly which files to read for each trap.
+ */
+export const TRAP_AREAS: readonly string[] = [
+  "memory",
+  "rules",
+  "agents",
+  "skills",
+  "commands",
+  "settings",
+  "hooks",
+  "ci",
+  "api-code",
+  "model-dependent",
+  "setup",
+  "plugin-config",
+];
+
 /** The fields every trap states, in the order the format writes them. */
 export const TRAP_FIELDS = ["kind", "area", "signal", "applies when", "change", "confidence", "sweep"] as const;
 
@@ -680,6 +699,11 @@ function trapErrors(path: string, trap: Trap): string[] {
     }
     const allowed = TRAP_ENUMS[field];
     if (allowed !== undefined && !allowed.includes(value)) errors.push(`${at} "${field}" is "${value}", not one of ${allowed.join(", ")}`);
+  }
+  const area = trap.fields.get("area");
+  if (area !== undefined && area !== "") {
+    const unknown = area.split(",").map((item) => item.trim()).filter((item) => !TRAP_AREAS.includes(item));
+    if (unknown.length > 0) errors.push(`${at} "area" names ${unknown.map((item) => `"${item}"`).join(", ")}, not an area id of the plan's map (${TRAP_AREAS.join(", ")})`);
   }
   if (trap.sources.length === 0) errors.push(`${at} has no source`);
   trap.sources.forEach((source, index) => {

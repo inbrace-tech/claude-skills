@@ -49,6 +49,8 @@ $ARGUMENTS
 
 ## Throughout the run
 
+- [N19] Write every file of the run by its absolute path under the run's folder — a `curl -o` or `>` target included — never by a path relative to the working directory, which a `cd` moves: a run once left a 107 KB doc page and its normalised copy at the audited project's root.
+
 - [N08] Before the first tool call and at the start of every stage, show the checklist as plain text, titled `<title> audit` from the knowledge file, one line per row of `<stages>`, each marked `[x]` done, `[>]` current, `[ ]` pending or `[-]` skipped, never depending on a task-list tool.
 - [N09] Ask every question through `AskUserQuestion`, recommended option first, at most four options per question, splitting a larger choice into several questions of one call; where the tool is not available, write the question as a numbered list with the recommendation marked, end the turn, and change nothing until the user answers.
 - [N10] Write the chat, every question and every file in the run's folder in the user's language — that of their messages, or the session's configured one — translating every template's headings and keeping quoted text, paths, ids and commands as they are.

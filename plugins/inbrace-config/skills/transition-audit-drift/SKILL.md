@@ -24,6 +24,8 @@ metadata:
 <drift_commands>
 
 ```bash
+# every path is absolute, under the run's folder — never relative to the working directory
+docs="<absolute path of the run's folder>/docs"; page="$docs/<page name>"
 # once per page: normalise — whitespace runs to one space, [text](url) to text, no * marks, straight quotes
 norm() { tr -s ' \t\r\n' '    ' | sed -E 's/\[([^]]*)\]\([^)]*\)/\1/g' | tr -d '*' | LC_ALL=C sed "s/’/'/g; s/‘/'/g; s/“/\"/g; s/”/\"/g"; }
 norm < "$page.md" > "$page.norm"

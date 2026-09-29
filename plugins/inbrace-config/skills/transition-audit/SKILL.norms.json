@@ -108,6 +108,12 @@
       "where": "Verify",
       "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#choose-a-model"], "inbrace-tech/claude-skills": [34, 38] },
       "what": "Some projects' hooks refuse an Agent call without `model`; `opus` then resolves to the session's Opus model, and the agent's pinned effort may not hold. Derived from `audit-sonnet-5-5` `N55` and `audit-opus-5-5` `N55` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+    },
+    {
+      "id": "N19",
+      "where": "Throughout the run",
+      "refs": { "inbrace-tech/claude-skills": [34, 61] },
+      "what": "Added after a graded run left a 107 KB doc page and its normalised copy at the audited project's root: a command wrote to a path relative to the working directory, which a `cd` had moved. Every file the run writes goes by its absolute path under the run's folder, so nothing lands in the user's tree (#34, #61)."
     }
   ]
 }
