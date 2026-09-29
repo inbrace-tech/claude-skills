@@ -94,8 +94,8 @@
     {
       "id": "N16",
       "where": "Close",
-      "refs": { "docs": ["https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 57, 61] },
-      "what": "Added in 0.6.1 with the move to `.model-audits/` (#57). A finished run needs only its report and findings; the docs cache, digest, brief and run file are working files that would otherwise pile up in the project. A run that stopped early keeps them, since `--resume` reads them (#34). The working files now include `status-before.txt`, deleted only after the stray-file check (#61)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 57, 61, 68] },
+      "what": "Added in 0.6.1 with the move to `.model-audits/` (#57). A finished run needs only its report and findings; the docs cache, digest, brief and run file are working files that would otherwise pile up in the project. A run that stopped early keeps them, since `--resume` reads them (#34). The working files now include `status-before.txt`, deleted only after the stray-file check (#61). In 0.6.1 the close handles a refused deletion (#68): in the 2026-09-29 capability evaluation a project's own hook that guards destructive commands refused the cleanup `rm`, the only permission denial in two otherwise complete runs, and the norm had assumed the deletion succeeds. The files stay, the close names them and says the user can delete them or the run's folder, and the deletion is never retried another way, since routing around the project's guard would override a choice the user made."
     },
     {
       "id": "N17",
