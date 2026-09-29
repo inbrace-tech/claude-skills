@@ -27,7 +27,7 @@ $ARGUMENTS
 </arguments>
 
 - [N03] Take the knowledge file as `${CLAUDE_SKILL_DIR}/transitions/<slug>.md`; where none exists, run a bootstrap, which the plan states: its docs come from the index at `https://platform.claude.com/llms.txt`, confirmed by the user at the first gate, and it has no known-traps stage.
-- [N04] Keep the run file, `.claude/audits/<target>-<YYYY-MM-DD>.run.md` under the audit root, where `<target>` is the target model id without `claude-`: write it before the plan with the slug, the knowledge file's absolute path or "bootstrap", the root and the arguments, and after every stage record the stage finished, the stage next and each gate answered, since each stage reads it to know it may run.
+- [N04] Keep every file of the run in its own folder, `.model-audits/<target>-<YYYY-MM-DD>/` under the audit root, where `<target>` is the target model id without `claude-`, and `-2`, `-3`, … added when that folder holds another run — never under `.claude/`, which Claude Code protects from writes in every permission mode but bypass; when creating `.model-audits/` for the first time, write in it a `.gitignore` holding the single line `*`, so nothing of the audit shows in `git status`, and never edit the project's own `.gitignore` or `.git/info/exclude`. Keep the run file, `run.md` in that folder: write it before the plan with the slug, the knowledge file's absolute path or "bootstrap", the root and the arguments, and after every stage record the stage finished, the stage next and each gate answered, since each stage reads it to know it may run.
 - [N05] Run the stages in the order of `<stages>`, invoking each through the Skill tool by the name it lists — `inbrace-config:transition-audit-plan` from the plugin, `transition-audit-plan` when copied — after setting it as next in the run file; a quick sweep skips discover, a bootstrap skips drift and known traps, and a run cancelled at the plan, stopped at the report or headless goes straight to apply for its close.
 
 <stages>
@@ -45,13 +45,13 @@ $ARGUMENTS
 </stages>
 
 - [N06] With `--resume`, or after an interruption or a compaction, read the run file, the findings file and the report on disk, reprint the checklist, say where the run stopped, and continue from the next stage, the last batch the findings file records or the last edit the report records, redoing nothing finished.
-- [N07] Never resume a findings file with no run file beside it, which an older version of this audit wrote in another format: say so, and write this run's files with a `-2` suffix.
+- [N07] Never resume the files an older version of this audit left in the project, in another format and folder: say they are there, for the user to keep or delete, and start the run in its own folder.
 
 ## Throughout the run
 
 - [N08] Before the first tool call and at the start of every stage, show the checklist as plain text, titled `<title> audit` from the knowledge file, one line per row of `<stages>`, each marked `[x]` done, `[>]` current, `[ ]` pending or `[-]` skipped, never depending on a task-list tool.
 - [N09] Ask every question through `AskUserQuestion`, recommended option first, at most four options per question, splitting a larger choice into several questions of one call; where the tool is not available, write the question as a numbered list with the recommendation marked, end the turn, and change nothing until the user answers.
-- [N10] Write the chat, every question and every file under `.claude/audits/` in the user's language — that of their messages, or the session's configured one — translating every template's headings and keeping quoted text, paths, ids and commands as they are.
+- [N10] Write the chat, every question and every file in the run's folder in the user's language — that of their messages, or the session's configured one — translating every template's headings and keeping quoted text, paths, ids and commands as they are.
 - [N11] Report progress in batches: one line when a batch finishes or an auditor returns, with the batches done of the total and the findings they added.
 - [N12] Ask for approval before each costly step — reading the first batch, starting any agent, applying changes — showing the fixed cost already paid, the step's marginal cost and the total to the end, each labelled "tokens of context (estimate)", the total being the fixed cost plus every step still ahead; and say in the first gate's footer that these figures leave out the cache re-reads of every round trip, which make the tokens actually sent several times larger (measured: about 4× in the session on small runs, about 10× across agents and session on a 47-batch run), and that `/usage`, also `/cost`, shows the real volume.
 - [N13] Record every approved gate in the report file with the estimate of each option offered, marking a gate the arguments answered as "pre-approved by argument", and put the gates approved after the report into its decision section.
@@ -60,7 +60,7 @@ $ARGUMENTS
 
 ## Findings file
 
-- [N16] Record findings in `.claude/audits/<target>-<YYYY-MM-DD>.findings.md`, one line each in the `<line_format>` below, which every stage and agent of the run uses and the brief carries:
+- [N16] Record findings in `findings.md` in the run's folder, one line each in the `<line_format>` below, which every stage and agent of the run uses and the brief carries:
 
 <line_format>
 

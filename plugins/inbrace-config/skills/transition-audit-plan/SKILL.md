@@ -13,7 +13,7 @@ metadata:
 
 ## Before anything
 
-- [N01] Run only when the run file under `.claude/audits/` names this stage as next, and otherwise stop at once, saying this skill runs only inside the model-transition audit.
+- [N01] Run only when the run file in the run's folder under `.model-audits/` names this stage as next, and otherwise stop at once, saying this skill runs only inside the model-transition audit.
 - [N02] Where the orchestrator's norms are no longer in context, as after a compaction, invoke `transition-audit` with `--resume` and stop.
 - [N03] Read the knowledge file only down to its `<traps>` line, which holds all this stage needs: the transition, the docs, `<source_id_match>` and `<api_signals>`; in a bootstrap, find the target's prompting guide, migration guide and what's-new page in `https://platform.claude.com/llms.txt` and use them as the docs, for the user to confirm at the gate.
 - [N04] Take the audit root from the arguments, or the current project root when none is given, and state it in the plan without asking.

@@ -4,8 +4,8 @@
     {
       "id": "N01",
       "where": "Before anything",
-      "refs": { "docs": ["https://code.claude.com/docs/en/skills#control-who-invokes-a-skill"], "inbrace-tech/claude-skills": [34, 41] },
-      "what": "A stage skill is model-invocable so the orchestrator can start it, which also lets Claude invoke it on an unrelated task; the run-file guard makes that cost one skill load. Written for the transition-agnostic audit (#34, #41)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#control-who-invokes-a-skill", "https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 41, 57] },
+      "what": "A stage skill is model-invocable so the orchestrator can start it, which also lets Claude invoke it on an unrelated task; the run-file guard makes that cost one skill load. Written for the transition-agnostic audit (#34, #41). In 0.6.1 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
     },
     {
       "id": "N02",
@@ -46,8 +46,8 @@
     {
       "id": "N08",
       "where": "Close",
-      "refs": { "docs": ["https://code.claude.com/docs/en/costs#track-your-costs", "https://code.claude.com/docs/en/prompt-caching#how-the-cache-is-organized"], "inbrace-tech/claude-skills": [34, 41] },
-      "what": "Every run ends with the same close, so the user always sees what changed, what did not, and why the harness shows more tokens than the estimate. Derived from `audit-sonnet-5-5` `N45` and `audit-opus-5-5` `N45` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/costs#track-your-costs", "https://code.claude.com/docs/en/prompt-caching#how-the-cache-is-organized", "https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 41, 57] },
+      "what": "Every run ends with the same close, so the user always sees what changed, what did not, and why the harness shows more tokens than the estimate. Derived from `audit-sonnet-5-5` `N45` and `audit-opus-5-5` `N45` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41). In 0.6.1 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
     },
     {
       "id": "N09",
@@ -90,6 +90,12 @@
       "where": "Learning loop, only with the user's consent",
       "refs": { "docs": ["https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms"], "inbrace-tech/claude-skills": [34, 44] },
       "what": "The user sees the draft in full before anything is posted, and the `gh` path, which posts publicly under their account, asks a second time; the maintainer approved both confirmations. The repository sets `blank_issues_enabled: false`, so the prefilled link opens the `trap_report.yml` issue form, whose field ids are the link's query parameters; a URL too long for the browser drops the passages (#34, #44)."
+    },
+    {
+      "id": "N16",
+      "where": "Close",
+      "refs": { "docs": ["https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 57] },
+      "what": "Added in 0.6.1 with the move to `.model-audits/` (#57). A finished run needs only its report and findings; the docs cache, digest, brief and run file are working files that would otherwise pile up in the project. A run that stopped early keeps them, since `--resume` reads them (#34)."
     }
   ]
 }
