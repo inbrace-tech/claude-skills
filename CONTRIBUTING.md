@@ -88,7 +88,7 @@ The maintainer cuts releases:
 
 1. `pnpm run release:version` on a branch off `main`: Changesets consumes the pending changesets, moves each plugin's version and writes `plugins/<plugin>/CHANGELOG.md`, then the version is copied into `plugin.json`. It needs a GitHub token for the changelog's links, taken from `GITHUB_TOKEN` or else `gh auth token`, and passed only to Changesets' environment.
 2. Open that diff as the version pull request and merge it.
-3. On the merged `main`, `pnpm run release` creates a signed `<plugin>@<version>` tag for each new version, checks it with `pnpm run release:verify-tag <tag> --verify-signature`, and pushes only those tags. The Release tag signature workflow then checks each pushed tag carries a signature; when it fails, delete the tag locally and on `origin` and cut it again.
+3. On the merged `main`, `pnpm run release` fetches `origin` and refuses to tag unless `HEAD` is `origin/main`, the tree is clean, no changeset is pending and `check-version` passes. It then creates a signed `<plugin>@<version>` tag for each new version, checks it with `pnpm run release:verify-tag <tag> --verify-signature`, and pushes only those tags. The Release tag signature workflow then checks each pushed tag carries a signature; when it fails, delete the tag locally and on `origin` and cut it again.
 4. Publish a GitHub Release for each tag, its notes the version's section of the plugin's `CHANGELOG.md`. Write them to a file, never a pipe, so a missing section stops the release instead of publishing empty notes:
 
    ```bash

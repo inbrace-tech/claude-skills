@@ -2,13 +2,17 @@
 // The maintainer's release steps around Changesets. Run from the repository root:
 //   node scripts/release.ts version   `changeset version`, then copy each version into plugin.json (`pnpm run release:version`)
 //   node scripts/release.ts tag       sign a `<plugin>@<version>` tag per new version, verify it, push only the new ones (`pnpm run release`)
+// `tag` first fetches origin and refuses unless HEAD is origin/main, the tree is clean, no changeset
+// is pending and every plugin.json carries its package's version.
 // The changelog generator asks GitHub who wrote each change: `version` takes GITHUB_TOKEN when set,
 // else `gh auth token`, and hands it to the child's environment only — never printed, never an argument.
 // Exit codes: 0 done, 1 a step failed, 2 wrong usage.
 
 import { execFileSync, spawnSync } from "node:child_process";
 import { join } from "node:path";
-import { newTags, signedTagEnv } from "./release.logic.ts";
+import { readdirSync } from "node:fs";
+import { isChangesetFile } from "./check-changeset-size.logic.ts";
+import { newTags, releasePreconditions, signedTagEnv } from "./release.logic.ts";
 
 const syncScript = join(import.meta.dirname, "sync-plugin-version.ts");
 const verifyTagScript = join(import.meta.dirname, "verify-tag-signature.ts");
@@ -48,7 +52,15 @@ function version(): void {
 }
 
 function tag(): void {
-  if (git(["status", "--porcelain"]).trim() !== "") fail("the working tree has changes; tag a clean checkout of the merged version PR");
+  // An unreachable origin fails here: tagging without knowing origin/main never passes.
+  run("git", ["fetch", "origin", "main", "--tags"]);
+  const errors = releasePreconditions({
+    porcelain: git(["status", "--porcelain"]),
+    head: git(["rev-parse", "HEAD"]).trim(),
+    originMain: git(["rev-parse", "origin/main"]).trim(),
+    pendingChangesets: readdirSync(".changeset").filter(isChangesetFile),
+  });
+  if (errors.length > 0) fail(`not tagging:\n${errors.map((error) => `- ${error}`).join("\n")}`);
   run(process.execPath, [syncScript, "--check"]);
 
   const before = tags();

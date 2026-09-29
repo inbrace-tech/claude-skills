@@ -23,3 +23,25 @@ export function newTags(before: readonly string[], after: readonly string[]): st
   const seen = new Set(before);
   return after.filter((tag) => tag !== "" && !seen.has(tag));
 }
+
+/** What `release tag` saw before creating any tag. */
+export interface ReleaseState {
+  /** `git status --porcelain`. */
+  porcelain: string;
+  /** `git rev-parse HEAD` and `git rev-parse origin/main`, after fetching origin. */
+  head: string;
+  originMain: string;
+  /** Pending changeset file names in `.changeset/`. */
+  pendingChangesets: readonly string[];
+}
+
+/** Why tagging must not start, each saying what it saw; empty when the checkout is the merged, versioned `main`. */
+export function releasePreconditions({ porcelain, head, originMain, pendingChangesets }: ReleaseState): string[] {
+  const errors: string[] = [];
+  if (porcelain.trim() !== "") errors.push(`the working tree has changes:\n${porcelain.trimEnd()}\ntag a clean checkout of the merged version pull request`);
+  if (head !== originMain) errors.push(`HEAD is ${head} but origin/main is ${originMain}; a tag names the merged commit, so check out origin/main`);
+  if (pendingChangesets.length > 0) {
+    errors.push(`pending changesets in .changeset/ (${pendingChangesets.join(", ")}): the version pull request that consumes them is not merged yet`);
+  }
+  return errors;
+}
