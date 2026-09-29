@@ -72,6 +72,12 @@
       "where": "Verify",
       "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#concurrent-subagent-limit"], "inbrace-tech/claude-skills": [34, 40] },
       "what": "Added in the transition-agnostic audit. Above 40 raw findings the session starts one verifier per group of files, all at once, below Claude Code's concurrent subagent limit. Each verifier keeps to its files, and a file is never split across shards, so its merge of duplicates on the same file, line and id still sees every candidate (#34, #40)."
+    },
+    {
+      "id": "N13",
+      "where": "Verify",
+      "refs": { "inbrace-tech/claude-skills": [66] },
+      "what": "Added in 0.6.1. In the 2026-09-29 capability evaluation 11 notes of one run's final list cited a selector at one line when it sits at the line before it. The verifier corrected the line on 3 of them and left 8, since [N04] moves a finding's anchor and nothing asked it to check the other lines a note cites. No verdict changed, but a user following those notes lands one line off. Checking every cited `file:line` against the construct it names, and saying which one could not be confirmed, makes every line reference of the final list one the user can follow (#66)."
     }
   ]
 }

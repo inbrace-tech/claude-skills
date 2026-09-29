@@ -70,7 +70,7 @@ Seven fields separated by ` | `:
 
 `<file>:<line> | <id> | <status> | "<quoted text>" | <confidence> | <doc> | <note>`
 
-- `<file>` is relative to the audit root, and `<line>` is the line that carries the signal where the quoted text starts, never a function head or a nearby setting.
+- `<file>` is relative to the audit root, and `<line>` is the line that carries the signal where the quoted text starts, never a function head or a nearby setting; a `file:line` the note cites follows the same rule, pointing at the line of the construct it names.
 - `<id>` is a trap id of the knowledge file, `P00` for older residue, or `D01`, `D02`, … in order for a discovery finding no trap names.
 - `<status>` is `change`, `already decided`, `older residue` or `unclear` in a batch's lines; the final list may also use `re-test`, `optional` and `discarded`.
 - `<quoted text>` is the file's text exactly, trimmed to the words that matter.
