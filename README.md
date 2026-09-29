@@ -107,7 +107,23 @@ Run `claude plugin list` in your terminal, or open the **Installed** tab in `/pl
 
 ### 6. Update
 
-Third-party marketplaces do not update on their own. Run `/plugin marketplace update inbrace`, or turn on auto-update for `inbrace` in the **Marketplaces** tab of `/plugin`.
+An existing install receives a new release only when the plugin's version changes; commits between releases do not reach it. To update, refresh the marketplace listing inside Claude Code, then update the plugin from your terminal:
+
+```text
+/plugin marketplace update inbrace
+```
+
+```bash
+claude plugin update inbrace-config@inbrace
+```
+
+Or open the plugin on the **Installed** tab in `/plugin` and select **Update now**. The running session keeps the version it loaded: run `/reload-plugins`, or start a new session, to use the new one.
+
+Auto-update is off by default for a third-party marketplace like this one. Turn it on per marketplace: in `/plugin`, go to **Marketplaces**, select `inbrace` and select **Enable auto-update**.
+
+Each release is a [GitHub Release](https://github.com/inbrace-tech/claude-skills/releases) with its notes, tagged `inbrace-config@x.y.z`. The plugin's full history is in [`plugins/inbrace-config/CHANGELOG.md`](plugins/inbrace-config/CHANGELOG.md).
+
+Checked against [Keep plugins updated](https://code.claude.com/docs/en/plugins/install#keep-plugins-updated) and [Host and maintain a marketplace › Keep users up to date](https://code.claude.com/docs/en/plugins/host-marketplace#keep-users-up-to-date).
 
 ### 7. Turn off or remove
 
