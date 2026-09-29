@@ -1,4 +1,5 @@
-# On every pushed release tag (`<plugin>@<version>`, as Changesets names them): the tag must be
+# On every pushed release tag (`<plugin>@<version>`, as Changesets names them; `**@*` also matches a
+# scoped name such as `@scope/plugin@1.0.0`, whose `/` a single `*` would not cross): the tag must be
 # annotated and carry a signature block. A runner holds no maintainer key, so this checks presence
 # only; the maintainer verifies the signature itself with `pnpm run release:verify-tag <tag> --verify-signature`.
 # Red means the tag was not signed: delete it (`git push origin :refs/tags/<tag>` and
@@ -7,7 +8,7 @@ name: Release tag signature
 
 on:
   push:
-    tags: ["*@*"]
+    tags: ["**@*"]
 
 permissions:
   contents: read

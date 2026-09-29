@@ -14,6 +14,19 @@ export const BUMPS = ["patch", "minor", "major"] as const;
 /** One `"<package>": <bump>` frontmatter line; the name may be bare, single- or double-quoted. */
 const RELEASE_LINE = /^(["']?)([^"':\s]+)\1\s*:\s*(\S+)\s*$/;
 
+/**
+ * The summary as @changesets/changelog-github renders it: its override lines removed, with the same
+ * patterns that package uses (dist/index.mjs, getReleaseLine) — the first `pr:`, `pull:` or
+ * `pull request:`, the first `commit:`, and every `author:` or `user:`.
+ */
+export function renderedSummary(body: string): string {
+  return body
+    .replace(/^\s*(?:pr|pull|pull\s+request):\s*#?(\d+)/im, "")
+    .replace(/^\s*commit:\s*([^\s]+)/im, "")
+    .replace(/^\s*(?:author|user):\s*@?([^\s]+)/gim, "")
+    .trim();
+}
+
 /** Whether a `.changeset/` entry is a changeset rather than its README or config. */
 export const isChangesetFile = (name: string): boolean => name.endsWith(".md") && name.toLowerCase() !== "readme.md";
 
@@ -40,7 +53,7 @@ export function checkChangeset(path: string, text: string, packages: ReadonlySet
   }
   if (named.size === 0 && errors.length === 0) errors.push(`${path}: names no package; every changeset bumps at least one plugin`);
 
-  const summary = body.trim();
+  const summary = renderedSummary(body);
   if (summary === "") errors.push(`${path}: has no summary; write one line saying what changed for users`);
   else if (/\r?\n/.test(summary)) errors.push(`${path}: the summary spans ${summary.split(/\r?\n/).length} lines; keep it to one and put the reasoning in the pull request`);
   else if (summary.length > MAX_SUMMARY_CHARACTERS) {

@@ -45,9 +45,15 @@ describe("release-notes, end to end", () => {
     expect(result.stdout).toMatch(/Full changelog: https:\/\/github\.com\/inbrace-tech\/claude-skills\/blob\/inbrace-config@0\.5\.0\/plugins\/inbrace-config\/CHANGELOG\.md\n$/);
   });
 
-  it("fails on a version with no section, and without a version", () => {
+  it("reads the version as v0.5.0 and inbrace-config@0.5.0 too", () => {
+    for (const arg of ["v0.5.0", "inbrace-config@0.5.0"]) expect(run("release-notes.ts", repo, arg).stdout).toMatch(/^- New skill/);
+  });
+
+  it("exits 1 on a version with no section, 2 without a version or with a malformed one", () => {
     expect(run("release-notes.ts", repo, "9.9.9").status).toBe(1);
     expect(run("release-notes.ts", repo).status).toBe(2);
+    expect(run("release-notes.ts", repo, "0.5").status).toBe(2);
+    expect(run("release-notes.ts", repo, "other@0.5.0").status).toBe(2);
   });
 });
 
