@@ -22,6 +22,13 @@ Skills here follow one format, so every rule can be found, cited and traced to t
 - **The surface states the final behavior.** How a rule changed, and why an alternative was rejected, belongs in the sidecar and the pull request, not in `SKILL.md`.
 - **Wrap content Claude executes verbatim** — a command, a template, a table it checks against — in a structural tag such as `<measure>` or `<patterns>`, so it reads as material to use rather than prose to paraphrase.
 - **Keep the context small.** A skill that reads a user's files states how it bounds what it reads, for example by measuring first and working in batches.
+- **Declare a size ceiling where the skill must stay small**, as `max-bytes` under the `metadata` frontmatter map, which Claude Code leaves to your own tooling ([Frontmatter reference](https://code.claude.com/docs/en/skills#frontmatter-reference)). `check-norms` fails a skill larger than the ceiling it declares, an agent over 8,192 bytes and a knowledge file over 57,000 bytes. The ceilings are in bytes because files like these run about 2.85 bytes per token, and after compaction a skill keeps only its first 5,000 tokens ([Skill content lifecycle](https://code.claude.com/docs/en/skills#skill-content-lifecycle)).
+- **Knowledge a skill applies per model transition lives in a knowledge file**, `skills/<skill>/transitions/<slug>.md`, where the slug reads `<source>-to-<target>`, such as `sonnet-5-to-5-5`.
+  - Its frontmatter sets `transition` (equal to the slug), `title`, `source`, `target`, `claude-code-floor` and `verified`, a `YYYY-MM-DD` date.
+  - Each trap sits in its `<traps>` block under a `### Pnn — <title>` heading, with the list items `kind` (`change`, `re-test`, `optional`, `hand-off` or `setting`), `area`, `signal`, `applies when`, `change`, `confidence` (`high`, `medium` or `low`) and `sweep` (`yes` or `no`).
+  - A trap has one or more `- source:` https URLs. Under each goes either a `passage:`, quoted verbatim from the page, with the `verified:` date, or a `basis:` stating the inference or the system-card page it rests on.
+  - Where each trap was learned goes in `<slug>.traps.json` beside the file, which nothing loads at runtime: `{"transition": "<path of the .md>", "traps": [{"id": "P01", "learned": "…", "refs": {…}}]}`, with `refs` shaped as in `SKILL.norms.json`.
+  - `check-norms` holds the file and its sidecar to each other, and trap ids follow the norm-id rule: never renumbered or reused.
 - **Agents follow the same format.** A plugin agent at `agents/<name>.md` states its behavior as `- [Nxx]` norms under `##` sections, with their history in `<name>.norms.json` beside it, whose `surface` is the agent's path. Its ids are its own: an agent never cites another surface's norms, since the skill or session that starts it is not in its context.
 - **An agent's return contract lives in the agent**, wrapped in its own tag such as `<return_contract>`, with the exact format of what it returns. A skill that starts the agent points to that contract instead of restating it; where the skill owns a format the agent returns, such as a finding line, the skill passes it in the agent's brief and the contract says to use the format the brief gives.
 
@@ -51,7 +58,7 @@ The scripts' tests are Vitest specs, `scripts/**/*.spec.ts`; `pnpm run test:watc
 
 `pnpm run audit:lockfile` asks the npm registry whether every version your change adds to `pnpm-lock.yaml` is still published and past the `minimumReleaseAge` floor in `pnpm-workspace.yaml`, comparing against the merge base with `origin/main`; `pnpm run audit:lockfile:all` asks the whole lockfile whether any version has been taken down. Both need the network and fail, rather than pass, when the registry cannot be reached. The pull-request workflow runs the first, and a daily workflow runs the second.
 
-`check-norms` covers every `plugins/*/skills/*/SKILL.md` and every `plugins/*/agents/*.md`, each with its sidecar.
+`check-norms` covers every `plugins/*/skills/*/SKILL.md` and every `plugins/*/agents/*.md`, each with its sidecar and its size ceiling, and every `plugins/*/skills/*/transitions/*.md` knowledge file with its `.traps.json`.
 
 Then install your branch locally and run the skill on a real project:
 

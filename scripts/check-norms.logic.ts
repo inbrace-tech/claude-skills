@@ -476,3 +476,276 @@ export function checkCorpus({ surfaces, markdown }: CorpusInput): CorpusResult {
   // A bare id cited twice in one field is one note, not two.
   return { errors, notes: [...new Set(notes)] };
 }
+
+// ---------------------------------------------------------------------------
+// Size ceilings. A skill declares its own in `metadata.max-bytes`; agents and knowledge files have
+// fixed ones. Bytes, not tokens: these files measured about 2.85 bytes per token, and a skill keeps
+// only its first 5,000 tokens after compaction (https://code.claude.com/docs/en/skills).
+
+/** The ceiling every plugin agent is held to, in bytes. */
+export const AGENT_MAX_BYTES = 8_192;
+
+/** The ceiling every knowledge file is held to, in bytes: under the Read tool's 25,000-token cap. */
+export const KNOWLEDGE_MAX_BYTES = 57_000;
+
+/** The UTF-8 size of a text, as `wc -c` counts it. */
+export const byteLength = (text: string): number => new TextEncoder().encode(text).length;
+
+/** The lines between a leading `---` and the next `---`, or null when the text opens with no frontmatter. */
+export function frontmatterLines(source: string): string[] | null {
+  const lines = source.split("\n");
+  if (lines[0]?.trimEnd() !== "---") return null;
+  const end = lines.findIndex((line, index) => index > 0 && line.trimEnd() === "---");
+  return end === -1 ? null : lines.slice(1, end);
+}
+
+/** A top-level `key: value` of a frontmatter, trimmed; null when absent. */
+export function frontmatterValue(lines: readonly string[], key: string): string | null {
+  for (const line of lines) {
+    const match = /^([A-Za-z0-9_-]+):(.*)$/.exec(line);
+    if (match?.[1] === key) return (match[2] ?? "").trim();
+  }
+  return null;
+}
+
+/**
+ * The `max-bytes` a skill declares under its `metadata` map: a number, null when it declares none,
+ * or the raw text when it is not a positive integer.
+ */
+export function declaredMaxBytes(surface: string): number | string | null {
+  const lines = frontmatterLines(surface);
+  if (lines === null) return null;
+  const start = lines.findIndex((line) => /^metadata:\s*$/.test(line));
+  if (start === -1) return null;
+  for (const line of lines.slice(start + 1)) {
+    if (!/^\s/.test(line)) break;
+    const raw = /^\s+max-bytes:(.*)$/.exec(line)?.[1]?.trim();
+    if (raw === undefined) continue;
+    return /^[1-9]\d*$/.test(raw) ? Number(raw) : raw;
+  }
+  return null;
+}
+
+/** What is wrong with a surface's size: over its declared ceiling (a skill) or the fixed one (an agent). */
+export function sizeErrors(surfacePath: string, surface: string, kind: "skill" | "agent"): string[] {
+  const size = byteLength(surface);
+  if (kind === "agent") {
+    return size > AGENT_MAX_BYTES ? [`${surfacePath}: ${size} bytes, over the ${AGENT_MAX_BYTES}-byte ceiling for an agent`] : [];
+  }
+  const declared = declaredMaxBytes(surface);
+  if (declared === null) return [];
+  if (typeof declared === "string") return [`${surfacePath}: metadata.max-bytes ${JSON.stringify(declared)} is not a positive integer`];
+  return size > declared ? [`${surfacePath}: ${size} bytes, over its metadata.max-bytes of ${declared}`] : [];
+}
+
+// ---------------------------------------------------------------------------
+// Knowledge files: `skills/<skill>/transitions/<slug>.md`, one per model transition, with the
+// history of its traps in `<slug>.traps.json` beside it, which nothing loads at runtime.
+
+/** A trap id: P followed by exactly two digits. */
+export const TRAP_ID = /^P\d{2}$/;
+
+/** A trap heading inside the `<traps>` block: `### P40 — Title`. */
+const TRAP_HEADING = /^### (\S+)\s+—\s+(.+?)\s*$/;
+
+/** The values each enumerated trap field takes. */
+export const TRAP_ENUMS: Readonly<Record<string, readonly string[]>> = {
+  kind: ["change", "re-test", "optional", "hand-off", "setting"],
+  confidence: ["high", "medium", "low"],
+  sweep: ["yes", "no"],
+};
+
+/** The fields every trap states, in the order the format writes them. */
+export const TRAP_FIELDS = ["kind", "area", "signal", "applies when", "change", "confidence", "sweep"] as const;
+
+/** The frontmatter keys every knowledge file sets. */
+export const KNOWLEDGE_KEYS = ["transition", "title", "source", "target", "claude-code-floor", "verified"] as const;
+
+/** A calendar date written `YYYY-MM-DD`. */
+export function isIsoDate(text: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) return false;
+  const date = new Date(`${text}T00:00:00Z`);
+  return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(text);
+}
+
+/** One `- source:` item of a trap, with the indented lines under it. */
+export interface TrapSource {
+  url: string;
+  passage: string | null;
+  verified: string | null;
+  basis: string | null;
+}
+
+/** One trap of a knowledge file. */
+export interface Trap {
+  id: string;
+  /** 1-indexed line of its heading. */
+  line: number;
+  fields: Map<string, string>;
+  sources: TrapSource[];
+}
+
+/** Strips one pair of surrounding double quotes. */
+const unquote = (text: string): string => (/^".*"$/.test(text) ? text.slice(1, -1) : text);
+
+/** The traps of a knowledge file's `<traps>` block, or null when it has none. */
+export function parseTraps(source: string): Trap[] | null {
+  const lines = source.split("\n");
+  const open = lines.findIndex((line) => line.trim() === "<traps>");
+  if (open === -1) return null;
+  const closeAt = lines.findIndex((line, index) => index > open && line.trim() === "</traps>");
+  const close = closeAt === -1 ? lines.length : closeAt;
+
+  const traps: Trap[] = [];
+  let trap: Trap | null = null;
+  let current: TrapSource | null = null;
+  for (let index = open + 1; index < close; index += 1) {
+    const line = lines[index] ?? "";
+    const heading = TRAP_HEADING.exec(line);
+    if (heading?.[1] !== undefined) {
+      trap = { id: heading[1], line: index + 1, fields: new Map(), sources: [] };
+      traps.push(trap);
+      current = null;
+      continue;
+    }
+    if (trap === null) continue;
+    const item = /^- ([a-z][a-z -]*?):\s*(.*)$/.exec(line);
+    if (item?.[1] !== undefined) {
+      const value = (item[2] ?? "").trim();
+      if (item[1] === "source") {
+        current = { url: value, passage: null, verified: null, basis: null };
+        trap.sources.push(current);
+      } else {
+        trap.fields.set(item[1], value);
+        current = null;
+      }
+      continue;
+    }
+    const sub = /^\s{2,}(passage|verified|basis):\s*(.*)$/.exec(line);
+    if (sub?.[1] !== undefined && current !== null) {
+      const value = unquote((sub[2] ?? "").trim());
+      if (sub[1] === "passage") current.passage = value;
+      else if (sub[1] === "verified") current.verified = value;
+      else current.basis = value;
+    }
+  }
+  return traps;
+}
+
+/** What `checkKnowledge` reads: one knowledge file and its history sidecar. */
+export interface KnowledgeInput {
+  /** `…/transitions/<slug>.md`, relative to the repository root with `/`. */
+  path: string;
+  /** `…/transitions/<slug>.traps.json`. */
+  sidecarPath: string;
+  /** Contents, or null when the file does not exist. */
+  source: string | null;
+  sidecarText: string | null;
+}
+
+/** The sidecar path for a knowledge file: `<slug>.md` → `<slug>.traps.json`. */
+export function trapsSidecarPathFor(path: string): string {
+  return path.replace(/\.md$/, ".traps.json");
+}
+
+/** The knowledge-file slugs in a `transitions/` directory, from each `.md` and `.traps.json` so an orphan sidecar counts; sorted. */
+export function knowledgeSlugs(fileNames: string[]): string[] {
+  const slugs = new Set<string>();
+  for (const file of fileNames) {
+    const slug = file.match(/^(.+?)(\.traps\.json|\.md)$/)?.[1];
+    if (slug !== undefined) slugs.add(slug);
+  }
+  return [...slugs].sort();
+}
+
+/** What is wrong with one trap's fields and sources. */
+function trapErrors(path: string, trap: Trap): string[] {
+  const errors: string[] = [];
+  const at = `${path}:${trap.line}: ${trap.id}`;
+  for (const field of TRAP_FIELDS) {
+    const value = trap.fields.get(field);
+    if (value === undefined || value === "") {
+      errors.push(`${at} has no "${field}"`);
+      continue;
+    }
+    const allowed = TRAP_ENUMS[field];
+    if (allowed !== undefined && !allowed.includes(value)) errors.push(`${at} "${field}" is "${value}", not one of ${allowed.join(", ")}`);
+  }
+  if (trap.sources.length === 0) errors.push(`${at} has no source`);
+  trap.sources.forEach((source, index) => {
+    const where = `${at} source ${index + 1}`;
+    if (!/^https:\/\/\S+$/.test(source.url)) errors.push(`${where} is not an https URL`);
+    const quoted = source.passage !== null && source.passage !== "";
+    const reasoned = source.basis !== null && source.basis !== "";
+    if (!quoted && !reasoned) errors.push(`${where} has neither a "passage" nor a "basis"`);
+    if (quoted && (source.verified === null || !isIsoDate(source.verified))) errors.push(`${where} has a passage but no "verified" date as YYYY-MM-DD`);
+  });
+  return errors;
+}
+
+/** What is wrong with a knowledge file's history sidecar, given the trap ids the file defines. */
+function trapsSidecarErrors(path: string, sidecarPath: string, sidecarText: string, defined: ReadonlySet<string>): string[] {
+  const errors: string[] = [];
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(sidecarText);
+  } catch (error) {
+    return [`${sidecarPath}: invalid JSON (${error instanceof Error ? error.message : String(error)})`];
+  }
+  if (!isUnchecked(parsed) || Array.isArray(parsed)) return [`${sidecarPath}: must be a JSON object`];
+  if (parsed.transition !== path) errors.push(`${sidecarPath}: transition is "${String(parsed.transition)}", expected "${path}"`);
+  if (!Array.isArray(parsed.traps)) errors.push(`${sidecarPath}: "traps" must be an array`);
+  const entries: unknown[] = Array.isArray(parsed.traps) ? parsed.traps : [];
+  const recorded = new Set<string>();
+  for (const item of entries) {
+    const entry: Unchecked = isUnchecked(item) ? item : {};
+    const id = entry.id;
+    if (typeof id !== "string" || !TRAP_ID.test(id)) {
+      errors.push(`${sidecarPath}: entry with invalid id ${JSON.stringify(id)}`);
+      continue;
+    }
+    if (recorded.has(id)) errors.push(`${sidecarPath}: ${id} is recorded more than once`);
+    recorded.add(id);
+    if (typeof entry.learned !== "string" || entry.learned.trim() === "") errors.push(`${sidecarPath}: ${id} has no "learned"`);
+    if (!isUnchecked(entry.refs) || Array.isArray(entry.refs)) errors.push(`${sidecarPath}: ${id} "refs" must be an object`);
+    else errors.push(...refsErrors(sidecarPath, id, entry.refs));
+  }
+  for (const id of defined) if (!recorded.has(id)) errors.push(`${path}: ${id} has no entry in ${baseName(sidecarPath)}`);
+  for (const id of recorded) if (!defined.has(id)) errors.push(`${sidecarPath}: ${id} matches no trap in ${baseName(path)}`);
+  return errors;
+}
+
+/** Checks one knowledge file against its format and its history sidecar. */
+export function checkKnowledge({ path, sidecarPath, source, sidecarText }: KnowledgeInput): string[] {
+  const fileName = baseName(path);
+  if (source === null) return [`${sidecarPath}: has no ${fileName} beside it`];
+
+  const errors: string[] = [];
+  const size = byteLength(source);
+  if (size > KNOWLEDGE_MAX_BYTES) errors.push(`${path}: ${size} bytes, over the ${KNOWLEDGE_MAX_BYTES}-byte ceiling for a knowledge file`);
+
+  const slug = fileName.replace(/\.md$/, "");
+  const front = frontmatterLines(source);
+  if (front === null) {
+    errors.push(`${path}: has no frontmatter`);
+  } else {
+    for (const key of KNOWLEDGE_KEYS) if (!frontmatterValue(front, key)) errors.push(`${path}: frontmatter has no "${key}"`);
+    const transition = frontmatterValue(front, "transition");
+    if (transition && transition !== slug) errors.push(`${path}: transition is "${transition}", expected "${slug}"`);
+    const verified = frontmatterValue(front, "verified");
+    if (verified && !isIsoDate(verified)) errors.push(`${path}: verified "${verified}" is not a date as YYYY-MM-DD`);
+  }
+
+  const traps = parseTraps(source);
+  if (traps === null) errors.push(`${path}: has no <traps> block`);
+  const defined = new Set<string>();
+  for (const trap of traps ?? []) {
+    if (!TRAP_ID.test(trap.id)) errors.push(`${path}:${trap.line}: trap id ${trap.id} is not P followed by two digits`);
+    else if (defined.has(trap.id)) errors.push(`${path}:${trap.line}: trap ${trap.id} is defined more than once`);
+    else defined.add(trap.id);
+    errors.push(...trapErrors(path, trap));
+  }
+
+  if (sidecarText === null) return [...errors, `${path}: has no ${baseName(sidecarPath)}`];
+  return [...errors, ...trapsSidecarErrors(path, sidecarPath, sidecarText, defined)];
+}
