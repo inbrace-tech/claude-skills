@@ -91,7 +91,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P02 — Agent, skill or launch still pinned to Sonnet 5
 
 - kind: change
-- area: agents, skills, instructions
+- area: memory, rules, agents, skills, commands, hooks, ci
 - signal: `model: claude-sonnet-5` in an agent's or skill's frontmatter; `claude-sonnet-5` in a launch command or dispatch recipe — a `--model` flag, a `model` argument to an Agent or workflow call, a brief template — which instructs how a session or agent starts even when written as prose
 - applies when: instruction files and the code that dispatches agents, unless the project records the pin as deliberate as already decided
 - change: Move the pin to `claude-sonnet-5-5` and leave its `effort:` to P03, or record why it stays. Where the pin or launch carries no explicit effort, say in the note that in Claude Code Sonnet 5 starts at `high` and Sonnet 5.5 at `medium`, so the move drops a level unless the user saved a level for Sonnet 5.5.
@@ -105,7 +105,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P03 — Effort level carried over from Sonnet 5
 
 - kind: re-test
-- area: agents, skills, settings
+- area: agents, skills, commands, settings, ci
 - signal: an `effort:` in the frontmatter of a file on Sonnet 5.5 whose pin came from Sonnet 5 — the git log shows the `effort:` predates the model change, or the project records no re-derivation of it; a top-level `effortLevel` in the project, local or managed settings, which applies to every model; `CLAUDE_CODE_EFFORT_LEVEL` in a settings `env`
 - applies when: files and settings that run Sonnet 5.5; also a pin or launch that moves to Sonnet 5.5 with no explicit effort — a P02 finding without an `effort:` or `--effort` — since Claude Code starts Sonnet 5 at `high` and Sonnet 5.5 at `medium`
 - change: Re-run the effort sweep rather than carrying the level over, since the levels are recalibrated and the guide states no direction: start at `medium` for well-specified agentic coding and multistep tool use and move to `high` for harder or longer work, at `medium` or `low` for chat and latency-sensitive work, at `high` otherwise, and keep `xhigh` or `max` only where a quality gain was measured. Say that the Claude API defaults to `high` while Claude Code starts Sonnet 5.5 at `medium`. List it under "Re-test only, no edit".
@@ -135,7 +135,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P05 — Sonnet 5 prompting delivered to Sonnet 5.5 by prefix
 
 - kind: change
-- area: hooks, gate-scripts
+- area: hooks, rules, settings
 - signal: any file that maps a model id to instruction text — a hook script, a gate or check script, a rule condition, a setting — by matching the id against a prefix or pattern, such as `claude-sonnet-5*`, `startsWith("claude-sonnet-5")` or `^claude-sonnet-5`, which `claude-sonnet-5-5` also matches; found by the plan's prefix search
 - applies when: text written for Sonnet 5 reaches Sonnet 5.5 through the match: the delivery mismatch is the finding, whatever the delivered text says
 - change: Where a Sonnet 5.5 counterpart exists under the root or the project records it as planned, propose making the selector match exact ids or the longest prefix, since a first match over a sorted list keeps returning the Sonnet 5 text after the new skill exists, and never propose adding the new skill alone as the fix: that selector edit is a change, typed rewrite, and where the counterpart is only planned its note says that whether Sonnet 5.5 should receive the Sonnet 5 text meanwhile stays a re-test. Otherwise, re-test whether Sonnet 5.5 should receive the delivered text, then match the exact id `claude-sonnet-5`, or record why Sonnet 5.5 keeps it, and list it under "Re-test only, no edit". Name in the note any statement in the delivered text that P07 flags.
@@ -147,7 +147,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P06 — Sonnet alias in dispatch conventions
 
 - kind: re-test
-- area: agents, instructions
+- area: memory, rules, agents, skills, commands, hooks
 - signal: `sonnet` as a model choice in instruction text or dispatch code — `model: sonnet` in frontmatter, a `model: "sonnet"` argument to an Agent or workflow call, a brief template or hook text, or a rule such as "use `sonnet` for bounded work"
 - applies when: the project runs Claude Code on the Anthropic API; on Claude Platform on AWS `sonnet` is Sonnet 4.6 and on Amazon Bedrock, Google Cloud's Agent Platform and Microsoft Foundry Sonnet 4.5, outside this transition, unless `ANTHROPIC_DEFAULT_SONNET_MODEL` names Sonnet 5 or 5.5; record it once per dispatch convention, one line naming every file it covers
 - change: Re-test. Since Claude Code v2.1.284 `sonnet` resolves to Sonnet 5.5 on the Anthropic API, so these dispatches already run on Sonnet 5.5 with no edit, while explicit `claude-sonnet-5` pins stay on Sonnet 5; a subagent dispatched this way runs at the session's effort unless it sets its own, since a subagent's `effort` defaults to inheriting from the session. Decide deliberately: accept the move and re-test the work it dispatches, or pin `claude-sonnet-5` where the project must stay, and note beside the convention that `sonnet` is Sonnet 4.6 on Claude Platform on AWS and Sonnet 4.5 on Amazon Bedrock, Google Cloud's Agent Platform and Microsoft Foundry. List it under "Re-test only, no edit".
@@ -167,7 +167,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P07 — Sonnet 5 behavior claim a Sonnet 5.5 source contradicts
 
 - kind: re-test
-- area: instructions
+- area: memory, rules, agents, skills, commands
 - signal: a statement of how the model behaves, in text Sonnet 5.5 reads or that a pin P02 moves would carry to it, that says (a) at `low` or `medium` effort the model scopes its work to what was asked; (b) `xhigh` is the recommended level for the hardest coding or agentic work; (c) an effort level produces the thinking it did on Sonnet 5; or (d) any other statement of how Sonnet 5 behaves, such as how it scales response length
 - applies when: instruction text, not the prompting techniques `<protected>` keeps
 - change: Re-test, and re-ground any instruction that rests on the claim, citing the passage that contradicts it: (a) "The model tends to add tests, documentation, and small supporting files … It does this at every effort level, and more at higher effort", and "At `low` and `medium`, on long agentic tasks, it's more likely to stop and check in with the user before it finishes"; (b) "Reserve `xhigh` and `max` for work where you've measured a quality gain", and at those levels "it can start its own rounds of review and verification"; (c) "a level doesn't produce the same amount of thinking as the same level on Claude Sonnet 5"; (d) the migration guide's "re-evaluate model-specific prompt instructions against Prompting Claude Sonnet 5.5". List it under "Re-test only, no edit". Low confidence for (d), which no Sonnet 5.5 passage contradicts.
@@ -186,7 +186,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P08 — Instructions to think less or not to think
 
 - kind: change
-- area: instructions
+- area: memory, rules, agents, skills, commands
 - signal: "respond directly", "thinking adds latency", "only think when", "don't overthink", "do not think", "skip thinking"
 - applies when: any instruction file
 - change: Remove, and lower the effort level where less thinking is wanted: asking Sonnet 5.5 to think less does not reliably reduce its thinking, and with `between_tools` such instructions make it more likely to write internal XML tags in its visible output.
@@ -202,7 +202,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P09 — Reasoning written into the response
 
 - kind: change
-- area: instructions
+- area: memory, rules, agents, skills, commands
 - signal: "show your reasoning in the answer", "write out your chain of thought", "include your reasoning in the response"
 - applies when: any instruction file; not a request to explain the rationale for a change or a decision
 - change: Remove. It invites the `reasoning_extraction` refusal, which server-side fallback does not retry. Read summarized thinking blocks instead.
@@ -215,7 +215,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P10 — Updates held until the end
 
 - kind: change
-- area: instructions
+- area: memory, rules, agents, skills, commands
 - signal: "hold all findings for the final response", "report only at the end", "no interim updates"
 - applies when: prompts of a user-facing agent; never a subagent's return contract
 - change: Remove. Sonnet 5.5 writes notes to the user between tool calls, and the guide says to remove older instructions that hold them back.
@@ -228,7 +228,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P11 — Language that discourages tool use
 
 - kind: change
-- area: instructions
+- area: memory, rules, agents, skills, commands
 - signal: "only use tools when strictly necessary", "minimize tool calls", "avoid unnecessary tool calls"
 - applies when: chat and knowledge-work prompts; a coding agent gets no finding
 - change: Remove. On chat and knowledge work Sonnet 5.5 sometimes answers from its training knowledge when a search would catch details that have changed.
@@ -241,7 +241,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P12 — Search tool without the check-current-facts instruction
 
 - kind: change
-- area: agents, skills
+- area: agents, skills, commands
 - signal: a research, support or knowledge-work agent or skill with a search tool, such as `WebSearch`, and no instruction to check specifics that may have changed
 - applies when: chat and knowledge-work prompts with a search tool
 - change: Add the guide's paragraph: "Use the search tool to check specifics that may have changed since your training, such as what is allowed, required or charged, even when you feel confident. For researched work such as a report or a comparison, gather current sources rather than writing from your training knowledge."
@@ -254,7 +254,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P13 — No update cadence
 
 - kind: optional
-- area: agents
+- area: agents, skills, commands, memory
 - signal: long human-in-the-loop agentic work with no guidance on updates
 - applies when: agent and orchestrator prompts, unless the file points to where the project states its update guidance
 - change: Add a cadence, for example a line on what the model is about to do before its first tool call and a short recap at the end.
@@ -267,7 +267,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P14 — Agent that may check in before the work is done
 
 - kind: optional
-- area: agents, skills
+- area: agents, skills, commands
 - signal: multipart agentic coding, or multipart background work, at `low` or `medium` effort — an `effort: low` or `effort: medium`, or no `effort:` in Claude Code, where Sonnet 5.5 starts at `medium` — with no instruction to carry the work through
 - applies when: agentic coding agents and skills, and subagents with no channel to the user, where a check-in becomes a premature return
 - change: Try a higher effort level first; otherwise add the guide's first paragraph, "Keep working until everything the user asked for is done, and only stop to ask when you can't go on without the user or before a risky step.", keeping the project's own rules on risky or irreversible actions. Sessions then run longer and cost more.
@@ -283,7 +283,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P15 — Unrequested additions in a project that wants minimal changes
 
 - kind: optional
-- area: agents, skills, memory
+- area: agents, skills, commands, memory, rules
 - signal: a coding agent or skill with no instruction limiting changes to the request, or a minimal-diff or scope-fence instruction in a coding agent, a skill, or a memory file and its imports that does not name unrequested tests, docs or files, in a project that states it prefers minimal diffs
 - applies when: coding agents and skills, and memory files with their imports, in such a project; a memory file whose own minimal-diff statement omits unrequested tests, docs or files is a finding on that line
 - change: Add only the guide's second paragraph: "When the work the user asked for is done and checked, stop and report. Don't add features, tests, files, docs or refactors that weren't asked for. If you think one would help, mention it at the end instead of doing it."
@@ -296,7 +296,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P16 — Self-started review rounds at `xhigh` or `max`
 
 - kind: optional
-- area: agents, skills
+- area: agents, skills, commands
 - signal: `effort: xhigh` or `effort: max` on routine work, or on an orchestrator that can start subagents, with no instruction to stop once the checks pass
 - applies when: agent and skill files, unless the project's workflow asks for the review
 - change: Run routine work at `high` or below; where that thoroughness is wanted, add the guide's paragraph: "When the work the user asked for is done and its checks pass, stop and report. Don't start extra rounds of review or hardening on your own, and don't launch reviewer sub-agents unless the user asked for a review. If you think a deeper review is worth doing, say so at the end."
@@ -322,7 +322,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P18 — Coding at `low` effort with no verification rule
 
 - kind: optional
-- area: agents, skills
+- area: agents, skills, commands
 - signal: an `effort: low` agent or skill that changes code, with no instruction to run a test, type-check or build before reporting done
 - applies when: coding agents and skills at `low` effort; also once per project, where coding agents run on Sonnet 5.5 and a P03 re-test could move one to `low`
 - change: Add the guide's verification paragraph, where the project sees changes reported done without a check, and keep any project rule that forbids installing dependencies, which the paragraph otherwise allows; in the once-per-project case, note that the paragraph applies if a re-test moves an agent to `low`. Low confidence for the once-per-project case.
@@ -335,7 +335,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P19 — Harness text after every tool result
 
 - kind: re-test
-- area: hooks
+- area: hooks, settings
 - signal: a `PreToolUse` or `PostToolUse` hook whose script adds context or a message on every call of the tools it matches, or a token or budget countdown
 - applies when: interactive sessions; hook scripts are found by the plan's prefix search
 - change: Re-test: Sonnet 5.5 can treat a genuine user message that arrives right after tool results as a possible prompt injection, and the guide names per-step harness text and countdowns among the causes; send such text less often. List it under "Re-test only, no edit".
@@ -350,7 +350,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P20 — Blanket authorization
 
 - kind: optional
-- area: agents
+- area: agents, skills, commands
 - signal: "you are authorized", "this task is your authorization", "assume permission"
 - applies when: agents that act on external systems
 - change: Scope the authorization to named targets, and keep a confirmation step for actions on third-party or production systems. The System Card shows Sonnet 5.5 treating a task card as sufficient authorization in an automated capture-the-flag exercise (Claude Sonnet 5.5 System Card, p.60–61, §6.2.1).
@@ -591,7 +591,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P38 — No Claude Code version floor for Sonnet 5.5
 
 - kind: change
-- area: setup-docs, memory
+- area: setup, memory
 - signal: a P01, P02 or P06 finding, and no memory file, README or setup script under the root that states the Claude Code version the project needs
 - applies when: the project, once, on the file where it describes its setup, or its root `CLAUDE.md`
 - change: Add a line stating Claude Code v2.1.284 or later, since Sonnet 5.5 requires Claude Code v2.1.284 or later.
@@ -604,7 +604,7 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 ### P39 — Content-based fallback left unaccounted for
 
 - kind: re-test
-- area: model-dependent, memory
+- area: model-dependent, memory, skills
 - signal: the project runs or moves to Sonnet 5.5
 - applies when: the project, once, on the file that holds its model notes or its Sonnet tier skill, or else on the first pin finding
 - change: Re-test: in Claude Code cyber-flagged Sonnet 5.5 requests re-run on Sonnet 5 and biology-flagged ones end with a refusal, and the session continues on the fallback model; decide whether the project keeps guidance for that model available and whether its measurements tell the models apart. List it under "Re-test only, no edit".

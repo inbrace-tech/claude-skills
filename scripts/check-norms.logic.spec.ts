@@ -547,6 +547,13 @@ describe("knowledge files", () => {
     expect(check(file(`${TRAP}\n\n${TRAP}`))).toContain(`${PATH}:28: trap P01 is defined more than once`);
   });
 
+  it("an area outside the plan map's ids fails, naming each unknown one; a list of known ids passes", () => {
+    expect(check(file(TRAP.replace("- area: settings", "- area: agents, instructions, gate-scripts")))).toStrictEqual([
+      `${PATH}:15: P01 "area" names "instructions", "gate-scripts", not an area id of the plan's map (memory, rules, agents, skills, commands, settings, hooks, ci, api-code, model-dependent, setup, plugin-config)`,
+    ]);
+    expect(check(file(TRAP.replace("- area: settings", "- area: memory, rules, agents, skills, commands")))).toStrictEqual([]);
+  });
+
   it("a missing field, or a value outside its enum, fails", () => {
     expect(check(file(TRAP.replace("- area: settings\n", "")))).toStrictEqual([`${PATH}:15: P01 has no "area"`]);
     expect(check(file(TRAP.replace("- kind: change", "- kind: maybe")))).toStrictEqual([

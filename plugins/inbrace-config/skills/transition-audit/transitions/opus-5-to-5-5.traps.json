@@ -13,28 +13,28 @@
     },
     {
       "id": "P03",
-      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1).",
-      "refs": { "inbrace-tech/claude-skills": [1] }
+      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [1, 61] }
     },
     {
       "id": "P04",
-      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1).",
-      "refs": { "inbrace-tech/claude-skills": [1] }
+      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [1, 61] }
     },
     {
       "id": "P05",
-      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
-      "refs": { "inbrace-tech/claude-skills": [2] }
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [2, 61] }
     },
     {
       "id": "P06",
-      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
-      "refs": { "inbrace-tech/claude-skills": [2] }
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [2, 61] }
     },
     {
       "id": "P07",
-      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
-      "refs": { "inbrace-tech/claude-skills": [2] }
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [2, 61] }
     },
     {
       "id": "P08",
@@ -43,28 +43,28 @@
     },
     {
       "id": "P09",
-      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
-      "refs": { "inbrace-tech/claude-skills": [2] }
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2). Its areas became ids of the plan's map in #61 (agents → agents, skills, commands, memory), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [2, 61] }
     },
     {
       "id": "P10",
-      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
-      "refs": { "inbrace-tech/claude-skills": [2] }
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2). Its areas became ids of the plan's map in #61 (agents → agents, skills, commands, ci), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [2, 61] }
     },
     {
       "id": "P11",
-      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
-      "refs": { "inbrace-tech/claude-skills": [2] }
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2). Its areas became ids of the plan's map in #61 (agents → agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [2, 61] }
     },
     {
       "id": "P12",
-      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
-      "refs": { "inbrace-tech/claude-skills": [2] }
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2). Its areas became ids of the plan's map in #61 (agents → agents, skills, commands, api-code), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [2, 61] }
     },
     {
       "id": "P13",
-      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2).",
-      "refs": { "inbrace-tech/claude-skills": [2] }
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [2, 61] }
     },
     {
       "id": "P14",
@@ -73,13 +73,13 @@
     },
     {
       "id": "P15",
-      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1).",
-      "refs": { "inbrace-tech/claude-skills": [1] }
+      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [1, 61] }
     },
     {
       "id": "P16",
-      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1).",
-      "refs": { "inbrace-tech/claude-skills": [1] }
+      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [1, 61] }
     },
     {
       "id": "P17",
@@ -98,8 +98,8 @@
     },
     {
       "id": "P20",
-      "learned": "Added when the audit began reporting agents and skills still pinned to Opus 5 (#6).",
-      "refs": { "inbrace-tech/claude-skills": [6] }
+      "learned": "Added when the audit began reporting agents and skills still pinned to Opus 5 (#6). Its areas became ids of the plan's map in #61 (agents, skills → agents, skills, commands, settings), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [6, 61] }
     },
     {
       "id": "P21",
@@ -108,8 +108,8 @@
     },
     {
       "id": "P22",
-      "learned": "Added after a run missed Opus 5 prompting that a hook delivered to Opus 5.5 by matching the model id's prefix (#27); the exact-or-longest-prefix selector fix became an applicable change in #33.",
-      "refs": { "inbrace-tech/claude-skills": [27, 33] }
+      "learned": "Added after a run missed Opus 5 prompting that a hook delivered to Opus 5.5 by matching the model id's prefix (#27); the exact-or-longest-prefix selector fix became an applicable change in #33. Its areas became ids of the plan's map in #61 (hooks, gate-scripts → hooks, rules, settings), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [27, 33, 61] }
     },
     {
       "id": "P23",
@@ -118,13 +118,13 @@
     },
     {
       "id": "P24",
-      "learned": "Added in 0.5.0 after a capability evaluation found the Claude Code version floor outside the table (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Added in 0.5.0 after a capability evaluation found the Claude Code version floor outside the table (#28). Its areas became ids of the plan's map in #61 (setup-docs, memory → setup, memory), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P25",
-      "learned": "Added in 0.5.0 from Claude Code's automatic model fallback, which re-runs flagged requests on another model (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Added in 0.5.0 from Claude Code's automatic model fallback, which re-runs flagged requests on another model (#28). Its areas became ids of the plan's map in #61 (model-dependent, memory → model-dependent, memory, skills), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P26",

@@ -101,7 +101,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P03 — "Don't think" rules
 
 - kind: change
-- area: instructions
+- area: memory, rules, agents, skills, commands
 - signal: "do not think", "don't reason", "skip thinking"
 - applies when: any instruction file
 - change: Remove. Thinking is always on, and such rules increase internal-tag leakage.
@@ -117,7 +117,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P04 — Reasoning written into the response
 
 - kind: change
-- area: instructions
+- area: memory, rules, agents, skills, commands
 - signal: "show your reasoning in the answer", "write out your chain of thought"
 - applies when: any instruction file
 - change: Remove. It can be declined with the `reasoning_extraction` refusal. Read summarized thinking blocks instead.
@@ -133,7 +133,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P05 — Thinking-disabled mitigation
 
 - kind: re-test
-- area: instructions
+- area: memory, rules, agents, skills, commands
 - signal: "you may say a brief sentence first… do not include internal or system XML tags"
 - applies when: the project ran Opus 5 with thinking off
 - change: Re-test, then remove if nothing regresses. It addressed artifacts that appear only with thinking disabled.
@@ -146,7 +146,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P06 — "Think carefully" in chat prompts
 
 - kind: optional
-- area: instructions
+- area: memory, rules, agents, skills, commands
 - signal: "think carefully before answering", "take your time"
 - applies when: chat applications
 - change: Consider removing. Effort is the control, and removing the line made replies start sooner without a quality drop in Anthropic's testing.
@@ -159,7 +159,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P07 — Opus 5 tuning instructions
 
 - kind: re-test
-- area: instructions
+- area: memory, rules, agents, skills, commands
 - signal: conciseness, over-verification, scope, narration-cadence or correction-narration instructions written for Opus 5
 - applies when: any instruction file
 - change: Keep as the starting point and mark for re-testing. They may no longer be needed; do not delete them on this audit's word alone.
@@ -191,7 +191,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P09 — No update cadence
 
 - kind: optional
-- area: agents
+- area: agents, skills, commands, memory
 - signal: long human-in-the-loop agentic work with no guidance on updates
 - applies when: agent and orchestrator prompts, unless the file points to where the project states its update guidance
 - change: Add a cadence, for example a one-line intent before the first tool call and a short recap at the end.
@@ -204,7 +204,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P10 — Unattended runs without a continuation plan
 
 - kind: change
-- area: agents
+- area: agents, skills, commands, ci
 - signal: background or headless agents, no to-do tracking
 - applies when: unattended agents only
 - change: Add a checklist the model updates, auto-continue only when items are open and no blocker is stated, and cap continuations at 2–3. Opus 5.5 sometimes ends a turn with a text update instead of a tool call.
@@ -223,7 +223,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P11 — Multi-app agents that act without looking
 
 - kind: change
-- area: agents
+- area: agents, skills, commands
 - signal: workflows across email, documents, spreadsheets or CRM
 - applies when: multi-app automation
 - change: Add the guide's instruction to explore the relevant sources before acting.
@@ -236,7 +236,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P12 — Multi-agent runs without time signals
 
 - kind: optional
-- area: agents
+- area: agents, skills, commands, api-code
 - signal: a lead agent delegating to subagents
 - applies when: multi-agent harnesses
 - change: Consider an elapsed-time line against a budget in each message back to the model.
@@ -249,7 +249,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P13 — Chat that re-examines settled answers
 
 - kind: optional
-- area: instructions
+- area: memory, rules, agents, skills, commands
 - signal: multi-turn chat with slow follow-ups
 - applies when: chat, not agentic work
 - change: Consider the guide's two-sentence "treat that answer as done" instruction.
@@ -275,7 +275,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P15 — Visual-input scaffolding
 
 - kind: re-test
-- area: instructions
+- area: memory, rules, agents, skills, commands
 - signal: forced cropping, OCR passes, "zoom before reading the chart"
 - applies when: vision workloads
 - change: Re-test. Opus 5.5 reads charts and diagrams natively; crop tools still help on the densest inputs.
@@ -288,7 +288,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P16 — Vague design direction
 
 - kind: change
-- area: instructions
+- area: memory, rules, agents, skills, commands
 - signal: "avoid a generic AI look", "make it modern"
 - applies when: frontend work
 - change: Replace with the specific default patterns to avoid.
@@ -349,7 +349,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P20 — Agent still pinned to Opus 5
 
 - kind: change
-- area: agents, skills
+- area: agents, skills, commands, settings
 - signal: `model: claude-opus-5` in an agent's or skill's frontmatter, or in settings
 - applies when: instruction files, unless the project records the pin as deliberate as already decided
 - change: Move the pin to `claude-opus-5-5` and set its effort as P21 explains — `effort: medium`, or no `effort:` so the file inherits the session's level — or record why it stays.
@@ -378,7 +378,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P22 — Opus 5 prompting delivered to Opus 5.5 by prefix
 
 - kind: change
-- area: hooks, gate-scripts
+- area: hooks, rules, settings
 - signal: any file that maps a model id to instruction text — a hook script, a gate or check script, a rule condition, a setting — by matching the id against a prefix or pattern, such as `claude-opus-5*`, `startsWith("claude-opus-5")` or `^claude-opus-5`, which `claude-opus-5-5` also matches
 - applies when: the project runs on Opus 5.5 and the delivered text carries Opus 5 tuning, as P07 describes; such files are found by the plan's prefix search
 - change: Where an Opus 5.5 counterpart exists under the root or the project records it as planned, propose making the selector match exact ids or the longest prefix, since a first match over a sorted list keeps returning the Opus 5 text after the new skill exists, and never propose adding the new skill alone as the fix: that selector edit is a change, typed rewrite, and where the counterpart is only planned its note says that whether Opus 5.5 still needs the Opus 5 text meanwhile stays a re-test. Otherwise, re-test whether Opus 5.5 still needs the delivered text, then match the exact id `claude-opus-5`, or record why Opus 5.5 keeps it, and list it under "Re-test only, no edit".
@@ -409,7 +409,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P24 — No Claude Code version floor for Opus 5.5
 
 - kind: change
-- area: setup-docs, memory
+- area: setup, memory
 - signal: a P01 or P20 finding, and no memory file, README or setup script under the root that states the Claude Code version the project needs
 - applies when: the project, once, on the file where it describes its setup, or its root `CLAUDE.md`
 - change: Add a line stating Claude Code v2.1.280 or later, since Opus 5.5 requires Claude Code v2.1.280 or later.
@@ -422,7 +422,7 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P25 — Content-based fallback left unaccounted for
 
 - kind: re-test
-- area: model-dependent, memory
+- area: model-dependent, memory, skills
 - signal: the project runs or moves to Opus 5.5
 - applies when: the project, once, on the file that holds its model notes or its Opus tier skill, or else on the first pin finding
 - change: Re-test: in Claude Code biology-flagged Opus 5.5 requests re-run on Opus 5 and cyber-flagged ones on Opus 4.8, and the session continues on the fallback model; decide whether the project keeps guidance for that model available and whether its measurements tell the models apart. List it under "Re-test only, no edit".

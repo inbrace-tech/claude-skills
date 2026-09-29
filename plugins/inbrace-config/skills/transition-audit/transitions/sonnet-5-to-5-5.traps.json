@@ -8,13 +8,13 @@
     },
     {
       "id": "P02",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills, instructions → memory, rules, agents, skills, commands, hooks, ci), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P03",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills, settings → agents, skills, commands, settings, ci), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P04",
@@ -23,63 +23,63 @@
     },
     {
       "id": "P05",
-      "learned": "Written in 0.5.0 from the Opus audit's prefix-delivery row (#28); the exact-or-longest-prefix selector fix became an applicable change in #33.",
-      "refs": { "inbrace-tech/claude-skills": [28, 33] }
+      "learned": "Written in 0.5.0 from the Opus audit's prefix-delivery row (#28); the exact-or-longest-prefix selector fix became an applicable change in #33. Its areas became ids of the plan's map in #61 (hooks, gate-scripts → hooks, rules, settings), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 33, 61] }
     },
     {
       "id": "P06",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, instructions → memory, rules, agents, skills, commands, hooks), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P07",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P08",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P09",
-      "learned": "Carried from the Opus audit's row of the same name (P04 there), first written in #1 or #2, and re-grounded in the Sonnet 5.5 guides in 0.5.0 (#28).",
-      "refs": { "inbrace-tech/claude-skills": [1, 2, 28] }
+      "learned": "Carried from the Opus audit's row of the same name (P04 there), first written in #1 or #2, and re-grounded in the Sonnet 5.5 guides in 0.5.0 (#28). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [1, 2, 28, 61] }
     },
     {
       "id": "P10",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P11",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P12",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills → agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P13",
-      "learned": "Carried from the Opus audit's update-cadence row, first written in #2, and re-grounded in the Sonnet 5.5 guide in 0.5.0 (#28).",
-      "refs": { "inbrace-tech/claude-skills": [2, 28] }
+      "learned": "Carried from the Opus audit's update-cadence row, first written in #2, and re-grounded in the Sonnet 5.5 guide in 0.5.0 (#28). Its areas became ids of the plan's map in #61 (agents → agents, skills, commands, memory), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [2, 28, 61] }
     },
     {
       "id": "P14",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills → agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P15",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills, memory → agents, skills, commands, memory, rules), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P16",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills → agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P17",
@@ -88,18 +88,18 @@
     },
     {
       "id": "P18",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills → agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P19",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (hooks → hooks, settings), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P20",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents → agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P21",
@@ -188,13 +188,13 @@
     },
     {
       "id": "P38",
-      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28). Its areas became ids of the plan's map in #61 (setup-docs, memory → setup, memory), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P39",
-      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28). Its areas became ids of the plan's map in #61 (model-dependent, memory → model-dependent, memory, skills), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61] }
     },
     {
       "id": "P40",

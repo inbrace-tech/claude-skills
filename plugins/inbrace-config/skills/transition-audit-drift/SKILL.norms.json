@@ -22,8 +22,8 @@
     {
       "id": "N04",
       "where": "Compare",
-      "refs": { "inbrace-tech/claude-skills": [34, 43] },
-      "what": "A comparison made by commands gives the same verdict on every run and keeps the pages out of context. The normalisation is the one the knowledge files' passages were verified with: on 2026-09-29 these commands found all 95 recorded passages, and reported `changed` for a planted, altered one. Written for the transition-agnostic audit (#34, #43)."
+      "refs": { "inbrace-tech/claude-skills": [34, 43, 61] },
+      "what": "A comparison made by commands gives the same verdict on every run and keeps the pages out of context. The normalisation is the one the knowledge files' passages were verified with: on 2026-09-29 these commands found all 95 recorded passages, and reported `changed` for a planted, altered one. Written for the transition-agnostic audit (#34, #43). After grading a full-scope run of `main` (a289710) on a seeded project against its sealed answer key — recall 96.6% primary, 89.8% strict, precision 100% — the run left a doc page and its normalised copy at the audited project's root, written by commands with paths relative to the working directory, while the report called the tree clean; every path is now absolute under the run's folder (#61)."
     },
     {
       "id": "N05",
