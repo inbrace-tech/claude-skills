@@ -114,6 +114,18 @@
       "where": "Throughout the run",
       "refs": { "inbrace-tech/claude-skills": [34, 61] },
       "what": "Added after a graded run left a 107 KB doc page and its normalised copy at the audited project's root: a command wrote to a path relative to the working directory, which a `cd` had moved. Every file the run writes goes by its absolute path under the run's folder, so nothing lands in the user's tree (#34, #61)."
+    },
+    {
+      "id": "N20",
+      "where": "Throughout the run",
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#safeguard-refusals"], "inbrace-tech/claude-skills": [87] },
+      "what": "In 0.6.2 (#87), a live session-mode run on the Sonnet fixture stopped mid-discovery with `stop_reason: \"refusal\"`, category `reasoning_extraction`, after reading the lines the reasoning-in-the-reply trap (Opus P04, Sonnet P09) exists to find; the guides say such requests can be declined, and Claude Code's automatic fallback covers other categories only, so the run simply stopped. The cause is the text itself, so the fix takes it out of every context and file of the run: the plan finds those lines by number (`unquoted.md`, [transition-audit-plan#N27]) and every stage and agent cites them as `file:line` and a label, reading the lines around them. The line format's quoted-text field carries `[not quoted: <label>]` for them; the eval graders match only file, line, id and status, so they are unaffected."
+    },
+    {
+      "id": "N21",
+      "where": "Throughout the run",
+      "refs": { "docs": ["https://code.claude.com/docs/en/model-config#automatic-model-fallback", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#safeguard-refusals"], "inbrace-tech/claude-skills": [87] },
+      "what": "In 0.6.2 (#87), a live session-mode run on the Sonnet fixture stopped mid-discovery with `stop_reason: \"refusal\"`, category `reasoning_extraction`, after reading the lines the reasoning-in-the-reply trap (Opus P04, Sonnet P09) exists to find; the guides say such requests can be declined, and Claude Code's automatic fallback covers other categories only, so the run simply stopped. Two batches were open at once and both were lost, and `--resume` would have reread the same batch the same way. The norm marks each batch opened before reading, so a resume sees which one stopped; records the batch and category; retries in halves down to one file; and gives up on that file as `not audited — refusal` in the coverage account, so one instruction cannot stop the whole audit. A verifier that stops is split the same way, and a line that stops it again keeps its raw status marked `not verified — refusal`."
     }
   ]
 }

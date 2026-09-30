@@ -34,8 +34,8 @@
     {
       "id": "N06",
       "where": "Check each trap",
-      "refs": { "inbrace-tech/claude-skills": [34, 40, 61] },
-      "what": "Discovery can miss a known edge case; looking for each trap where it can occur adds it back. Lexical traps are found by search, the others by reading their areas, within what the user approved. Written for the transition-agnostic audit (#34, #40). After grading a full-scope run of `main` (a289710) on a seeded project against its sealed answer key — recall 96.6% primary, 89.8% strict, precision 100% — a planted P13 in a skill was missed: the trap's area named only agents and the stage read only those files. Areas are now ids of the plan's map, each trap lists every area its \"applies when\" covers, check-norms rejects an unknown id, and the clean line names the areas read (#61)."
+      "refs": { "inbrace-tech/claude-skills": [34, 40, 61, 87] },
+      "what": "Discovery can miss a known edge case; looking for each trap where it can occur adds it back. Lexical traps are found by search, the others by reading their areas, within what the user approved. Written for the transition-agnostic audit (#34, #40). After grading a full-scope run of `main` (a289710) on a seeded project against its sealed answer key — recall 96.6% primary, 89.8% strict, precision 100% — a planted P13 in a skill was missed: the trap's area named only agents and the stage read only those files. Areas are now ids of the plan's map, each trap lists every area its \"applies when\" covers, check-norms rejects an unknown id, and the clean line names the areas read (#61). In 0.6.2 the lines of a trap `<unquoted>` lists are taken from `unquoted.md` rather than read around each match ([N12], #87)."
     },
     {
       "id": "N07",
@@ -66,6 +66,12 @@
       "where": "Check each trap",
       "refs": { "inbrace-tech/claude-skills": [34, 43] },
       "what": "Added with the drift stage. A trap whose passage has changed, vanished or could not be checked may no longer hold, so its findings are capped at medium and say so, while the trap is still applied: nothing the earlier audits checked goes unchecked (#34, #43)."
+    },
+    {
+      "id": "N12",
+      "where": "Check each trap",
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#safeguard-refusals"], "inbrace-tech/claude-skills": [87] },
+      "what": "In 0.6.2 (#87), a live session-mode run on the Sonnet fixture stopped mid-discovery with `stop_reason: \"refusal\"`, category `reasoning_extraction`, after reading the lines the reasoning-in-the-reply trap (Opus P04, Sonnet P09) exists to find; the guides say such requests can be declined, and Claude Code's automatic fallback covers other categories only, so the run simply stopped. A sweep reads the lines around each match, which for this trap is the line that stops the run; the plan already lists its lines by number, so the stage takes them from `unquoted.md` and judges \"applies when\" from the neighbouring lines."
     }
   ]
 }

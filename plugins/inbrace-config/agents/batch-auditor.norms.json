@@ -40,8 +40,8 @@
     {
       "id": "N08",
       "where": "Classify",
-      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents"], "inbrace-tech/claude-skills": [25, 42] },
-      "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) the auditors proposed the same missing-instruction addition in three agents that each already loaded the rule through a skill named in their `skills:` frontmatter. The sub-agents page says each listed skill's full content is injected into the subagent at startup, so the rule is present in the agent; a skill with `disable-model-invocation: true` cannot be preloaded and a missing one is skipped, so those keep the finding. The agent reads the listed skills only when such a finding depends on them, since the skill usually sits in another auditor's batches. See #25. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents"], "inbrace-tech/claude-skills": [25, 42, 87] },
+      "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) the auditors proposed the same missing-instruction addition in three agents that each already loaded the rule through a skill named in their `skills:` frontmatter. The sub-agents page says each listed skill's full content is injected into the subagent at startup, so the rule is present in the agent; a skill with `disable-model-invocation: true` cannot be preloaded and a missing one is skipped, so those keep the finding. The agent reads the listed skills only when such a finding depends on them, since the skill usually sits in another auditor's batches. See #25. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42). In 0.6.2 the preloaded skills are searched with Grep, reading only the lines around a match, rather than read in full, which kept the lines that stopped a live run in context (#87)."
     },
     {
       "id": "N09",
@@ -54,6 +54,12 @@
       "where": "Classify",
       "refs": { "inbrace-tech/claude-skills": [34, 39, 42] },
       "what": "Added in the transition-agnostic audit. Every finding quotes the doc passage behind it, so the verifier can check that passage against the cached page and the user sees why the finding exists (#34). Auditors run in parallel, so each numbers its discovery findings from `D01`, and the session renumbers them into the run's sequence as it appends them (#39). In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
+    },
+    {
+      "id": "N11",
+      "where": "Read",
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#safeguard-refusals"], "inbrace-tech/claude-skills": [87] },
+      "what": "In 0.6.2 (#87), a live session-mode run on the Sonnet fixture stopped mid-discovery with `stop_reason: \"refusal\"`, category `reasoning_extraction`, after reading the lines the reasoning-in-the-reply trap (Opus P04, Sonnet P09) exists to find; the guides say such requests can be declined, and Claude Code's automatic fallback covers other categories only, so the run simply stopped. The auditors run on Opus 5.5 and read the same text, so the brief names the lines to skip and the agent cites them by `file:line` and label; a refused auditor is split by the session that started it."
     }
   ]
 }

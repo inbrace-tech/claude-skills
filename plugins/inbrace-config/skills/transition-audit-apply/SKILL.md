@@ -21,6 +21,7 @@ metadata:
 - [N03] Append the decision to the report file before the first edit, then each change as it is applied and the verification result, so the report records what the audit changed and a resume can continue from the last edit.
 - [N04] When the user chose to see the diff first, show the diff of every proposed change in the chat without editing any file, then ask whether to apply all of it, choose by type, or stop, with the cost of applying in each applying option.
 - [N05] Before removing any text, search the root for the exact string, and where a test, hook or script matches it, leave the text and name that dependency in the close.
+- [N18] Remove a line `unquoted.md` lists by its number, never reading it: before any other edit to its file, from its highest such line down, check that `grep -n -i -E -- '<pattern>' <file> | cut -d: -f1` still prints that number, delete it with `sed -i.bak '<n>d' <file> && rm <file>.bak`, and show it in a diff as `file:line — removed: <label>`; search the root with the pattern, not the text, for [N05], and check the removal with the same command for [N07].
 - [N06] Apply exactly the approved set and nothing beside it, and edit no file the plan marked read-only: name it with its change for the user to make where it is produced.
 - [N07] After applying, check every edited file again against the known traps and the change digest, and confirm that no safety rule, confirmation step, permission boundary, project fact or measured-failure rule was removed.
 

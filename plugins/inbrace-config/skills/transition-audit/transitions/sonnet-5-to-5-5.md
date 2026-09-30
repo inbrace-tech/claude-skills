@@ -66,6 +66,14 @@ Re-run the project's own evals, or a fresh effort sweep from the guide's startin
 
 </next_step>
 
+<unquoted>
+
+Traps whose matching lines in a project ask the model to reveal its reasoning, which can stop it with a refusal when it reads or quotes them. The plan finds their lines with the pattern below and lists them in `unquoted.md`, and no stage reads or quotes those lines.
+
+- P09 — label: reasoning requested in the reply — pattern (`grep -n -i -E`): `chain[ -]of[ -]thought|(show|include|write( out)?|give|explain|walk( me)? through|lay out|share|reveal|expose|print|output)( all| out)? (your|its)( full| complete| step[ -]by[ -]step| internal| hidden)? (reasoning|thinking|thought process|thoughts)`
+
+</unquoted>
+
 <traps>
 
 ### P01 — Project settings run Sonnet 5

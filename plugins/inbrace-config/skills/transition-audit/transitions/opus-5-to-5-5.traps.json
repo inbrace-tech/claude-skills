@@ -18,8 +18,8 @@
     },
     {
       "id": "P04",
-      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
-      "refs": { "inbrace-tech/claude-skills": [1, 61] }
+      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.2 it went into the knowledge file's `<unquoted>` block: a live run stopped on a `reasoning_extraction` refusal after reading its lines, so the audit now finds them by number and never reads or quotes them (#87).",
+      "refs": { "inbrace-tech/claude-skills": [1, 61, 87] }
     },
     {
       "id": "P05",

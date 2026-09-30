@@ -55,6 +55,7 @@ metadata:
 
 </chat_report>
 
+- [N14] For a line whose quoted text is `[not quoted: <label>]`, write its label wherever the report or the chat would quote or summarise the line — the "Today" column included — never its text.
 - [N13] Add to the report file the section "Known traps possibly stale", listing each trap whose drift line is not `holds` with its verdict, its recorded passage and date, and, for `changed` and `vanished`, the section as the page reads today; and in the chat, after "Why", one line counting those traps.
 - [N05] In the report file, close the older-residue section by recommending Anthropic's model-general audit, `/claude-api prompt-audit`, and the API-code section with the `/claude-api migrate` command covering every file it lists.
 - [N06] Propose no diff at this stage: the table names each change in words, and the diff is written for the changes the user approves.

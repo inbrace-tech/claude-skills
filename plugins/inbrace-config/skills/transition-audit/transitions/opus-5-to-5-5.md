@@ -60,6 +60,14 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 
 </next_step>
 
+<unquoted>
+
+Traps whose matching lines in a project ask the model to reveal its reasoning, which can stop it with a refusal when it reads or quotes them. The plan finds their lines with the pattern below and lists them in `unquoted.md`, and no stage reads or quotes those lines.
+
+- P04 — label: reasoning requested in the reply — pattern (`grep -n -i -E`): `chain[ -]of[ -]thought|(show|include|write( out)?|give|explain|walk( me)? through|lay out|share|reveal|expose|print|output)( all| out)? (your|its)( full| complete| step[ -]by[ -]step| internal| hidden)? (reasoning|thinking|thought process|thoughts)`
+
+</unquoted>
+
 <traps>
 
 ### P01 — Project not set to Opus 5.5 at `medium`
