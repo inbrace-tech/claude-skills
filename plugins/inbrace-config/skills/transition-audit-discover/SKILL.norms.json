@@ -34,14 +34,14 @@
     {
       "id": "N06",
       "where": "Docs",
-      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#what-loads-at-startup", "https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 39, 57] },
-      "what": "One brief shared by every agent keeps them classifying alike; agents never see the session, and those that set `omitClaudeMd` do not load the project memory, so the facts they need arrive as quoted `file:line` text, never as a paraphrase that could be wrong. Derived from `audit-sonnet-5-5` `N40` and `audit-opus-5-5` `N40` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #39). In 0.6.0 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#what-loads-at-startup", "https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 39, 57, 87] },
+      "what": "One brief shared by every agent keeps them classifying alike; agents never see the session, and those that set `omitClaudeMd` do not load the project memory, so the facts they need arrive as quoted `file:line` text, never as a paraphrase that could be wrong. Derived from `audit-sonnet-5-5` `N40` and `audit-opus-5-5` `N40` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #39). In 0.6.0 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57). In 0.6.2 the brief carries the lines of `unquoted.md` as `file:line | id | label`, never their text, so every agent knows which lines not to read (#87)."
     },
     {
       "id": "N07",
       "where": "Read",
-      "refs": { "inbrace-tech/claude-skills": [34, 39] },
-      "what": "Writing each batch's lines before reading the next keeps no finding dependent on context that compaction could drop, and lets a resume tell which batches are done. Derived from `audit-sonnet-5-5` `N08` and `audit-opus-5-5` `N08` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #39)."
+      "refs": { "inbrace-tech/claude-skills": [34, 39, 87] },
+      "what": "Writing each batch's lines before reading the next keeps no finding dependent on context that compaction could drop, and lets a resume tell which batches are done. Derived from `audit-sonnet-5-5` `N08` and `audit-opus-5-5` `N08` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #39). In 0.6.2 the order became strict: a batch's lines are written before anything else is opened, a skill read as context or a lead included. In the live run of #87 the agents batch's lines were still unwritten when [N21] opened the skills it preloads, and one refusal lost two batches."
     },
     {
       "id": "N08",
@@ -118,14 +118,14 @@
     {
       "id": "N20",
       "where": "Classify",
-      "refs": { "inbrace-tech/claude-skills": [34, 39] },
-      "what": "A project that already decided for the target should see that decision respected, with where it says so. Derived from `audit-sonnet-5-5` `N31` and `audit-opus-5-5` `N31` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #39)."
+      "refs": { "inbrace-tech/claude-skills": [34, 39, 86] },
+      "what": "A project that already decided for the target should see that decision respected, with where it says so. Derived from `audit-sonnet-5-5` `N31` and `audit-opus-5-5` `N31` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #39). In 0.6.2 (#86), the one false positive of the 0.6.1 suite was a docs file proposing a change to a Sonnet 5 fallback variable that the same file explains at a nearby line; the docs bear that reason out, but the norm cleared only what the project states it evaluated for the target. A value kept on purpose for a reason the docs support is now `already decided` too. No findings file was kept, so which stage kept the change is inferred."
     },
     {
       "id": "N21",
       "where": "Classify",
-      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents", "https://code.claude.com/docs/en/sub-agents#what-loads-at-startup"], "inbrace-tech/claude-skills": [34, 39] },
-      "what": "A skill listed under `skills:` is injected in full into the agent at startup, and a custom subagent loads the project memory unless `omitClaudeMd` is set, so an instruction stated there is not missing; a `disable-model-invocation` skill cannot be preloaded. Derived from `audit-sonnet-5-5` `N58` and `audit-opus-5-5` `N58` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #39)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents", "https://code.claude.com/docs/en/sub-agents#what-loads-at-startup"], "inbrace-tech/claude-skills": [34, 39, 87] },
+      "what": "A skill listed under `skills:` is injected in full into the agent at startup, and a custom subagent loads the project memory unless `omitClaudeMd` is set, so an instruction stated there is not missing; a `disable-model-invocation` skill cannot be preloaded. Derived from `audit-sonnet-5-5` `N58` and `audit-opus-5-5` `N58` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #39). In 0.6.2 the preloaded skills are searched for the instruction with Grep, reading only the lines around a match, instead of being read in full inside the agents batch: the full read opened a second batch's worth of text before the first was written, and it held the lines that stopped the run on a refusal (#87)."
     },
     {
       "id": "N22",
@@ -136,14 +136,20 @@
     {
       "id": "N23",
       "where": "Close the stage",
-      "refs": { "inbrace-tech/claude-skills": [34, 39] },
-      "what": "Open discovery must say what it did not read, or its silence reads as a clean result; the account also shows how the docs were read, so an offline run is never taken for a verified one. Written for the transition-agnostic audit (#34, #39)."
+      "refs": { "inbrace-tech/claude-skills": [34, 39, 87] },
+      "what": "Open discovery must say what it did not read, or its silence reads as a clean result; the account also shows how the docs were read, so an offline run is never taken for a verified one. Written for the transition-agnostic audit (#34, #39). In 0.6.2 the coverage account names the lines skipped per [N25] and the files `not audited — refusal` per [transition-audit#N21] (#87)."
     },
     {
       "id": "N24",
       "where": "Classify",
       "refs": { "docs": ["https://code.claude.com/docs/en/settings#settings-files-and-who-they-affect"], "inbrace-tech/claude-skills": [77] },
       "what": "Added in 0.6.1. In the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition one run dismissed a missing effort level because the auditor's own `~/.claude/settings.json` saved one for the target, and another kept a launch recipe with no effort flag as \"inherited from what the user saved\". The user settings file applies to that user on that machine; the other developers of the project, its CI and its headless runs never get it, so an audit that lets it settle a finding reports a configuration the project does not ship. The file stays context for explaining what the user sees today (#77)."
+    },
+    {
+      "id": "N25",
+      "where": "Read",
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#safeguard-refusals"], "inbrace-tech/claude-skills": [87] },
+      "what": "In 0.6.2 (#87), a live session-mode run on the Sonnet fixture stopped mid-discovery with `stop_reason: \"refusal\"`, category `reasoning_extraction`, after reading the lines the reasoning-in-the-reply trap (Opus P04, Sonnet P09) exists to find; the guides say such requests can be declined, and Claude Code's automatic fallback covers other categories only, so the run simply stopped. Reading the file around the listed line keeps the rest of the file audited for every other trap, and the lines around it are enough to tell an instruction from prose ([N13]). A paraphrase the pattern misses is cited the same way once seen, so it is not quoted back; if reading it stops the run, [transition-audit#N21] recovers."
     }
   ]
 }

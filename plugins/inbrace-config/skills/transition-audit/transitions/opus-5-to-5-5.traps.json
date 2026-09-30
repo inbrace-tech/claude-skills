@@ -18,8 +18,8 @@
     },
     {
       "id": "P04",
-      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
-      "refs": { "inbrace-tech/claude-skills": [1, 61] }
+      "learned": "In the audit since its first version, which flagged instructions Opus 5 and 5.5 outdated (#1). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.2 it went into the knowledge file's `<unquoted>` block: a live run stopped on a `reasoning_extraction` refusal after reading its lines, so the audit now finds them by number and never reads or quotes them (#87).",
+      "refs": { "inbrace-tech/claude-skills": [1, 61, 87] }
     },
     {
       "id": "P05",
@@ -33,8 +33,8 @@
     },
     {
       "id": "P07",
-      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.1, after the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition: a tier skill's capability paragraph and an open measurement on Opus 5 were never raised, and a rule whose stated reason cited an Opus 5 tier skill norm was judged fine because the citation resolved, although the session reading it runs Opus 5.5. The signal now names capability statements and source-model rationales, one line per norm of a tier skill (#78).",
-      "refs": { "inbrace-tech/claude-skills": [2, 61, 78] }
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.1, after the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition: a tier skill's capability paragraph and an open measurement on Opus 5 were never raised, and a rule whose stated reason cited an Opus 5 tier skill norm was judged fine because the citation resolved, although the session reading it runs Opus 5.5. The signal now names capability statements and source-model rationales, one line per norm of a tier skill (#78). In 0.6.2 (#89), the first source's anchor was re-pointed to `#capability-improvements`, the id the rendered guide gives that section (its own link uses it) though the raw Markdown heading reads \"Capabilities relevant to prompting\"; both fragments of the passage were re-checked word for word against the page downloaded on 2026-09-30. In 0.6.2 it also recognises a rule that names no model by finding its words in the Opus 5 guide: on the 0.6.1 suite a scope sentence copied from that guide into a path-scoped rule drew no re-test (#86).",
+      "refs": { "inbrace-tech/claude-skills": [2, 61, 78, 89, 86] }
     },
     {
       "id": "P08",
@@ -53,8 +53,8 @@
     },
     {
       "id": "P11",
-      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2). Its areas became ids of the plan's map in #61 (agents → agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
-      "refs": { "inbrace-tech/claude-skills": [2, 61] }
+      "learned": "Added when the audit was scoped to the Opus 5 → 5.5 transition and rewritten as numbered norms from the Opus 5.5 guides (#2). Its areas became ids of the plan's map in #61 (agents → agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.2 the signal names the missing instruction and the applies-when says a specific brief does not clear it: on the 0.6.1 suite an onboarding agent with a numbered brief and no explore-first line drew no change, since the passage speaks of loosely specified tasks (#86).",
+      "refs": { "inbrace-tech/claude-skills": [2, 61, 86] }
     },
     {
       "id": "P12",
@@ -98,8 +98,8 @@
     },
     {
       "id": "P20",
-      "learned": "Added when the audit began reporting agents and skills still pinned to Opus 5 (#6). Its areas became ids of the plan's map in #61 (agents, skills → agents, skills, commands, settings), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
-      "refs": { "inbrace-tech/claude-skills": [6, 61] }
+      "learned": "Added when the audit began reporting agents and skills still pinned to Opus 5 (#6). Its areas became ids of the plan's map in #61 (agents, skills → agents, skills, commands, settings), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.2 its signal and areas took launch commands, dispatch recipes and CI workflows, which the suite's key already counted as P20 although the areas did not name them, and it names the effort default that drops with the pin (#89).",
+      "refs": { "inbrace-tech/claude-skills": [6, 61, 89, 86] }
     },
     {
       "id": "P21",
@@ -113,8 +113,8 @@
     },
     {
       "id": "P23",
-      "learned": "Added in 0.5.0 with the rows for skills preloaded through `skills:` into an agent whose pin moves (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Added in 0.5.0 with the rows for skills preloaded through `skills:` into an agent whose pin moves (#28). In 0.6.2 it fires without a P20 finding, since an agent already on Opus 5.5 still loads the skill in full at startup; the suite's key already accepted that case (#89).",
+      "refs": { "inbrace-tech/claude-skills": [28, 89] }
     },
     {
       "id": "P24",
@@ -140,6 +140,16 @@
       "id": "P28",
       "learned": "Added in 0.5.0 from the migration guide's note that text between tool calls arrives as thinking blocks, for parsers that keep only text blocks (#28).",
       "refs": { "inbrace-tech/claude-skills": [28] }
+    },
+    {
+      "id": "P29",
+      "learned": "Added in 0.6.2 from the guide's note that thinking counts toward `max_tokens`, for request code sized while Opus 5 ran with thinking off (#89).",
+      "refs": { "inbrace-tech/claude-skills": [89] }
+    },
+    {
+      "id": "P30",
+      "learned": "Added in 0.6.2 from the what's-new note that a request without `effort` moves from `high` to `medium` (#89).",
+      "refs": { "inbrace-tech/claude-skills": [89] }
     }
   ]
 }

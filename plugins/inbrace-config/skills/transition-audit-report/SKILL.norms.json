@@ -78,6 +78,12 @@
       "where": "Report",
       "refs": { "inbrace-tech/claude-skills": [34, 43] },
       "what": "Added with the drift stage. A changed or vanished passage marks its trap as possibly stale in the report, so the knowledge never silently outlives the docs; the user, and the maintainers through the learning loop, see what the page says now (#34, #43)."
+    },
+    {
+      "id": "N14",
+      "where": "Report",
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#safeguard-refusals"], "inbrace-tech/claude-skills": [87] },
+      "what": "In 0.6.2 (#87), a live session-mode run on the Sonnet fixture stopped mid-discovery with `stop_reason: \"refusal\"`, category `reasoning_extraction`, after reading the lines the reasoning-in-the-reply trap (Opus P04, Sonnet P09) exists to find; the guides say such requests can be declined, and Claude Code's automatic fallback covers other categories only, so the run simply stopped. The report and its chat summary are where a finding's text would otherwise be quoted back in full, so a finding marked `[not quoted: <label>]` shows its label there."
     }
   ]
 }

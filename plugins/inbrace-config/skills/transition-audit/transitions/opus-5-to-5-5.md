@@ -60,6 +60,14 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 
 </next_step>
 
+<unquoted>
+
+Traps whose matching lines in a project ask the model to reveal its reasoning, which can stop it with a refusal when it reads or quotes them. The plan finds their lines with the pattern below and lists them in `unquoted.md`, and no stage reads or quotes those lines.
+
+- P04 — label: reasoning requested in the reply — pattern (`grep -n -i -E`): `chain[ -]of[ -]thought|(show|include|write( out)?|give|explain|walk( me)? through|lay out|share|reveal|expose|print|output)( all| out)? (your|its)( full| complete| step[ -]by[ -]step| internal| hidden)? (reasoning|thinking|thought process|thoughts)`
+
+</unquoted>
+
 <traps>
 
 ### P01 — Project not set to Opus 5.5 at `medium`
@@ -161,13 +169,13 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 - kind: re-test
 - area: memory, rules, agents, skills, commands
 - signal: conciseness, over-verification, scope, narration-cadence or correction-narration instructions written for Opus 5; a statement of what Opus 5 can do, such as the capability context of a tier skill — how well it coordinates subagents, how conservative its review prompts must be, a measurement left open on it; a rule whose stated reason cites Opus 5 guidance, an Opus 5 tier skill or one of its norms, even where the citation still resolves
-- applies when: any instruction file, one line per norm or paragraph of a tier skill written for Opus 5
+- applies when: any instruction file, one line per norm or paragraph of a tier skill written for Opus 5; recognise text written for Opus 5 that names no model by finding its words in the cached Opus 5 guide with Grep, since the guide's own sentences on conciseness, document length and scope are what such rules copy
 - change: Keep as the starting point and mark for re-testing. They may no longer be needed; do not delete them on this audit's word alone. Re-derive a capability statement from the Opus 5.5 guide's capabilities, re-run a measurement it leaves open on Opus 5.5, and re-anchor a rule's stated reason on the Opus 5.5 guide or a reason that names no model, since the session that reads it now runs Opus 5.5.
 - confidence: medium
 - sweep: no
-- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#capabilities-relevant-to-prompting
+- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#capability-improvements
   passage: "It also sustains long-running autonomous work better than Claude Opus 5 … Early testers also reported stronger code review, with more bugs caught than on Claude Opus 5 and fewer false alarms"
-  verified: 2026-09-29
+  verified: 2026-09-30
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5
   passage: "Existing Claude Opus 5 prompts should perform well without changes, and the patterns in Prompting Claude Opus 5 remain a reasonable starting point."
   verified: 2026-09-29
@@ -230,8 +238,8 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 
 - kind: change
 - area: agents, skills, commands
-- signal: workflows across email, documents, spreadsheets or CRM
-- applies when: multi-app automation
+- signal: an agent or skill whose tools or steps span two or more of email, documents, spreadsheets and CRM, that creates or changes records, with no instruction to look through the relevant sources first
+- applies when: multi-app automation that writes to those apps; a specific brief does not clear it, since the guide's point is that what a task depends on often sits in a source the request does not name
 - change: Add the guide's instruction to explore the relevant sources before acting.
 - confidence: medium
 - sweep: no
@@ -358,12 +366,15 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 ### P20 — Agent still pinned to Opus 5
 
 - kind: change
-- area: agents, skills, commands, settings
-- signal: `model: claude-opus-5` in an agent's or skill's frontmatter, or in settings
-- applies when: instruction files, unless the project records the pin as deliberate as already decided
-- change: Move the pin to `claude-opus-5-5` and set its effort as P21 explains — `effort: medium`, or no `effort:` so the file inherits the session's level — or record why it stays.
+- area: memory, rules, agents, skills, commands, hooks, settings, ci
+- signal: `model: claude-opus-5` in an agent's or skill's frontmatter, in settings, or in a launch command or dispatch recipe — a `--model` flag in a CI workflow or a `claude -p` recipe, a `model` argument to an Agent call — which instructs how a session or agent starts even when written as prose
+- applies when: instruction files, workflows and scripts that launch a session, unless the project records the pin as deliberate as already decided
+- change: Move the pin to `claude-opus-5-5` and set its effort as P21 explains — `effort: medium`, or no `effort:` so the file inherits the session's level — or record why it stays. Where a launch sets no effort — no `--effort`, no `CLAUDE_CODE_EFFORT_LEVEL`, no project effort setting — say that Opus 5 starts at `high` and Opus 5.5 at `medium`, so the move drops a level for everyone who runs it.
 - confidence: medium
 - sweep: yes
+- source: https://code.claude.com/docs/en/model-config#adjust-effort-level
+  passage: "The model's default effort: `high` on every model that supports effort, except that Opus 5.5 and Sonnet 5.5 default to `medium`"
+  verified: 2026-09-30
 - source: https://code.claude.com/docs/en/sub-agents#choose-a-model
   passage: "Full model ID: use a full model ID such as `claude-opus-5-5` or `claude-sonnet-5`."
   verified: 2026-09-29
@@ -403,9 +414,9 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
 
 - kind: re-test
 - area: agents
-- signal: a `skills:` entry naming a skill written for Opus 5 — its name or title names Opus 5 — in an agent with a P20 finding
-- applies when: agent files
-- change: Re-test: re-derive a Opus 5.5 counterpart from the Opus 5.5 guide and point the `skills:` line at it, since the migration guide says to re-evaluate model-specific prompt instructions against Prompting Claude Opus 5.5; where a prefix match selects that skill, P22 applies too. List it under "Re-test only, no edit".
+- signal: a `skills:` entry naming a skill written for Opus 5 — its name or title names Opus 5 — in an agent that is pinned to Opus 5, a P20 finding, or already to Opus 5.5
+- applies when: agent files; an agent already on `claude-opus-5-5` gets the finding on its own, with no P20 finding
+- change: Re-test: re-derive a Opus 5.5 counterpart from the Opus 5.5 guide and point the `skills:` line at it, since the migration guide says to re-evaluate model-specific prompt instructions against Prompting Claude Opus 5.5; where a prefix match selects that skill, P22 applies too. An agent already on Opus 5.5 receives the Opus 5 text in full at startup all the same. List it under "Re-test only, no edit".
 - confidence: medium
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/opus-5-5/migration-guide#recommended-changes
@@ -484,5 +495,31 @@ Re-run the project's own evals, or a short effort sweep at `low`, `medium` and `
   verified: 2026-09-29
 - source: https://code.claude.com/docs/en/model-config#extended-thinking
   basis: inference: the Claude Code docs do not say how a session transcript records progress-update thinking blocks.
+
+### P29 — `max_tokens` sized for a request with thinking off
+
+- kind: hand-off
+- area: api-code
+- signal: a small `max_tokens` in request code that ran Opus 5 with thinking disabled
+- applies when: API code
+- change: Hand off per the API hand-off rule. Thinking counts toward `max_tokens` on Opus 5.5, so a limit sized for Opus 5 with thinking off can cut replies off.
+- confidence: medium
+- sweep: no
+- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#calibrate-effort
+  passage: "Thinking counts toward `max_tokens` even when thinking content isn't returned to you, so a limit sized for Claude Opus 5 with thinking off can cut replies off."
+  verified: 2026-09-30
+
+### P30 — Requests that pass no effort
+
+- kind: hand-off
+- area: api-code
+- signal: request code for a model id or alias that is moving to Opus 5.5 and sends no `effort`
+- applies when: API code, unless the project records the omission as deliberate as already decided
+- change: Hand off per the API hand-off rule. Say that such a request ran at `high` on Opus 5 and runs at `medium` on Opus 5.5, so the id change lowers the level for every caller, and that the docs' advice is to set `effort` explicitly and re-run the sweep.
+- confidence: medium
+- sweep: no
+- source: https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5#behavior-differences
+  passage: "A request that omits `effort` runs at `medium`; on Claude Opus 5 it ran at `high`. Set `effort` explicitly and re-run your sweep"
+  verified: 2026-09-30
 
 </traps>

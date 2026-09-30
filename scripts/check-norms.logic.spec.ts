@@ -14,6 +14,7 @@ import {
   isIsoDate,
   knowledgeSlugs,
   parseTraps,
+  positionalArgumentErrors,
   sidecarLayoutErrors,
   sizeErrors,
   trapsSidecarPathFor,
@@ -485,6 +486,25 @@ describe("size ceilings", () => {
 
   it("byteLength counts UTF-8 bytes, as wc -c does", () => {
     expect(byteLength("—")).toBe(3);
+  });
+});
+
+describe("positional arguments in skill text", () => {
+  it("flags a dollar sign before a digit, in prose and in a fence", () => {
+    const text = "A run cost US$2.16.\n\n```text\necho $0\n```\n";
+    expect(positionalArgumentErrors("s/SKILL.md", text)).toStrictEqual([
+      "s/SKILL.md:1: `$2` is replaced by an argument of the invocation; write `USD <amount>` or escape the dollar sign with one backslash",
+      "s/SKILL.md:4: `$0` is replaced by an argument of the invocation; write `USD <amount>` or escape the dollar sign with one backslash",
+    ]);
+  });
+
+  it("flags every token of a line, and a doubled backslash leaves the token live", () => {
+    expect(positionalArgumentErrors("s/SKILL.md", "$1 and $2")).toHaveLength(2);
+    expect(positionalArgumentErrors("s/SKILL.md", "\\\\$1")).toHaveLength(1);
+  });
+
+  it("accepts USD, one backslash, and a dollar sign before a name or brace", () => {
+    expect(positionalArgumentErrors("s/SKILL.md", "USD 14, \\$14, $ARGUMENTS, ${CLAUDE_SKILL_DIR}, US$ and $")).toStrictEqual([]);
   });
 });
 

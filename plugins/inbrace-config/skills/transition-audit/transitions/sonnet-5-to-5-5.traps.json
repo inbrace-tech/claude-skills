@@ -3,8 +3,8 @@
   "traps": [
     {
       "id": "P01",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). In 0.6.2 a Sonnet 5 fallback variable that a project documents beside a `model` already on Sonnet 5.5 is no finding: on the 0.6.1 suite a docs file explaining that pin drew a change (#86).",
+      "refs": { "inbrace-tech/claude-skills": [28, 86] }
     },
     {
       "id": "P02",
@@ -13,13 +13,13 @@
     },
     {
       "id": "P03",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills, settings → agents, skills, commands, settings, ci), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
-      "refs": { "inbrace-tech/claude-skills": [28, 61] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills, settings → agents, skills, commands, settings, ci), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.2 its areas took memory, rules and hooks, the areas where P02 fires: on the 0.6.1 suite a dispatch recipe in a file imported by `CLAUDE.md` got its P02 finding but no P03, while the same pin in an agent got both, since the traps stage read P03 only where its areas said (#86).",
+      "refs": { "inbrace-tech/claude-skills": [28, 61, 86] }
     },
     {
       "id": "P04",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). In 0.6.1 its kind moved from re-test to change, typed remove (#64): in the 2026-09-29 capability evaluation a held-out answer key required removing `MAX_THINKING_TOKENS=0`, every skill run kept it as a re-test by following this trap, and only the plain session with the doc links proposed the edit. The model-config page states outright that the setting has no effect on Sonnet 5.5, so nothing is left to re-test. The setting stays as already decided where the project records that it still serves another model, a Sonnet 5 fallback or an agent pinned to a model where it still turns thinking off, which the page's own exception list supports.",
-      "refs": { "docs": ["https://code.claude.com/docs/en/model-config#extended-thinking"], "inbrace-tech/claude-skills": [28, 64] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). In 0.6.1 its kind moved from re-test to change, typed remove (#64): in the 2026-09-29 capability evaluation a held-out answer key required removing `MAX_THINKING_TOKENS=0`, every skill run kept it as a re-test by following this trap, and only the plain session with the doc links proposed the edit. The model-config page states outright that the setting has no effect on Sonnet 5.5, so nothing is left to re-test. The setting stays as already decided where the project records that it still serves another model, a Sonnet 5 fallback or an agent pinned to a model where it still turns thinking off, which the page's own exception list supports. In 0.6.2 (#89), the second fragment of the first source's passage no longer occurred on the model-config page, which now reads \"a saved `alwaysThinkingEnabled: false` or `MAX_THINKING_TOKENS=0` has no effect there\"; the passage was re-recorded word for word from the page downloaded on 2026-09-30 and the meaning is unchanged.",
+      "refs": { "docs": ["https://code.claude.com/docs/en/model-config#extended-thinking"], "inbrace-tech/claude-skills": [28, 64, 89] }
     },
     {
       "id": "P05",
@@ -43,8 +43,8 @@
     },
     {
       "id": "P09",
-      "learned": "Carried from the Opus audit's row of the same name (P04 there), first written in #1 or #2, and re-grounded in the Sonnet 5.5 guides in 0.5.0 (#28). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
-      "refs": { "inbrace-tech/claude-skills": [1, 2, 28, 61] }
+      "learned": "Carried from the Opus audit's row of the same name (P04 there), first written in #1 or #2, and re-grounded in the Sonnet 5.5 guides in 0.5.0 (#28). Its areas became ids of the plan's map in #61 (instructions → memory, rules, agents, skills, commands), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.2 it went into the knowledge file's `<unquoted>` block: a live run stopped on a `reasoning_extraction` refusal after reading its lines, so the audit now finds them by number and never reads or quotes them (#87).",
+      "refs": { "inbrace-tech/claude-skills": [1, 2, 28, 61, 87] }
     },
     {
       "id": "P10",
@@ -215,6 +215,11 @@
       "id": "P43",
       "learned": "Added in 0.6.1 as a sibling of P27 (#65). In the 2026-09-29 capability evaluation the calibrated harness held a skill that sends a message to a running agent mid-turn, and the traps stage recorded P27 as not checkable, since P27 covers only Claude API code and is a hand-off. The guide names messages that arrive while the model is partway through a multistep turn among the causes of the injection misread, so the risk also sits in instruction text. P27 stays an API hand-off and this trap covers the instruction areas. It is a re-test of low confidence, since the Claude Code docs do not say where a message to a working agent lands relative to its tool results.",
       "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets", "https://code.claude.com/docs/en/sub-agents#resume-subagents"], "inbrace-tech/claude-skills": [65] }
+    },
+    {
+      "id": "P44",
+      "learned": "Added in 0.6.2 after the 2026-09-30 live runs: discovery found the source id held as a constant in the module that wraps the SDK, which P01, P02 and P40 do not cover (#89).",
+      "refs": { "inbrace-tech/claude-skills": [89] }
     }
   ]
 }

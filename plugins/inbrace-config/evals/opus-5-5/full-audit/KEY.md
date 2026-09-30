@@ -34,7 +34,7 @@ Each grader below reads the "Final list" of the audit's `findings.md`, through t
 | `pos-28-skill-md-21-change` | `.claude/skills/model-notes-opus-5/SKILL.md:21` | change | P03: 'Do not think on lookups' |
 | `pos-29-skill-md-8-optional` | `.claude/skills/ask-contract/SKILL.md:8` | optional | P13: multi-turn chat with follow-ups, no 'treat as done' |
 | `pos-30-skill-md-13-optional` | `.claude/skills/ask-contract/SKILL.md:13` | optional | P06: 'Think carefully before answering' in a chat skill |
-| `pos-31-skill-md-11-change` | `.claude/skills/summarize-contract/SKILL.md:11` | change | P04: 'Write out your chain of thought in the summary' |
+| `pos-31-skill-md-11-change` | `.claude/skills/summarize-contract/SKILL.md:11` | change | P04: reasoning requested in the reply (the line is cited by number and never quoted) |
 | `pos-32-skill-md-11-change` | `.claude/skills/triage-intake/SKILL.md:11` | change | P03: 'Do not think before labelling: skip thinking' |
 | `pos-33-skill-md-11-re-test` | `.claude/skills/scan-reader/SKILL.md:11` | re-test | P15: forced crop and OCR before reading charts |
 | `pos-34-skill-md-10-change` | `.claude/skills/portal-ui/SKILL.md:10` | change | P16: 'Make it modern and avoid a generic AI look' |
@@ -43,10 +43,10 @@ Each grader below reads the "Final list" of the audit's `findings.md`, through t
 | `pos-37-skill-md-4-change` | `.claude/skills/quarterly-report/SKILL.md:4` | change | P20: skill frontmatter `model: claude-opus-5` |
 | `pos-38-skill-md-5-re-test` | `.claude/skills/vendor-scorecard/SKILL.md:5` | re-test | P21: Opus 5.5 skill with effort kept from Opus 5 |
 | `pos-39-explain-clause-md-3-change` | `.claude/commands/explain-clause.md:3` | change | P20: command frontmatter `model: claude-opus-5` |
-| `pos-40-explain-clause-md-10-change` | `.claude/commands/explain-clause.md:10` | change | P04: 'Show your reasoning in the answer' |
+| `pos-40-explain-clause-md-10-change` | `.claude/commands/explain-clause.md:10` | change | P04: reasoning requested in the reply (the line is cited by number and never quoted) |
 | `pos-41-writing-md-10-re-test` | `.claude/rules/writing.md:10` | re-test | P07: Opus 5 scope instruction |
 | `pos-42-review-voice-md-3-change` | `.claude/rules/shared/review-voice.md:3` | change | P03 (read-only): 'skip thinking' in a gitignored synced rule |
-| `pos-43-review-voice-md-6-change` | `.claude/rules/shared/review-voice.md:6` | change | P04 (read-only): 'Write out your chain of thought in the reply' |
+| `pos-43-review-voice-md-6-change` | `.claude/rules/shared/review-voice.md:6` | change | P04: reasoning requested in the reply (the line is cited by number and never quoted); the file is read-only |
 | `pos-44-anthropic-ts-6-change` | `src/lib/anthropic.ts:6` | change | D: MODEL = claude-opus-5 in the client wrapper |
 | `pos-45-classify-ts-21-change` | `src/intake/classify.ts:21` | change | P02: thinking disabled (TS) |
 | `pos-46-classify-ts-25-change` | `src/intake/classify.ts:25` | change | P17: forced tool_choice type tool (TS) |

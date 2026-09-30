@@ -52,8 +52,8 @@
     {
       "id": "N09",
       "where": "Verify",
-      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents"], "inbrace-tech/claude-skills": [25, 28, 30] },
-      "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) three agents were each proposed a missing-instruction addition that a skill in their `skills:` frontmatter already stated. The sub-agents page says each listed skill's full content is injected into the subagent at startup, so the finding is refuted by the skill, which the verifier opens before judging; a skill with `disable-model-invocation: true` cannot be preloaded and a missing one is skipped, so those findings stand. See #25. In 0.5.0, after four seeded runs split three ways over a rule stated in project memory, the verifier also discards a missing-instruction finding the project memory settles for an agent that does not set `omitClaudeMd: true`. The sub-agents page's \"What loads at startup\" section and the `omitClaudeMd` field description say a custom subagent loads the project's CLAUDE.md hierarchy unless the field is set; one passage of the same page says CLAUDE.md files \"still load through the normal message flow\" even with it, so the rule rests on the majority of the page and the finding it decides carries medium confidence. See #28 and #30."
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents"], "inbrace-tech/claude-skills": [25, 28, 30, 87] },
+      "what": "Added in 0.4.7. In a full-scope run of 0.4.5 on a private multi-agent harness (197 instruction files) three agents were each proposed a missing-instruction addition that a skill in their `skills:` frontmatter already stated. The sub-agents page says each listed skill's full content is injected into the subagent at startup, so the finding is refuted by the skill, which the verifier opens before judging; a skill with `disable-model-invocation: true` cannot be preloaded and a missing one is skipped, so those findings stand. See #25. In 0.5.0, after four seeded runs split three ways over a rule stated in project memory, the verifier also discards a missing-instruction finding the project memory settles for an agent that does not set `omitClaudeMd: true`. The sub-agents page's \"What loads at startup\" section and the `omitClaudeMd` field description say a custom subagent loads the project's CLAUDE.md hierarchy unless the field is set; one passage of the same page says CLAUDE.md files \"still load through the normal message flow\" even with it, so the rule rests on the majority of the page and the finding it decides carries medium confidence. See #28 and #30. In 0.6.2 the preloaded skills are searched with Grep, reading only the lines around a match, rather than opened in full (#87)."
     },
     {
       "id": "N10",
@@ -82,14 +82,26 @@
     {
       "id": "N14",
       "where": "Verify",
-      "refs": { "docs": ["https://code.claude.com/docs/en/model-config#model-aliases", "https://platform.claude.com/docs/en/models/opus-5-5/migration-guide"], "inbrace-tech/claude-skills": [77] },
-      "what": "Added in 0.6.1. In the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition the verifier turned a raw `change` raising a CI pin of Claude Code below the target's documented minimum version into `re-test`, because the project said the pin existed after a measured failure; the Claude Code docs state the minimum outright, so the pin cannot stay and the local reason is only what to check when raising it. In another run it left a cost re-baseline the migration checklist asks for as `unclear`, having looked for the deciding passage only in the page the line cited. [N05] still protects instruction text a measured failure produced; a value the target's requirement rules out is not such text (#77)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/model-config#model-aliases", "https://platform.claude.com/docs/en/models/opus-5-5/migration-guide"], "inbrace-tech/claude-skills": [77, 86] },
+      "what": "Added in 0.6.1. In the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition the verifier turned a raw `change` raising a CI pin of Claude Code below the target's documented minimum version into `re-test`, because the project said the pin existed after a measured failure; the Claude Code docs state the minimum outright, so the pin cannot stay and the local reason is only what to check when raising it. In another run it left a cost re-baseline the migration checklist asks for as `unclear`, having looked for the deciding passage only in the page the line cited. [N05] still protects instruction text a measured failure produced; a value the target's requirement rules out is not such text (#77). In 0.6.2 (#86), the clause keeps its rule for requirements of the target but no longer covers a value the target's own passage keeps or recommends, such as the fallback variable a project documents: that is `already decided`, with the line that states the reason."
     },
     {
       "id": "N15",
       "where": "Verify",
       "refs": { "inbrace-tech/claude-skills": [77] },
       "what": "Added in 0.6.1. In the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition older-residue lines reached the final list with no proposed change: one with no passage at all, graded a false positive, and several whose passage the project had already weighed in a decision record, graded unsupported. The verifier now holds residue to the rule discovery records it by, and the session that started it files residue apart from the final list (#77)."
+    },
+    {
+      "id": "N16",
+      "where": "Read",
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#safeguard-refusals"], "inbrace-tech/claude-skills": [87] },
+      "what": "In 0.6.2 (#87), a live session-mode run on the Sonnet fixture stopped mid-discovery with `stop_reason: \"refusal\"`, category `reasoning_extraction`, after reading the lines the reasoning-in-the-reply trap (Opus P04, Sonnet P09) exists to find; the guides say such requests can be declined, and Claude Code's automatic fallback covers other categories only, so the run simply stopped. The verifier opens every cited line ([N02], [N03], [N13]), which for these lines is the text that stops the model; it checks them against the brief's list and their surrounding lines instead."
+    },
+    {
+      "id": "N17",
+      "where": "Verify",
+      "refs": { "inbrace-tech/claude-skills": [89] },
+      "what": "In 0.6.2 (#89), an Opus live demo had a `finding-verifier` claim that a skill named in a note did not exist and remove the reference; the skill existed and the orchestrator caught it and undid the edit. The verifier reads only, with `Read`, `Grep` and `Glob`, so the check is a `Glob` where the file can sit; a reference that could resolve outside the project (a user or plugin skill) is kept and flagged as unconfirmed, never called missing."
     }
   ]
 }
