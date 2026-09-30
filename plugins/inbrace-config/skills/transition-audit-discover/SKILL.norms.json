@@ -118,8 +118,8 @@
     {
       "id": "N20",
       "where": "Classify",
-      "refs": { "inbrace-tech/claude-skills": [34, 39] },
-      "what": "A project that already decided for the target should see that decision respected, with where it says so. Derived from `audit-sonnet-5-5` `N31` and `audit-opus-5-5` `N31` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #39)."
+      "refs": { "inbrace-tech/claude-skills": [34, 39, 86] },
+      "what": "A project that already decided for the target should see that decision respected, with where it says so. Derived from `audit-sonnet-5-5` `N31` and `audit-opus-5-5` `N31` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #39). In 0.6.2 (#86), the one false positive of the 0.6.1 suite was a docs file proposing a change to a Sonnet 5 fallback variable that the same file explains at a nearby line; the docs bear that reason out, but the norm cleared only what the project states it evaluated for the target. A value kept on purpose for a reason the docs support is now `already decided` too. No findings file was kept, so which stage kept the change is inferred."
     },
     {
       "id": "N21",

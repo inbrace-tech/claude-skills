@@ -28,8 +28,8 @@
     {
       "id": "N05",
       "where": "Check each trap",
-      "refs": { "inbrace-tech/claude-skills": [34, 40] },
-      "what": "A finding discovery already recorded should appear once, under the id of the trap that explains it, while keeping the trace of where it came from. Written for the transition-agnostic audit (#34, #40)."
+      "refs": { "inbrace-tech/claude-skills": [34, 40, 86] },
+      "what": "A finding discovery already recorded should appear once, under the id of the trap that explains it, while keeping the trace of where it came from. Written for the transition-agnostic audit (#34, #40). In 0.6.2 (#86), on the 0.6.1 suite a dispatch recipe drew its P02 finding but not the P03 re-test on the same line, and one function's two P21 constructs came out as one: the norm merged by file and construct, against the orchestrator's line format, whose unit is one line per id per `file:line`. A discovery line now takes a trap's id only when it carries that trap's id or none, and another trap on the same construct keeps its own line. No findings file was kept, so the cause is read from the norm's text, not observed."
     },
     {
       "id": "N06",

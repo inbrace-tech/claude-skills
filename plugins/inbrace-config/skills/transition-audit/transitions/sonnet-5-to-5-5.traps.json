@@ -3,8 +3,8 @@
   "traps": [
     {
       "id": "P01",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). In 0.6.2 a Sonnet 5 fallback variable that a project documents beside a `model` already on Sonnet 5.5 is no finding: on the 0.6.1 suite a docs file explaining that pin drew a change (#86).",
+      "refs": { "inbrace-tech/claude-skills": [28, 86] }
     },
     {
       "id": "P02",
@@ -13,8 +13,8 @@
     },
     {
       "id": "P03",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills, settings → agents, skills, commands, settings, ci), after a graded run missed a planted P13 in a skill that the trap's area did not cover.",
-      "refs": { "inbrace-tech/claude-skills": [28, 61] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills, settings → agents, skills, commands, settings, ci), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.2 its areas took memory, rules and hooks, the areas where P02 fires: on the 0.6.1 suite a dispatch recipe in a file imported by `CLAUDE.md` got its P02 finding but no P03, while the same pin in an agent got both, since the traps stage read P03 only where its areas said (#86).",
+      "refs": { "inbrace-tech/claude-skills": [28, 61, 86] }
     },
     {
       "id": "P04",
@@ -215,6 +215,11 @@
       "id": "P43",
       "learned": "Added in 0.6.1 as a sibling of P27 (#65). In the 2026-09-29 capability evaluation the calibrated harness held a skill that sends a message to a running agent mid-turn, and the traps stage recorded P27 as not checkable, since P27 covers only Claude API code and is a hand-off. The guide names messages that arrive while the model is partway through a multistep turn among the causes of the injection misread, so the risk also sits in instruction text. P27 stays an API hand-off and this trap covers the instruction areas. It is a re-test of low confidence, since the Claude Code docs do not say where a message to a working agent lands relative to its tool results.",
       "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets", "https://code.claude.com/docs/en/sub-agents#resume-subagents"], "inbrace-tech/claude-skills": [65] }
+    },
+    {
+      "id": "P44",
+      "learned": "Added in 0.6.2 after the 2026-09-30 live runs: discovery found the source id held as a constant in the module that wraps the SDK, which P01, P02 and P40 do not cover (#89).",
+      "refs": { "inbrace-tech/claude-skills": [89] }
     }
   ]
 }

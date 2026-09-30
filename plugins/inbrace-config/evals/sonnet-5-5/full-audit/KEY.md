@@ -54,8 +54,8 @@ Each grader below reads the "Final list" of the audit's `findings.md`, through t
 | `pos-48-skill-md-14-re-test` | `.claude/skills/model-notes-sonnet-5/SKILL.md:14` | re-test (exact line) | P07: low and medium add no tests, docs or files |
 | `pos-49-skill-md-18-change` | `.claude/skills/model-notes-sonnet-5/SKILL.md:18` | change | P08: only think when a step needs it |
 | `pos-50-skill-md-8-optional` | `.claude/skills/incident-bridge/SKILL.md:8` | optional | P13: long human-in-the-loop work with no update guidance |
-| `pos-51-skill-md-11-change` | `.claude/skills/triage-queue/SKILL.md:11` | change | P09: write out your chain of thought |
-| `pos-52-skill-md-10-change` | `.claude/skills/explain-invoice/SKILL.md:10` | change | P09: include your reasoning in the response |
+| `pos-51-skill-md-11-change` | `.claude/skills/triage-queue/SKILL.md:11` | change | P09: reasoning requested in the reply (the line is cited by number and never quoted) |
+| `pos-52-skill-md-10-change` | `.claude/skills/explain-invoice/SKILL.md:10` | change | P09: reasoning requested in the reply (the line is cited by number and never quoted) |
 | `pos-53-skill-md-10-change` | `.claude/skills/customer-reply/SKILL.md:10` | change | P08: respond directly, thinking adds latency |
 | `pos-54-skill-md-14-change` | `.claude/skills/backfill-tags/SKILL.md:14` | change | P02: `claude -p --model claude-sonnet-5` recipe |
 | `pos-55-skill-md-14-re-test` | `.claude/skills/backfill-tags/SKILL.md:14` | re-test | P03: the launch has no `--effort` |

@@ -28,7 +28,7 @@ export function resumeConversation(saved: SavedTurn[]): MessageParam[] {
   return messages;
 }
 
-/** Hands a conversation the assistant could not resolve to the senior reviewer model. */
+/** Hands a conversation the reply loop (`MODEL`, Sonnet) could not resolve, its `messages` unchanged, to the senior reviewer model. */
 export async function escalate(messages: MessageParam[]) {
   return createMessage({
     model: ESCALATION_MODEL,

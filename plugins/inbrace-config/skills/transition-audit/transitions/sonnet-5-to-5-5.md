@@ -81,7 +81,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - kind: setting
 - area: settings
 - signal: `model` or `env.ANTHROPIC_MODEL` set to `claude-sonnet-5` or its provider ID, or `env.ANTHROPIC_DEFAULT_SONNET_MODEL` set to Sonnet 5 while `model` is `sonnet`, `sonnet[1m]` or `opusplan`, in the project, local or managed settings
-- applies when: a settings file names Sonnet 5 as the session model; resolve aliases as the Claude Code docs do: `sonnet` is Sonnet 5.5 on the Anthropic API, but Sonnet 4.6 on Claude Platform on AWS and Sonnet 4.5 on Amazon Bedrock, Google Cloud's Agent Platform and Microsoft Foundry, which fall outside this transition, and `ANTHROPIC_DEFAULT_SONNET_MODEL`, when set, decides what `sonnet` means; `default` resolves to Opus 5.5, so a project that sets no model gets no finding; record it once per project, on the file that names Sonnet 5
+- applies when: a settings file names Sonnet 5 as the session model; resolve aliases as the Claude Code docs do: `sonnet` is Sonnet 5.5 on the Anthropic API, but Sonnet 4.6 on Claude Platform on AWS and Sonnet 4.5 on Amazon Bedrock, Google Cloud's Agent Platform and Microsoft Foundry, which fall outside this transition, and `ANTHROPIC_DEFAULT_SONNET_MODEL`, when set, decides what `sonnet` means; `default` resolves to Opus 5.5, so a project that sets no model gets no finding; record it once per project, on the file that names Sonnet 5; on a provider other than the Anthropic API, `ANTHROPIC_DEFAULT_SONNET_MODEL` left at Sonnet 5 beside a `model` already on Sonnet 5.5 is the fallback the docs describe, not a finding, and a file that says so is the record
 - change: Set `"model": "claude-sonnet-5-5"` — `anthropic.claude-sonnet-5-5` on Amazon Bedrock — in the file the user picks per the report stage's settings question, keeping a `[1m]` suffix where the current value carries one, and say in one line that on the Anthropic API Sonnet 5.5 always runs with the 1M window. Where Sonnet 5 comes from `ANTHROPIC_DEFAULT_SONNET_MODEL`, propose removing it on the Anthropic API, and on the other providers keep it and set `model` instead, since there it supplies the model Sonnet 5.5's cyber-flagged requests re-run on. Write no effort level: P03 covers effort. Explain, from the user's settings read as context, what the user's settings do today: in Claude Code, Sonnet 5.5 starts at `medium` unless a level is set for it, and a top-level `effortLevel` in `~/.claude/settings.json` does not count for Opus 5.5 and the models released after it; Sonnet 5.5 requires Claude Code v2.1.284 or later. Type setting. Medium confidence when it comes through `ANTHROPIC_DEFAULT_SONNET_MODEL`.
 - confidence: high
 - sweep: yes
@@ -113,7 +113,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 ### P03 — Effort level carried over from Sonnet 5
 
 - kind: re-test
-- area: agents, skills, commands, settings, ci
+- area: memory, rules, agents, skills, commands, hooks, settings, ci
 - signal: an `effort:` in the frontmatter of a file on Sonnet 5.5 whose pin came from Sonnet 5 — the git log shows the `effort:` predates the model change, or the project records no re-derivation of it; a top-level `effortLevel` in the project, local or managed settings, which applies to every model; `CLAUDE_CODE_EFFORT_LEVEL` in a settings `env`
 - applies when: files and settings that run Sonnet 5.5; also a pin or launch that moves to Sonnet 5.5 with no explicit effort — a P02 finding without an `effort:` or `--effort` — since Claude Code starts Sonnet 5 at `high` and Sonnet 5.5 at `medium`
 - change: Re-run the effort sweep rather than carrying the level over, since the levels are recalibrated and the guide states no direction: start at `medium` for well-specified agentic coding and multistep tool use and move to `high` for harder or longer work, at `medium` or `low` for chat and latency-sensitive work, at `high` otherwise, and keep `xhigh` or `max` only where a quality gain was measured. Say that the Claude API defaults to `high` while Claude Code starts Sonnet 5.5 at `medium`. List it under "Re-test only, no edit".
@@ -693,5 +693,18 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
   verified: 2026-09-29
 - source: https://code.claude.com/docs/en/agent-teams#context-and-communication
   basis: inference: where Claude Code places a message that reaches a working agent, relative to its tool results, is not documented; the page says only that messages between teammates are delivered automatically.
+
+### P44 — Source model id held in Claude API code
+
+- kind: hand-off
+- area: api-code
+- signal: the id `claude-sonnet-5`, or its provider form such as `anthropic.claude-sonnet-5` on Amazon Bedrock, held as a constant, default or configuration value in the module that wraps the SDK client or builds its requests
+- applies when: Claude API code, unless the project records the id as deliberate as already decided; a price table is P40's, a setting P01's, and an instruction file or launch P02's
+- change: Hand off per the API hand-off rule. The migration replaces the id with `claude-sonnet-5-5`, which has no date suffix, and on other platforms with the id the what's-new page lists under Availability, `anthropic.claude-sonnet-5-5` on Amazon Bedrock.
+- confidence: high
+- sweep: no
+- source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#migrating-from-claude-sonnet-5
+  passage: "Replace your model ID with `claude-sonnet-5-5`, which has no date suffix. On other platforms, use the ID listed under"
+  verified: 2026-09-30
 
 </traps>
