@@ -201,6 +201,7 @@ A copied skill does not receive updates. Installing through the marketplace does
 Each skill is measured, not asserted. The results are published whether an expectation held or not:
 
 - [2026-09-29: the transition-agnostic audit](docs/evaluations/2026-09-29-transition-audit.md). On a repository no version of the skill had seen, 0.6.0 found 32 of 35 items on average, against 25 for 0.5.1 and 29 for a plain session given the docs. It found every high-severity item, with no false positive, at about twice 0.5.1's cost.
+- [2026-09-29, second round (v3): against plain sessions, Sonnet and Opus](docs/evaluations/2026-09-29-transition-audit-v3.md). On a repository it had never seen, 0.6.0 found 88.6% of the Sonnet 5 → 5.5 changes (strict recall), against 71.4% for a plain session given the doc links and 57.1% without them, with no false positive; on Opus 5 → 5.5, 86.8%, 82.4% and 58.8%. The defects it found are fixed in 0.6.1.
 
 ## How the skills are written
 

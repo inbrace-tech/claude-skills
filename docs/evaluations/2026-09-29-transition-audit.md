@@ -2,6 +2,8 @@
 
 This evaluation asks whether `inbrace-config` 0.6.0, which reads today's docs, explores the project and then checks known traps, finds more of the right Sonnet 5 → Sonnet 5.5 changes than the table-bound 0.5.1 and than a plain Claude session given the docs, without losing precision. The protocol was written and registered before any arm ran. Every expectation is reported, including where it held only under one reading.
 
+**Second round.** A later round the same day ([v3](2026-09-29-transition-audit-v3.md)) compares 0.6.0 with a plain session given the documentation links and one without them, on Sonnet 5 → 5.5 and on Opus 5 → 5.5, under strict recall. The defects it found are fixed in 0.6.1.
+
 **In short:** on a repository no version of the skill had seen, 0.6.0 found 31 and 33 of 35 items in its two runs. That is 32 on average, against 25 for 0.5.1 and 29 for the plain session. It found every high-severity item, made no false positive, and held all 13 negatives. It also cost the most: about US$11 a run, against US$5.5 for 0.5.1 and US$1.35 for the plain session.
 
 ## Question
