@@ -173,9 +173,9 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - change: Keep as the starting point and mark for re-testing. They may no longer be needed; do not delete them on this audit's word alone. Re-derive a capability statement from the Opus 5.5 guide's capabilities, re-run a measurement it leaves open on Opus 5.5, and re-anchor a rule's stated reason on the Opus 5.5 guide or a reason that names no model, since the session that reads it now runs Opus 5.5.
 - confidence: medium
 - sweep: no
-- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#capabilities-relevant-to-prompting
+- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#capability-improvements
   passage: "It also sustains long-running autonomous work better than Claude Opus 5 … Early testers also reported stronger code review, with more bugs caught than on Claude Opus 5 and fewer false alarms"
-  verified: 2026-09-29
+  verified: 2026-09-30
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5
   passage: "Existing Claude Opus 5 prompts should perform well without changes, and the patterns in Prompting Claude Opus 5 remain a reasonable starting point."
   verified: 2026-09-29

@@ -137,8 +137,8 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - confidence: high
 - sweep: yes
 - source: https://code.claude.com/docs/en/model-config#extended-thinking
-  passage: "You can't turn thinking off on Opus 5.5, Sonnet 5.5, or the Fable models … `alwaysThinkingEnabled`, and `MAX_THINKING_TOKENS=0` have no effect there"
-  verified: 2026-09-29
+  passage: "You can't turn thinking off on Opus 5.5, Sonnet 5.5, or the Fable models … a saved `alwaysThinkingEnabled: false` or `MAX_THINKING_TOKENS=0` has no effect there"
+  verified: 2026-09-30
 - source: https://code.claude.com/docs/en/model-config#extended-thinking
   passage: "which turns thinking off on the Anthropic API except on Opus 5.5, Sonnet 5.5, and Fable models"
   verified: 2026-09-29

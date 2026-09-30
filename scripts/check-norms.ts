@@ -15,6 +15,7 @@ import {
   checkKnowledge,
   checkSurface,
   knowledgeSlugs,
+  positionalArgumentErrors,
   sidecarLayoutErrors,
   sidecarPathFor,
   sizeErrors,
@@ -111,6 +112,7 @@ for (const { kind, path: surfacePath } of surfaces()) {
   };
   inputs.push(input);
   if (input.surface !== null) errors.push(...sizeErrors(input.surfacePath, input.surface, kind));
+  if (input.surface !== null && kind === "skill") errors.push(...positionalArgumentErrors(input.surfacePath, input.surface));
   // An orphan sidecar is reported as such; its layout is judged once it has a surface.
   if (input.surface !== null && input.sidecarText !== null) errors.push(...sidecarLayoutErrors(input.sidecarPath, input.sidecarText));
   const result = checkSurface(input);

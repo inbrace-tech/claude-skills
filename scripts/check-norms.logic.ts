@@ -548,6 +548,22 @@ export function sizeErrors(surfacePath: string, surface: string, kind: "skill" |
   return size > declared ? [`${surfacePath}: ${size} bytes, over its metadata.max-bytes of ${declared}`] : [];
 }
 
+/**
+ * What is wrong with the positional arguments of a skill's text: Claude Code replaces `$0`, `$1`, … with the
+ * invocation's arguments wherever they occur, prices and code fences included, unless one backslash sits directly
+ * before the `$` (a doubled one leaves the token live). A dollar amount is written `USD 14` or `\$14`.
+ */
+export function positionalArgumentErrors(surfacePath: string, surface: string): string[] {
+  const errors: string[] = [];
+  surface.split("\n").forEach((line, index) => {
+    for (const match of line.matchAll(/(\\*)\$(\d)/g)) {
+      if (match[1]?.length === 1) continue;
+      errors.push(`${surfacePath}:${index + 1}: \`$${match[2]}\` is replaced by an argument of the invocation; write \`USD <amount>\` or escape the dollar sign with one backslash`);
+    }
+  });
+  return errors;
+}
+
 // ---------------------------------------------------------------------------
 // Knowledge files: `skills/<skill>/transitions/<slug>.md`, one per model transition, with the
 // history of its traps in `<slug>.traps.json` beside it, which nothing loads at runtime.

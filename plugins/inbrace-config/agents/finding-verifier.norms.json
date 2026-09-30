@@ -96,6 +96,12 @@
       "where": "Read",
       "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#safeguard-refusals"], "inbrace-tech/claude-skills": [87] },
       "what": "In 0.6.2 (#87), a live session-mode run on the Sonnet fixture stopped mid-discovery with `stop_reason: \"refusal\"`, category `reasoning_extraction`, after reading the lines the reasoning-in-the-reply trap (Opus P04, Sonnet P09) exists to find; the guides say such requests can be declined, and Claude Code's automatic fallback covers other categories only, so the run simply stopped. The verifier opens every cited line ([N02], [N03], [N13]), which for these lines is the text that stops the model; it checks them against the brief's list and their surrounding lines instead."
+    },
+    {
+      "id": "N17",
+      "where": "Verify",
+      "refs": { "inbrace-tech/claude-skills": [89] },
+      "what": "In 0.6.2 (#89), an Opus live demo had a `finding-verifier` claim that a skill named in a note did not exist and remove the reference; the skill existed and the orchestrator caught it and undid the edit. The verifier reads only, with `Read`, `Grep` and `Glob`, so the check is a `Glob` where the file can sit; a reference that could resolve outside the project (a user or plugin skill) is kept and flagged as unconfirmed, never called missing."
     }
   ]
 }

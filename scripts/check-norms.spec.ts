@@ -39,6 +39,24 @@ describe("check-norms, end to end", () => {
     expect(result.stderr).toMatch(/1 error\(s\) across 1 skill\(s\) and 0 agent\(s\)/);
   });
 
+  it("end to end: a positional argument in a skill fails, in an agent it does not", ({ onTestFinished }) => {
+    const root = mkdtempSync(join(tmpdir(), "check-norms-"));
+    onTestFinished(() => rmSync(root, { recursive: true, force: true }));
+    const skill = join(root, "plugins", "p", "skills", "s");
+    const agents = join(root, "plugins", "p", "agents");
+    mkdirSync(skill, { recursive: true });
+    mkdirSync(agents, { recursive: true });
+    writeFileSync(join(skill, "SKILL.md"), "- [N01] It costs US$2 a run.\n");
+    writeFileSync(join(skill, "SKILL.norms.json"), serialiseSidecar({ surface: "plugins/p/skills/s/SKILL.md", norms: [entry("N01")] }));
+    writeFileSync(join(agents, "a.md"), "- [N01] It costs US$2 a run.\n");
+    writeFileSync(join(agents, "a.norms.json"), serialiseSidecar({ surface: "plugins/p/agents/a.md", norms: [entry("N01")] }));
+
+    const result = run(root);
+    expect(result.status).toBe(1);
+    expect(result.stderr).toMatch(/plugins\/p\/skills\/s\/SKILL\.md:1: `\$2` is replaced by an argument/);
+    expect(result.stderr).not.toMatch(/agents\/a\.md:1/);
+  });
+
   it("end to end: an orphan sidecar fails", ({ onTestFinished }) => {
     const root = mkdtempSync(join(tmpdir(), "check-norms-"));
     onTestFinished(() => rmSync(root, { recursive: true, force: true }));
