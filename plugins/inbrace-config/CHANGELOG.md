@@ -2,6 +2,32 @@
 
 The plugin was named `claude-config` before 0.4.0.
 
+## 0.6.2
+
+### Patch Changes
+
+- Transition audit: the plan warns when a reasoning-exposing line sits in always-loaded memory, and a refused agent's batches are then read in the session. ([#88](https://github.com/inbrace-tech/claude-skills/pull/88) by [@ropdias](https://github.com/ropdias))
+
+- Transition audit: a value the project keeps on purpose for a reason the docs bear out, such as a Sonnet 5 fallback variable, is already decided, not a change. ([#88](https://github.com/inbrace-tech/claude-skills/pull/88) by [@ropdias](https://github.com/ropdias))
+
+- Transition audit: re-anchored the Opus P07 source and re-recorded the Sonnet P04 passage from today's docs. ([#88](https://github.com/inbrace-tech/claude-skills/pull/88) by [@ropdias](https://github.com/ropdias))
+
+- Eval suite: the key labels the reasoning-in-the-reply rows by trap id and never quotes them, and a Sonnet fixture docstring names the loop whose conversation it escalates. ([#88](https://github.com/inbrace-tech/claude-skills/pull/88) by [@ropdias](https://github.com/ropdias))
+
+- Transition audit: new known traps for the source model id in Sonnet API code (P44), and for Opus API code a max_tokens sized with thinking off (P29) and requests with no effort (P30). ([#88](https://github.com/inbrace-tech/claude-skills/pull/88) by [@ropdias](https://github.com/ropdias))
+
+- Transition audit: Opus P20 also reads launch commands and CI workflows, and P23 fires for an agent already on Opus 5.5 that preloads an Opus 5 skill. ([#88](https://github.com/inbrace-tech/claude-skills/pull/88) by [@ropdias](https://github.com/ropdias))
+
+- Transition audit: Opus P07 recognises rules copied from the Opus 5 guide without naming a model, and P11 fires on a multi-app agent that writes records even with a specific brief. ([#88](https://github.com/inbrace-tech/claude-skills/pull/88) by [@ropdias](https://github.com/ropdias))
+
+- Transition audit: cites reasoning-exposing lines by number, never reading them, and recovers from a model refusal instead of stopping. ([#88](https://github.com/inbrace-tech/claude-skills/pull/88) by [@ropdias](https://github.com/ropdias))
+
+- Transition audit: two traps on one construct each keep their own line, and Sonnet's P03 effort re-test reads the memory, rules and hooks areas where P02 fires. ([#88](https://github.com/inbrace-tech/claude-skills/pull/88) by [@ropdias](https://github.com/ropdias))
+
+- Transition audit: a price in a skill's text shows its amount, not the invocation's argument, and `check-norms` rejects a dollar sign before a digit in a skill. ([#88](https://github.com/inbrace-tech/claude-skills/pull/88) by [@ropdias](https://github.com/ropdias))
+
+- Transition audit: the verifier looks for a file with Glob before it calls one missing, and keeps a reference that could sit outside the project. ([#88](https://github.com/inbrace-tech/claude-skills/pull/88) by [@ropdias](https://github.com/ropdias))
+
 ## 0.6.1
 
 ### Patch Changes
