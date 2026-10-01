@@ -385,10 +385,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 ### P21 — Agent or skill on Opus 5.5 carrying an effort left from Opus 5
 
 - kind: re-test
-- area: agents, skills
-- signal: `model: claude-opus-5-5` with an `effort:` in the frontmatter, in a file whose pin came from Opus 5 — the git log shows the `effort:` predates the model change, or the project records no re-derivation of it
-- applies when: agent and skill files; a file with no `effort:` gets no finding, since it inherits the session's level
-- change: Re-test one level lower: Opus 5.5's `medium` matches or beats Opus 5 at `high`. List it under "Re-test only, no edit".
+- area: memory, rules, agents, skills, commands
+- signal: `model: claude-opus-5-5` with an `effort:` in the frontmatter, in a file whose pin came from Opus 5 — the git log shows the `effort:` predates the model change, or the project records no re-derivation of it; a line in an instruction file that states the effort of a named agent or skill whose own `effort:` draws this finding, such as a row of a model-and-effort routing table
+- applies when: agent and skill files, and the memory, rules and command files that restate their effort; a file with no `effort:` gets no finding, since it inherits the session's level, and neither does a line that names such a file or one whose effort a recorded eval re-derived
+- change: Re-test one level lower: Opus 5.5's `medium` matches or beats Opus 5 at `high`. For a line that mirrors a file's effort, record one finding per line, its note naming the mirrored `file:line`, re-test it together with that file and change both in the same edit. List it under "Re-test only, no edit".
 - confidence: medium
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#calibrate-effort
