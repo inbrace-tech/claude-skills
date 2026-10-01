@@ -103,8 +103,8 @@
     },
     {
       "id": "P21",
-      "learned": "Added with the effort re-derivation for files moved to Opus 5.5, since Opus 5.5's `medium` matches or beats Opus 5 at `high` (#7).",
-      "refs": { "inbrace-tech/claude-skills": [7] }
+      "learned": "Added with the effort re-derivation for files moved to Opus 5.5, since Opus 5.5's `medium` matches or beats Opus 5 at `high` (#7). Its areas took memory, rules and commands, and its signal a line that states a named agent's or skill's effort, after a user's report (#92): a rule file's routing table restated each agent's effort, and the traps stage, which reads a `sweep: no` trap only in the areas it lists, never read that file, so re-testing the agent left the row stale. The mirror line fires only where the file it names draws the trap's own finding, and its note names that `file:line`, so the cross-reference lives in the trap and no stage norm was added.",
+      "refs": { "inbrace-tech/claude-skills": [7, 92] }
     },
     {
       "id": "P22",

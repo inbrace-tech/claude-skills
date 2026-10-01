@@ -13,8 +13,8 @@
     },
     {
       "id": "P03",
-      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills, settings → agents, skills, commands, settings, ci), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.2 its areas took memory, rules and hooks, the areas where P02 fires: on the 0.6.1 suite a dispatch recipe in a file imported by `CLAUDE.md` got its P02 finding but no P03, while the same pin in an agent got both, since the traps stage read P03 only where its areas said (#86).",
-      "refs": { "inbrace-tech/claude-skills": [28, 61, 86] }
+      "learned": "Written in 0.5.0 for the Sonnet 5 → 5.5 audit from the Sonnet 5.5 prompting guide, migration guide and Claude Code documentation (#28). Its areas became ids of the plan's map in #61 (agents, skills, settings → agents, skills, commands, settings, ci), after a graded run missed a planted P13 in a skill that the trap's area did not cover. In 0.6.2 its areas took memory, rules and hooks, the areas where P02 fires: on the 0.6.1 suite a dispatch recipe in a file imported by `CLAUDE.md` got its P02 finding but no P03, while the same pin in an agent got both, since the traps stage read P03 only where its areas said (#86). Its signal took a line that states a named agent's or skill's effort, such as a routing-table row, after a user's report on the Opus transition (#92): the signal named effort only in frontmatter, in settings and in a settings `env`, so a rule that restated an agent's effort stayed stale when the agent was re-tested. The mirror line fires only where the file it names draws P03 on its own `effort:`, and its note names that `file:line`.",
+      "refs": { "inbrace-tech/claude-skills": [28, 61, 86, 92] }
     },
     {
       "id": "P04",
