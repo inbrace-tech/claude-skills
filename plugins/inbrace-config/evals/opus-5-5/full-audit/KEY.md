@@ -61,6 +61,7 @@ Each grader below reads the "Final list" of the audit's `findings.md`, through t
 | `pos-55-extract-py-49-change` | `worker/extract.py:49` | change | P17: tool_choice any in create (Py) |
 | `pos-56-session-py-37-change` | `worker/session.py:37` | change | P19: appends a tool to tools mid-session |
 | `pos-57-bedrock-portal-py-10-change` | `worker/bedrock_portal.py:10` | change | D: Bedrock id anthropic.claude-opus-5 |
+| `pos-58-agent-routing-md-12-re-test` | `.claude/rules/agent-routing.md:12` | re-test (exact line) | P21: routing-table row mirrors `risk-scorer.md:5`, effort kept from Opus 5; exact, since the rows below it are negatives (#92) |
 | `res-01-claude-md-23` | `CLAUDE.md:23` | not change or re-test or optional (older residue) | 'Use subagents liberally' — delegate-more guidance |
 | `res-02-skill-md-14` | `.claude/skills/redline-session/SKILL.md:14` | not change or re-test or optional (older residue) | explicit final verification step by a subagent |
 | `res-03-review-pr-md-8` | `.claude/commands/review-pr.md:8` | not change or re-test or optional (older residue) | severity filter 'only report high-severity issues' in a review prompt |
@@ -90,3 +91,5 @@ Each grader below reads the "Final list" of the audit's `findings.md`, through t
 | `neg-23-bedrock-portal-py-18` | `worker/bedrock_portal.py:18` | not change or re-test or optional | P18: computer_20251124 on Bedrock only |
 | `neg-24-prices-py-5` | `worker/prices.py:5` | not change or re-test or optional | P26: table already has a claude-opus-5-5 entry |
 | `neg-25-team-runner-py-54` | `worker/team_runner.py:54` | not change or re-test or optional | P12: harness already appends elapsed time |
+| `neg-26-agent-routing-md-13` | `.claude/rules/agent-routing.md:13` | not change or re-test or optional | P21: row mirrors `pricing-analyst.md:5`, re-derived on Opus 5.5 by a recorded eval |
+| `neg-27-agent-routing-md-14` | `.claude/rules/agent-routing.md:14` | not change or re-test or optional | P21: row names `citation-checker`, whose file sets no effort |

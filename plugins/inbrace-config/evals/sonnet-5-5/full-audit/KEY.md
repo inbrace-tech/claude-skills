@@ -62,6 +62,7 @@ Each grader below reads the "Final list" of the audit's `findings.md`, through t
 | `pos-56-effort-levels-md-9-re-test` | `.claude/rules/effort-levels.md:9` | re-test | P07: levels carry over unchanged |
 | `pos-57-support-voice-md-3-change` | `.claude/rules/shared/support-voice.md:3` | change (exact line) | P08, read-only: don't overthink |
 | `pos-58-support-voice-md-4-change` | `.claude/rules/shared/support-voice.md:4` | change (exact line) | P11, read-only: minimize tool calls |
+| `pos-59-agent-routing-md-12-re-test` | `.claude/rules/agent-routing.md:12` | re-test (exact line) | P03: routing-table row mirrors `ticket-researcher.md:5`, effort carried over from Sonnet 5; exact, since the row below it is a negative (#92) |
 | `res-01-classify-ts-27` | `src/triage/classify.ts:27` | not change or re-test or optional (older residue) | `temperature: 0` |
 | `res-02-summarize-py-18` | `worker/summarize.py:18` | not change or re-test or optional (older residue) | assistant prefill |
 | `res-03-skill-md-15` | `.claude/skills/triage-queue/SKILL.md:15` | not change or re-test or optional (older residue) | progress summary every 3 tool calls |
@@ -90,3 +91,4 @@ Each grader below reads the "Final list" of the audit's `findings.md`, through t
 | `neg-22-skill-md-10` | `.claude/skills/escalation-review/SKILL.md:10` | not change or re-test or optional | states its own update cadence |
 | `neg-23-api-code-md-11` | `.claude/rules/api-code.md:11` | not change or re-test or optional | "think the problem through" nudge |
 | `neg-24-lint-fixer-md-4` | `.claude/agents/lint-fixer.md:4` | not optional | P18 discarded: the agent loads the project memory |
+| `neg-25-agent-routing-md-13` | `.claude/rules/agent-routing.md:13` | not change or re-test or optional | P03: row mirrors `architect.md:5`, an agent pinned to Opus 5.5 |
