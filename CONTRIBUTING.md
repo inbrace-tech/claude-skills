@@ -30,6 +30,7 @@ Skills here follow one format, so every rule can be found, cited and traced to t
   - A trap has one or more `- source:` https URLs. Under each goes either a `passage:`, quoted verbatim from the page, with the `verified:` date, or a `basis:` stating the inference or the system-card page it rests on.
   - Where each trap was learned goes in `<slug>.traps.json` beside the file, which nothing loads at runtime: `{"transition": "<path of the .md>", "traps": [{"id": "P01", "learned": "…", "refs": {…}}]}`, with `refs` shaped as in `SKILL.norms.json`.
   - `check-norms` holds the file and its sidecar to each other, and trap ids follow the norm-id rule: never renumbered or reused.
+  - What changed from the source model to the target goes in a change digest, `<slug>.digest.md` beside the file, at most 24,000 bytes. Its frontmatter sets `transition` and `verified`, and each change sits in its `<changes>` block under a `### Cnn — <title>` heading, with a `change` item of one sentence and one or more `- source:` https URLs, each with a `passage:` of at most 30 words quoted verbatim from the page and its `verified:` date. A digest never copies a page: it states the change in its own words and quotes only the passage that proves it. An optional `<older_residue>` block holds, under `### Rnn — <title>` headings with a `residue` item and the same sources, what was written for a model older than the source. Change and residue ids follow the same rule as trap ids.
 - **Agents follow the same format.** A plugin agent at `agents/<name>.md` states its behavior as `- [Nxx]` norms under `##` sections, with their history in `<name>.norms.json` beside it, whose `surface` is the agent's path. Its ids are its own: an agent never cites another surface's norms, since the skill or session that starts it is not in its context.
 - **An agent's return contract lives in the agent**, wrapped in its own tag such as `<return_contract>`, with the exact format of what it returns. A skill that starts the agent points to that contract instead of restating it; where the skill owns a format the agent returns, such as a finding line, the skill passes it in the agent's brief and the contract says to use the format the brief gives.
 
@@ -59,7 +60,7 @@ The scripts' tests are Vitest specs, `scripts/**/*.spec.ts`; `pnpm run test:watc
 
 `pnpm run audit:lockfile` asks the npm registry whether every version your change adds to `pnpm-lock.yaml` is still published and past the `minimumReleaseAge` floor in `pnpm-workspace.yaml`, comparing against the merge base with `origin/main`; `pnpm run audit:lockfile:all` asks the whole lockfile whether any version has been taken down. Both need the network and fail, rather than pass, when the registry cannot be reached. The pull-request workflow runs the first, and a daily workflow runs the second.
 
-`check-norms` covers every `plugins/*/skills/*/SKILL.md` and every `plugins/*/agents/*.md`, each with its sidecar and its size ceiling, and every `plugins/*/skills/*/transitions/*.md` knowledge file with its `.traps.json`.
+`check-norms` covers every `plugins/*/skills/*/SKILL.md` and every `plugins/*/agents/*.md`, each with its sidecar and its size ceiling, and every `plugins/*/skills/*/transitions/*.md` knowledge file with its `.traps.json` and its `.digest.md`.
 
 Then install your branch locally and run the skill on a real project:
 
