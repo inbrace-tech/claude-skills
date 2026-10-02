@@ -2,6 +2,18 @@
 
 The plugin was named `claude-config` before 0.4.0.
 
+## 0.6.3
+
+### Patch Changes
+
+- The plugin now ships a listing icon, which Anthropic's plugin directory reads when the plugin is first submitted. ([#97](https://github.com/inbrace-tech/claude-skills/pull/97) by [@ropdias](https://github.com/ropdias))
+
+- The Sonnet eval fixture's sample help-desk client no longer reads a token from the environment, which the plugin directory's validation held for review. ([#98](https://github.com/inbrace-tech/claude-skills/pull/98) by [@ropdias](https://github.com/ropdias))
+
+- The audits now flag a line in a rule, memory or command file that restates an agent's or skill's effort, such as a routing-table row, for re-test with the file it mirrors. ([#95](https://github.com/inbrace-tech/claude-skills/pull/95) by [@ropdias](https://github.com/ropdias))
+
+- The plugin folder now has its own README: what the audit does, its commands, what it fetches and sends, troubleshooting, support and the privacy policy. ([#99](https://github.com/inbrace-tech/claude-skills/pull/99) by [@ropdias](https://github.com/ropdias))
+
 ## 0.6.2
 
 ### Patch Changes
