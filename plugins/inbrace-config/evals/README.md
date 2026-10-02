@@ -9,7 +9,7 @@ Every run is a real model call, counted against your plan's usage ([Requirements
 - never as a CI job, and never with an API key stored as a secret, although the documentation shows that setup ([Run evals in CI](https://code.claude.com/docs/en/plugin-evals#run-evals-in-ci)): a full run costs tens of dollars, and nothing should spend that unattended;
 - only with the audit's non-interactive arguments, `--scope full --mode agents --stop-at-report`, so a run can never reach a gate that applies changes ([transition-audit N02, N15](../skills/transition-audit/SKILL.md)).
 
-Before the first run, install the sandbox's prerequisites. The audit needs `Bash` (for `curl` and `git status`), and a granted `Bash` runs only under Claude Code's OS-level sandbox, which on Linux needs `bubblewrap` and `socat` ([Grant tools](https://code.claude.com/docs/en/plugin-evals#grant-tools), [Sandboxing](https://code.claude.com/docs/en/sandboxing)):
+Before the first run, install the sandbox's prerequisites. The audit needs `Bash` (for `git status`, `grep` and `wc`), and a granted `Bash` runs only under Claude Code's OS-level sandbox, which on Linux needs `bubblewrap` and `socat` ([Grant tools](https://code.claude.com/docs/en/plugin-evals#grant-tools), [Sandboxing](https://code.claude.com/docs/en/sandboxing)):
 
 ```bash
 sudo apt install bubblewrap socat
@@ -20,8 +20,10 @@ Then, from `plugins/inbrace-config`:
 ```bash
 claude plugin eval . --scaffold --ablation none --model claude-opus-5-5 --no-publish \
   --max-cost-usd 60 --tag sonnet-5-5 \
-  --allow-tools Bash Write Edit "WebFetch(domain:platform.claude.com)" "WebFetch(domain:code.claude.com)"
+  --allow-tools Bash Write Edit
 ```
+
+- No fetch tool is granted: the audit reaches no network ([transition-audit N22](../skills/transition-audit/SKILL.md)), and the full-audit case fails a run that calls WebFetch or runs `curl`, `wget` or `gh`.
 
 - `--scaffold` runs each case's `scaffold.sh`, which copies the fixture into the run's empty workspace ([Seed the workspace](https://code.claude.com/docs/en/plugin-evals#add-setup-or-history-with-case-yaml)). It runs as you, so pass it only for this suite.
 - `--ablation none` skips the no-plugin baseline: without the plugin, the audit's slash command does not exist, so a baseline would measure nothing. The comparison with a plain Claude session is the one in `docs/evaluations/`.
@@ -37,7 +39,7 @@ Each transition has the same three cases:
 
 | Case | Prompt | What passes |
 |---|---|---|
-| `<transition>-full-audit` | `/inbrace-config:audit-<model>-5-5 --scope full --mode agents --stop-at-report` on the seeded fixture | One grader per answer-key row (see `full-audit/KEY.md`), plus: the run reached the report stage, wrote `report.md`, created `.model-audits/.gitignore`, and called `Write` or `Edit` on no file outside `.model-audits/` |
+| `<transition>-full-audit` | `/inbrace-config:audit-<model>-5-5 --scope full --mode agents --stop-at-report` on the seeded fixture | One grader per answer-key row (see `full-audit/KEY.md`), plus: the run reached the report stage, wrote `report.md`, created `.model-audits/.gitignore`, called `Write` or `Edit` on no file outside `.model-audits/`, and reached no network |
 | `<transition>-headless-without-scope` | The same command without `--scope` and `--mode` | It stops at the plan, runs no later stage, calls `Write` or `Edit` on no file outside `.model-audits/`, and names the arguments that would have reached the report |
 | `<transition>-bad-argument` | `--scope everything` | It stops before the plan, writes nothing, and shows the usage line naming the token at fault |
 
