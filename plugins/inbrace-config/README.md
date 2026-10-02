@@ -1,8 +1,8 @@
-# inbrace-config
+# Inbrace Config
 
-Audit a Claude Code setup for a move from one Claude model to another. The audit reads today's Anthropic documentation for the transition, explores the project, checks the transition's known traps, reports what it would change and why, and applies only what you approve.
+Inbrace's tools for keeping the configuration of a Claude Code setup current: what Claude Code reads as instructions — `CLAUDE.md`, rules, agents, skills, settings and hooks — and the project's model-dependent code, CI and docs.
 
-It covers what Claude Code reads as instructions — `CLAUDE.md`, rules, agents, skills, settings and hooks — and the project's model-dependent code, CI and docs.
+Today it ships one tool, the **model-transition audit**, for a move from one Claude model to another. The audit reads today's Anthropic documentation for the transition, explores the project, checks the transition's known traps, reports what it would change and why, and applies only what you approve. Its known traps cover two transitions, Claude Opus 5 → Opus 5.5 and Claude Sonnet 5 → Sonnet 5.5; any other pair of models runs on the documentation alone.
 
 ## Requirements
 
