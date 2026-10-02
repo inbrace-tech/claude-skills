@@ -40,9 +40,12 @@ export interface SourceResult extends SourceRef {
   reason: "pdf" | "unreachable" | null;
 }
 
-/** Every source of every trap (`<traps>`) and every change (`<changes>`) in one file. */
+/** The blocks whose items quote a page: a knowledge file's traps, and a digest's changes and older residue. */
+const QUOTING_BLOCKS = ["traps", "changes", "older_residue"] as const;
+
+/** Every source of every item of the quoting blocks in one file. */
 export function sourcesOf(file: string, text: string): SourceRef[] {
-  const items = [...(parseItems(text, "traps") ?? []), ...(parseItems(text, "changes") ?? [])];
+  const items = QUOTING_BLOCKS.flatMap((block) => parseItems(text, block) ?? []);
   return items.flatMap((item) => item.sources.map((source, index) => ({ file, id: item.id, index: index + 1, url: source.url, passage: source.passage })));
 }
 
