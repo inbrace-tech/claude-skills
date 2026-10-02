@@ -23,6 +23,9 @@ describe("check-doc-drift rules", () => {
     ]);
     const digest = ["<changes>", "", "### C01 — A change", "", "- change: y", "- source: https://example.com/c#x", '  passage: "two"', "", "</changes>"].join("\n");
     expect(sourcesOf("d.md", digest)).toStrictEqual([{ file: "d.md", id: "C01", index: 1, url: "https://example.com/c#x", passage: "two" }]);
+    const residue = ["<older_residue>", "", "### R01 — An old instruction", "", "- residue: z", "- source: https://example.com/old", '  passage: "three"', "", "</older_residue>"].join("\n");
+    expect(sourcesOf("d.md", `${digest}\n${residue}`).map((source) => source.id)).toStrictEqual(["C01", "R01"]);
+    expect(sourcesOf("k.md", "<older_residue>\n\nProse naming items, with no heading.\n\n</older_residue>")).toStrictEqual([]);
     expect(sourcesOf("n.md", "no block")).toStrictEqual([]);
   });
 
