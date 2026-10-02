@@ -1,6 +1,7 @@
 {
   "name": "inbrace-config",
-  "description": "Audit a Claude Code setup for a model transition — reads today's Anthropic docs, explores the project, checks the known traps (Opus 5 to 5.5, Sonnet 5 to 5.5): report, ask, then apply only what you approve.",
+  "displayName": "Inbrace Config",
+  "description": "Tools for keeping a Claude Code setup current. Today: a model-transition audit (Opus 5 to 5.5, Sonnet 5 to 5.5) that reads today's Anthropic docs, explores the project, checks the known traps, reports, asks, then applies only what you approve.",
   "version": "0.6.2",
   "author": {
     "name": "Inbrace",
