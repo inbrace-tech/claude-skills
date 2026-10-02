@@ -56,12 +56,6 @@
       "what": "The guides' advice is a starting point; the project's own measurements confirm it. The step differs per transition, so it comes from the knowledge file. Derived from `audit-sonnet-5-5` `N23` and `audit-opus-5-5` `N23` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
     },
     {
-      "id": "N10",
-      "where": "Close",
-      "refs": { "inbrace-tech/claude-skills": [34, 41] },
-      "what": "A shared report helps a team decide, but publishing is the user's choice. Derived from `audit-sonnet-5-5` `N14` and `audit-opus-5-5` `N14` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
-    },
-    {
       "id": "N11",
       "where": "Learning loop, only with the user's consent",
       "refs": { "inbrace-tech/claude-skills": [34, 44, 108] },

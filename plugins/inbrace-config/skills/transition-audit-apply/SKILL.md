@@ -31,7 +31,6 @@ metadata:
 - [N16] At the close of a run that reached its end — applied, stopped at the report, or cancelled — after the check of [N17], delete the run's working files, `brief.md`, `status-before.txt` and `run.md`, keeping `report.md` and `findings.md`; where the deletion is refused or fails, leave the files and never retry it by another route, since a guard on the project is the user's choice, and say in the close which working files remain in the run's folder and that the user can delete them, or the whole `.model-audits/<run>/` folder; where the run stopped early and can be resumed, keep them all and say in the close that they stay for `--resume`.
 - [N17] Before closing, compare the root's `git status --porcelain --untracked-files=all` — or its file list outside git — with `status-before.txt`, and list in the close, by path, every file the run created or changed outside `.model-audits/` and the edits the user approved, never calling the tree clean without this check; keep `status-before.txt` with the working files until then.
 - [N09] Where the audit ran, make the next step the knowledge file's `<next_step>`, since the guides' advice is a starting point the project's own measurements confirm.
-- [N10] Where this session can publish an artifact, offer in the close to publish the report as one for sharing, and publish only if the user accepts.
 
 ## Learning loop, only with the user's consent
 
