@@ -691,6 +691,16 @@ describe("change digests", () => {
   });
 
   it("a digest over its ceiling fails", () => {
-    expect(check(`${digest()}${"x".repeat(DIGEST_MAX_BYTES)}`)[0]).toMatch(/over the 20000-byte ceiling for a change digest/);
+    expect(check(`${digest()}${"x".repeat(DIGEST_MAX_BYTES)}`)[0]).toMatch(/over the 24000-byte ceiling for a change digest/);
+  });
+
+  it("an older-residue block is optional, and its items are held to the same rules under R ids", () => {
+    const RESIDUE = ["### R01 — An old instruction", "", "- residue: A already made it unnecessary.", "- source: https://example.com/old", '  passage: "A does this on its own"', "  verified: 2026-10-02"].join("\n");
+    const withResidue = (residue: string): string => `${digest()}\n<older_residue>\n\n${residue}\n\n</older_residue>\n`;
+    expect(check(withResidue(RESIDUE))).toStrictEqual([]);
+    expect(check(withResidue(RESIDUE.replace("R01", "C02")))).toStrictEqual([`${DIGEST}:21: older-residue id C02 is not R followed by two digits`]);
+    expect(check(withResidue(`${RESIDUE}\n\n${RESIDUE}`))).toStrictEqual([`${DIGEST}:28: older residue R01 is defined more than once`]);
+    expect(check(withResidue(RESIDUE.replace("- residue: A already made it unnecessary.\n", "")))).toStrictEqual([`${DIGEST}:21: R01 has no "residue"`]);
+    expect(check(withResidue(RESIDUE.replace("\n  verified: 2026-10-02", "")))).toStrictEqual([`${DIGEST}:21: R01 source 1 has a passage but no "verified" date as YYYY-MM-DD`]);
   });
 });
