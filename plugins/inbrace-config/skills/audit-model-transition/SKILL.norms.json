@@ -10,8 +10,8 @@
     {
       "id": "N02",
       "where": "Start",
-      "refs": { "docs": ["https://code.claude.com/docs/en/skills#available-string-substitutions"], "inbrace-tech/claude-skills": [34, 42] },
-      "what": "The slug names the knowledge file; saying whether it exists tells the user, before any cost, whether the known traps will run or the audit rests on the docs alone. Written for the transition-agnostic audit (#34, #42)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#available-string-substitutions"], "inbrace-tech/claude-skills": [34, 42, 108] },
+      "what": "The slug names the knowledge file; saying whether it exists tells the user, before any cost, whether the known traps will run or the audit rests on the docs alone. Written for the transition-agnostic audit (#34, #42). The command used to say whether a knowledge file existed and, when none did, that the audit would run on the docs alone. That mode is gone: the orchestrator stops with the transitions it knows (#108)."
     },
     {
       "id": "N03",
