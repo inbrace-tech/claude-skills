@@ -255,3 +255,37 @@ What changes from Claude Sonnet 5 to Claude Sonnet 5.5 that can bear on a Claude
   verified: 2026-10-02
 
 </changes>
+
+<older_residue>
+
+Instructions and settings written for a model older than Sonnet 5, which Sonnet 5 already rejected or made unnecessary. They are not part of this transition; each is recorded as older residue only with its passage below.
+
+### R01 — Assistant prefill
+
+- residue: A prefilled last assistant turn was already rejected on Sonnet 5 and Sonnet 4.6.
+- source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide
+  passage: "Claude Sonnet 5.5 rejects a prefilled last assistant turn with a 400 error, as Claude Sonnet 4.6 and Claude Sonnet 5 do."
+  verified: 2026-10-02
+
+### R02 — Non-default sampling parameters
+
+- residue: A non-default `temperature`, `top_p` or `top_k` already returned an error on Sonnet 5.
+- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5#tone-and-writing-style
+  passage: "setting `temperature`, `top_p`, or `top_k` to a non-default value returns a 400 error on Claude Sonnet 5"
+  verified: 2026-10-02
+
+### R03 — Manual thinking budgets
+
+- residue: `budget_tokens` was already removed on Sonnet 5, after being deprecated on Sonnet 4.6.
+- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5#calibrating-effort-and-thinking-depth
+  passage: "is not supported on Claude Sonnet 5 and returns a 400 error. It was deprecated on Claude Sonnet 4.6 and is now removed."
+  verified: 2026-10-02
+
+### R04 — Scaffolding that forces interim status messages
+
+- residue: Sonnet 5 already gave regular progress updates, so scaffolding such as "after every 3 tool calls, summarize progress" was unnecessary there.
+- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5#user-facing-progress-updates
+  passage: "If you've added scaffolding to force interim status messages ("After every 3 tool calls, summarize progress"), try removing it."
+  verified: 2026-10-02
+
+</older_residue>

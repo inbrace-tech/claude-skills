@@ -217,3 +217,30 @@ What changes from Claude Opus 5 to Claude Opus 5.5 that can bear on a Claude Cod
   verified: 2026-10-02
 
 </changes>
+
+<older_residue>
+
+Instructions written for a model older than Opus 5, which Opus 5 already made unnecessary. They are not part of this transition; each is recorded as older residue only with its passage below.
+
+### R01 — Explicit verification steps
+
+- residue: Opus 5 already verified its own work, so an instruction to add a verification step or a verifying subagent caused over-verification there.
+- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5#task-scope-and-over-verification
+  passage: "If your prompt contains explicit verification instructions … remove them: instructions like these cause over-verification on Claude Opus 5"
+  verified: 2026-10-02
+
+### R02 — Guidance to delegate more
+
+- residue: Opus 5 already delegated to subagents readily, so guidance pushing it to delegate more multiplied cost there.
+- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5#controlling-subagent-spawning
+  passage: "Claude Opus 5 delegates to subagents more readily than prior models."
+  verified: 2026-10-02
+
+### R03 — Severity filters in review prompts
+
+- residue: A review prompt that asked for only high-severity issues already made Opus 5 report less than it found.
+- source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5#capability-improvements
+  passage: "the model may follow that instruction literally and report less; ask it to report everything and filter in a separate pass instead"
+  verified: 2026-10-02
+
+</older_residue>

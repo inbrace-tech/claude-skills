@@ -808,13 +808,18 @@ export function checkKnowledge({ path, sidecarPath, source, sidecarText }: Knowl
 // ---------------------------------------------------------------------------
 // Change digests: `skills/<skill>/transitions/<slug>.digest.md`, one beside each knowledge file. It
 // states what changed from the source model to the target, one `### C01 — Title` item per change in a
-// `<changes>` block, each with the page that states it and a short quotation from that page.
+// `<changes>` block, each with the page that states it and a short quotation from that page. An
+// optional `<older_residue>` block holds, as `### R01 — Title` items, what was written for a model
+// older than the source.
 
 /** A change id: C followed by exactly two digits. */
 export const CHANGE_ID = /^C\d{2}$/;
 
-/** The ceiling every change digest is held to, in bytes: about 7,000 tokens at the measured 2.85 bytes per token. */
-export const DIGEST_MAX_BYTES = 20_000;
+/** An older-residue id: R followed by exactly two digits. */
+export const RESIDUE_ID = /^R\d{2}$/;
+
+/** The ceiling every change digest is held to, in bytes: about 8,400 tokens at the measured 2.85 bytes per token. */
+export const DIGEST_MAX_BYTES = 24_000;
 
 /** The most words a digest passage quotes from its page. */
 export const DIGEST_PASSAGE_MAX_WORDS = 30;
@@ -837,11 +842,11 @@ export function digestPathFor(path: string): string {
   return path.replace(/\.md$/, ".digest.md");
 }
 
-/** What is wrong with one change's fields and sources. */
-function changeErrors(digestPath: string, change: Trap): string[] {
+/** What is wrong with one digest item's statement — its `change` or its `residue` — and its sources. */
+function digestItemErrors(digestPath: string, change: Trap, statement: "change" | "residue"): string[] {
   const errors: string[] = [];
   const at = `${digestPath}:${change.line}: ${change.id}`;
-  if (!change.fields.get("change")) errors.push(`${at} has no "change"`);
+  if (!change.fields.get(statement)) errors.push(`${at} has no "${statement}"`);
   if (change.sources.length === 0) errors.push(`${at} has no source`);
   change.sources.forEach((source, index) => {
     const where = `${at} source ${index + 1}`;
@@ -885,7 +890,15 @@ export function checkDigest({ path, digestPath, digestText }: DigestInput): stri
     if (!CHANGE_ID.test(change.id)) errors.push(`${digestPath}:${change.line}: change id ${change.id} is not C followed by two digits`);
     else if (defined.has(change.id)) errors.push(`${digestPath}:${change.line}: change ${change.id} is defined more than once`);
     else defined.add(change.id);
-    errors.push(...changeErrors(digestPath, change));
+    errors.push(...digestItemErrors(digestPath, change, "change"));
+  }
+
+  // Optional: what was written for a model older than the source, each with the passage that says so.
+  for (const residue of parseItems(digestText, "older_residue") ?? []) {
+    if (!RESIDUE_ID.test(residue.id)) errors.push(`${digestPath}:${residue.line}: older-residue id ${residue.id} is not R followed by two digits`);
+    else if (defined.has(residue.id)) errors.push(`${digestPath}:${residue.line}: older residue ${residue.id} is defined more than once`);
+    else defined.add(residue.id);
+    errors.push(...digestItemErrors(digestPath, residue, "residue"));
   }
   return errors;
 }
