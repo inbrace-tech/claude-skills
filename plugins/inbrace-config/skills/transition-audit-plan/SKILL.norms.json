@@ -16,8 +16,8 @@
     {
       "id": "N03",
       "where": "Before anything",
-      "refs": { "docs": ["https://platform.claude.com/llms.txt"], "inbrace-tech/claude-skills": [34, 38] },
-      "what": "The traps are the largest part of a knowledge file and only the traps stage needs them, so the plan reads the file only down to them. A bootstrap has no knowledge file, so its docs come from the documentation index and the user confirms them. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "docs": ["https://platform.claude.com/llms.txt"], "inbrace-tech/claude-skills": [34, 38, 105] },
+      "what": "The traps are the largest part of a knowledge file and only the traps stage needs them, so the plan reads the file only down to them. A bootstrap has no knowledge file, so its docs come from the documentation index and the user confirms them. Written for the transition-agnostic audit (#34, #38). The plan no longer reads a docs table or runs a bootstrap from the documentation index; it takes the date the knowledge was verified, which the plan now shows. Since #105 the audit reaches no network: the directory's validation flagged the run-time fetch, and what a published plugin reads has to be in the reviewed commit."
     },
     {
       "id": "N04",
@@ -98,12 +98,6 @@
       "what": "Counting batches per area, as auditors are assigned per area, avoids an estimate that no dispatch can match. Derived from `audit-sonnet-5-5` `N56` and `audit-opus-5-5` `N56` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
     },
     {
-      "id": "N17",
-      "where": "Measure",
-      "refs": { "docs": ["https://code.claude.com/docs/en/tools-reference#webfetch-tool-behavior"], "inbrace-tech/claude-skills": [34, 38] },
-      "what": "Discovery reads the docs raw, since WebFetch returns a small model's answer rather than the page and cannot support a verbatim passage; probing before the gate lets the user decide with the docs' cost and reachability known, and the offline path in hand. Written for the transition-agnostic audit (#34, #38)."
-    },
-    {
       "id": "N18",
       "where": "Measure",
       "refs": { "inbrace-tech/claude-skills": [34, 38] },
@@ -112,8 +106,8 @@
     {
       "id": "N19",
       "where": "Show the plan and ask",
-      "refs": { "inbrace-tech/claude-skills": [34, 38, 59, 89], "docs": ["https://code.claude.com/docs/en/skills#pass-arguments-to-skills"] },
-      "what": "Two short tables let the user choose without reading the inventory; the batch counts read as a floor because grouping packs fewer tokens per batch than the estimate assumes. Derived from `audit-sonnet-5-5` `N07` and `audit-opus-5-5` `N07` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.x the estimate was rebuilt from two runs of this audit at full scope in session mode: a small seeded project (inventory ~18k tokens, 10 batches, 74 raw findings, 3 verifiers) whose gate said ~65k–125k and which spent ~243k tokens of context in the session and ~248k in the verifiers, US$7.90, 18 min; and a tiny throwaway project (~0.2k, 1 batch, 8 findings, 1 verifier) whose gate said ~30–40k and which spent ~116k and ~40k, US$2.16, 4.5 min; cache re-reads came to 15× and 19× the context (#59). In 0.6.2 (#89), the amounts read `US` plus a dollar sign before a digit, and Claude Code replaces that token in skill text with the invocation's argument at that position, so the note showed an argument where a price belonged; they read `USD <amount>` now, and `check-norms` rejects an unescaped dollar sign before a digit in any skill."
+      "refs": { "inbrace-tech/claude-skills": [34, 38, 59, 89, 108], "docs": ["https://code.claude.com/docs/en/skills#pass-arguments-to-skills"] },
+      "what": "Two short tables let the user choose without reading the inventory; the batch counts read as a floor because grouping packs fewer tokens per batch than the estimate assumes. Derived from `audit-sonnet-5-5` `N07` and `audit-opus-5-5` `N07` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.x the estimate was rebuilt from two runs of this audit at full scope in session mode: a small seeded project (inventory ~18k tokens, 10 batches, 74 raw findings, 3 verifiers) whose gate said ~65k–125k and which spent ~243k tokens of context in the session and ~248k in the verifiers, US$7.90, 18 min; and a tiny throwaway project (~0.2k, 1 batch, 8 findings, 1 verifier) whose gate said ~30–40k and which spent ~116k and ~40k, US$2.16, 4.5 min; cache re-reads came to 15× and 19× the context (#59). In 0.6.2 (#89), the amounts read `US` plus a dollar sign before a digit, and Claude Code replaces that token in skill text with the invocation's argument at that position, so the note showed an argument where a price belonged; they read `USD <amount>` now, and `check-norms` rejects an unescaped dollar sign before a digit in any skill. The plan used to show whether the docs could be reached, from the probe of the retired `N17`; it now shows the date the knowledge was checked and that no page is read (#108)."
     },
     {
       "id": "N20",
@@ -130,14 +124,14 @@
     {
       "id": "N22",
       "where": "Show the plan and ask",
-      "refs": { "inbrace-tech/claude-skills": [34, 38] },
-      "what": "Time estimates come from measured runs; in agents mode the slowest auditor sets a wave's time. Derived from `audit-sonnet-5-5` `N54` and `audit-opus-5-5` `N54` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "inbrace-tech/claude-skills": [34, 38, 108] },
+      "what": "Time estimates come from measured runs; in agents mode the slowest auditor sets a wave's time. Derived from `audit-sonnet-5-5` `N54` and `audit-opus-5-5` `N54` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). The minute counted for fetching the docs is gone with the fetch (#108)."
     },
     {
       "id": "N23",
       "where": "Show the plan and ask",
-      "refs": { "inbrace-tech/claude-skills": [34, 38, 59] },
-      "what": "A cheap lexical pass is useful when the budget is small, as long as its limit is stated; with open discovery it covers only the known traps. Derived from `audit-sonnet-5-5` `N51` and `audit-opus-5-5` `N51` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.x the estimate was rebuilt from two runs of this audit at full scope in session mode: a small seeded project (inventory ~18k tokens, 10 batches, 74 raw findings, 3 verifiers) whose gate said ~65k–125k and which spent ~243k tokens of context in the session and ~248k in the verifiers, US$7.90, 18 min; and a tiny throwaway project (~0.2k, 1 batch, 8 findings, 1 verifier) whose gate said ~30–40k and which spent ~116k and ~40k, US$2.16, 4.5 min; cache re-reads came to 15× and 19× the context (#59)."
+      "refs": { "inbrace-tech/claude-skills": [34, 38, 59, 107, 108] },
+      "what": "A cheap lexical pass is useful when the budget is small, as long as its limit is stated; with open discovery it covers only the known traps. Derived from `audit-sonnet-5-5` `N51` and `audit-opus-5-5` `N51` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #38). In 0.6.x the estimate was rebuilt from two runs of this audit at full scope in session mode: a small seeded project (inventory ~18k tokens, 10 batches, 74 raw findings, 3 verifiers) whose gate said ~65k–125k and which spent ~243k tokens of context in the session and ~248k in the verifiers, US$7.90, 18 min; and a tiny throwaway project (~0.2k, 1 batch, 8 findings, 1 verifier) whose gate said ~30–40k and which spent ~116k and ~40k, US$2.16, 4.5 min; cache re-reads came to 15× and 19× the context (#59). The quick sweep no longer checks the traps against today's docs: drift is detected in CI (#107, #108)."
     },
     {
       "id": "N24",
@@ -148,8 +142,8 @@
     {
       "id": "N25",
       "where": "Measure",
-      "refs": { "inbrace-tech/claude-skills": [34, 59] },
-      "what": "Added after the gate's estimate proved far too low. The old estimate was the inventory times one to three, plus 30–40k for the skills, but the inventory is a small part of a run: the fixed load (harness, the audit's own skills, the knowledge file) is ~75–85k, the docs ~30k, each finding costs its writing, relabelling, verification and report entry, and every verifier loads its own base and opens the cached pages to check passages. Each row's coefficients come from two runs of this audit at full scope in session mode: a small seeded project (inventory ~18k tokens, 10 batches, 74 raw findings, 3 verifiers) whose gate said ~65k–125k and which spent ~243k tokens of context in the session and ~248k in the verifiers, US$7.90, 18 min; and a tiny throwaway project (~0.2k, 1 batch, 8 findings, 1 verifier) whose gate said ~30–40k and which spent ~116k and ~40k, US$2.16, 4.5 min. Recomputed from what each plan knew, the rows bracket both: ~221k–565k against ~490k, and ~148k–201k against ~156k. The range is wide because the number of findings is unknown until the files are read (#34, #59)."
+      "refs": { "inbrace-tech/claude-skills": [34, 59, 108] },
+      "what": "Added after the gate's estimate proved far too low. The old estimate was the inventory times one to three, plus 30–40k for the skills, but the inventory is a small part of a run: the fixed load (harness, the audit's own skills, the knowledge file) is ~75–85k, the docs ~30k, each finding costs its writing, relabelling, verification and report entry, and every verifier loads its own base and opens the cached pages to check passages. Each row's coefficients come from two runs of this audit at full scope in session mode: a small seeded project (inventory ~18k tokens, 10 batches, 74 raw findings, 3 verifiers) whose gate said ~65k–125k and which spent ~243k tokens of context in the session and ~248k in the verifiers, US$7.90, 18 min; and a tiny throwaway project (~0.2k, 1 batch, 8 findings, 1 verifier) whose gate said ~30–40k and which spent ~116k and ~40k, US$2.16, 4.5 min. Recomputed from what each plan knew, the rows bracket both: ~221k–565k against ~490k, and ~148k–201k against ~156k. The range is wide because the number of findings is unknown until the files are read (#34, #59). The docs row, sized from the pages the retired `N17` measured, became the digest row, sized from the shipped change digest (`G`), and the verifier's rows count the digest where they counted cached pages. These formulas were calibrated on runs that fetched the pages and have not been re-measured since (#108)."
     },
     {
       "id": "N26",

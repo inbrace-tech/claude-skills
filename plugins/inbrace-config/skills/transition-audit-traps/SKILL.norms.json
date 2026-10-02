@@ -62,12 +62,6 @@
       "what": "The report must show that every trap the per-transition audits checked was checked again, so nothing they caught goes unchecked. Written for the transition-agnostic audit (#34, #40). After grading a full-scope run of `main` (a289710) on a seeded project against its sealed answer key — recall 96.6% primary, 89.8% strict, precision 100% — a planted P13 in a skill was missed: the trap's area named only agents and the stage read only those files. Areas are now ids of the plan's map, each trap lists every area its \"applies when\" covers, check-norms rejects an unknown id, and the clean line names the areas read (#61)."
     },
     {
-      "id": "N11",
-      "where": "Check each trap",
-      "refs": { "inbrace-tech/claude-skills": [34, 43] },
-      "what": "Added with the drift stage. A trap whose passage has changed, vanished or could not be checked may no longer hold, so its findings are capped at medium and say so, while the trap is still applied: nothing the earlier audits checked goes unchecked (#34, #43)."
-    },
-    {
       "id": "N12",
       "where": "Check each trap",
       "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#safeguard-refusals"], "inbrace-tech/claude-skills": [87] },
