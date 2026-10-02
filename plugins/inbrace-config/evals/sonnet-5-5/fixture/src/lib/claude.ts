@@ -8,9 +8,9 @@ import type { Message, MessageCreateParamsNonStreaming } from "@anthropic-ai/sdk
 export const MODEL = "claude-sonnet-5";
 export const ESCALATION_MODEL = "claude-opus-5-5";
 
-export const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+export const client = new Anthropic(
+  // The SDK finds its API key by itself.
+);
 
 export class RefusalError extends Error {
   constructor(readonly category: string | undefined) {
