@@ -64,38 +64,38 @@
     {
       "id": "N11",
       "where": "Learning loop, only with the user's consent",
-      "refs": { "inbrace-tech/claude-skills": [34, 44] },
-      "what": "Added with the learning loop. A run that learned something the knowledge file lacks — a finding outside the known traps, a trap whose passage changed, or a transition with no knowledge yet — is how the audit improves; nothing else is worth an offer. A headless run has no one to consent, and a cancelled plan learned nothing (#34, #44)."
+      "refs": { "inbrace-tech/claude-skills": [34, 44, 108] },
+      "what": "Added with the learning loop. A run that learned something the knowledge file lacks — a finding outside the known traps, a trap whose passage changed, or a transition with no knowledge yet — is how the audit improves; nothing else is worth an offer. A headless run has no one to consent, and a cancelled plan learned nothing (#34, #44). A drift verdict and a bootstrap run no longer exist to trigger the invite (#108)."
     },
     {
       "id": "N12",
       "where": "Learning loop, only with the user's consent",
-      "refs": { "inbrace-tech/claude-skills": [34, 44] },
-      "what": "The maintainer asked for an invitation, not a form step: the close says that improvements are welcome and help everyone, and asks whether the user wants to contribute, anonymised, before anything is drafted. The link is recommended because the user's own submit on GitHub is the last check. The `gh` option needs a logged-in `gh` and posts publicly under the user's account, so it is offered only when that works (#34, #44)."
+      "refs": { "inbrace-tech/claude-skills": [34, 44, 105] },
+      "what": "The maintainer asked for an invitation, not a form step: the close says that improvements are welcome and help everyone, and asks whether the user wants to contribute, anonymised, before anything is drafted. The link is recommended because the user's own submit on GitHub is the last check. The `gh` option needs a logged-in `gh` and posts publicly under the user's account, so it is offered only when that works (#34, #44). The option to post the issue with `gh issue create` is gone: the plugin sends nothing, and the user submits the prefilled form or does not. Since #105 the audit reaches no network: the directory's validation flagged the run-time fetch, and what a published plugin reads has to be in the reviewed commit."
     },
     {
       "id": "N13",
       "where": "Learning loop, only with the user's consent",
-      "refs": { "inbrace-tech/claude-skills": [34, 44] },
-      "what": "The audited project may be private and this repository is public, so the draft is built by allow-list, never by redacting a copy: only the transition, trap ids, verified public doc text and the map's generic vocabulary go in (#34, #44)."
+      "refs": { "inbrace-tech/claude-skills": [34, 44, 108] },
+      "what": "The audited project may be private and this repository is public, so the draft is built by allow-list, never by redacting a copy: only the transition, trap ids, verified public doc text and the map's generic vocabulary go in (#34, #44). The draft's passages come from the change digest or the knowledge file, where they came from a cached page, and it names no drift verdict (#108)."
     },
     {
       "id": "N14",
       "where": "Learning loop, only with the user's consent",
-      "refs": { "inbrace-tech/claude-skills": [34, 44] },
-      "what": "A mechanical search for the project's own names catches what the allow-list might let through in the generic sentences. Short words and the map's vocabulary are exempt so that words like `hooks` do not block every draft. After two failures nothing is shown, since a draft that leaks once is not safe to offer (#34, #44)."
+      "refs": { "inbrace-tech/claude-skills": [34, 44, 108] },
+      "what": "A mechanical search for the project's own names catches what the allow-list might let through in the generic sentences. Short words and the map's vocabulary are exempt so that words like `hooks` do not block every draft. After two failures nothing is shown, since a draft that leaks once is not safe to offer (#34, #44). With no posting path, a second match now only withholds the draft (#108)."
     },
     {
       "id": "N15",
       "where": "Learning loop, only with the user's consent",
-      "refs": { "docs": ["https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms"], "inbrace-tech/claude-skills": [34, 44] },
-      "what": "The user sees the draft in full before anything is posted, and the `gh` path, which posts publicly under their account, asks a second time; the maintainer approved both confirmations. The repository sets `blank_issues_enabled: false`, so the prefilled link opens the `trap_report.yml` issue form, whose field ids are the link's query parameters; a URL too long for the browser drops the passages (#34, #44)."
+      "refs": { "docs": ["https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms"], "inbrace-tech/claude-skills": [34, 44, 108] },
+      "what": "The user sees the draft in full before anything is posted, and the `gh` path, which posts publicly under their account, asks a second time; the maintainer approved both confirmations. The repository sets `blank_issues_enabled: false`, so the prefilled link opens the `trap_report.yml` issue form, whose field ids are the link's query parameters; a URL too long for the browser drops the passages (#34, #44). Delivery is the prefilled link alone; the `gh issue create` path and its second confirmation are gone (#108)."
     },
     {
       "id": "N16",
       "where": "Close",
-      "refs": { "docs": ["https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 57, 61, 68] },
-      "what": "Added in 0.6.0 with the move to `.model-audits/` (#57). A finished run needs only its report and findings; the docs cache, digest, brief and run file are working files that would otherwise pile up in the project. A run that stopped early keeps them, since `--resume` reads them (#34). The working files now include `status-before.txt`, deleted only after the stray-file check (#61). In 0.6.1 the close handles a refused deletion (#68): in the 2026-09-29 capability evaluation a project's own hook that guards destructive commands refused the cleanup `rm`, the only permission denial in two otherwise complete runs, and the norm had assumed the deletion succeeds. The files stay, the close names them and says the user can delete them or the run's folder, and the deletion is never retried another way, since routing around the project's guard would override a choice the user made."
+      "refs": { "docs": ["https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 57, 61, 68, 108] },
+      "what": "Added in 0.6.0 with the move to `.model-audits/` (#57). A finished run needs only its report and findings; the docs cache, digest, brief and run file are working files that would otherwise pile up in the project. A run that stopped early keeps them, since `--resume` reads them (#34). The working files now include `status-before.txt`, deleted only after the stray-file check (#61). In 0.6.1 the close handles a refused deletion (#68): in the 2026-09-29 capability evaluation a project's own hook that guards destructive commands refused the cleanup `rm`, the only permission denial in two otherwise complete runs, and the norm had assumed the deletion succeeds. The files stay, the close names them and says the user can delete them or the run's folder, and the deletion is never retried another way, since routing around the project's guard would override a choice the user made. The run no longer leaves a `docs/` cache or a `digest.md` to delete (#108)."
     },
     {
       "id": "N17",

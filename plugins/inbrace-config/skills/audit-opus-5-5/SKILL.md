@@ -1,6 +1,6 @@
 ---
 name: audit-opus-5-5
-description: Audit a project's Claude Code setup (CLAUDE.md, rules, agents, skills, settings, hooks, CI and Claude API code) for what changes when moving from Claude Opus 5 to Claude Opus 5.5. Reads today's docs, explores the project, checks the known traps, asks before each costly stage with its cost, reports in the chat, and applies only what was approved.
+description: Audit a project's Claude Code setup (CLAUDE.md, rules, agents, skills, settings, hooks, CI and Claude API code) for what changes when moving from Claude Opus 5 to Claude Opus 5.5. Explores the project against what Anthropic's documentation says changed, as recorded and dated in the plugin, checks the known traps, asks before each costly stage with its cost, reports in the chat, and applies only what was approved.
 argument-hint: "[path] [--scope full|reduced|quick] [--mode session|agents] [--stop-at-report]"
 disable-model-invocation: true
 allowed-tools: Skill(inbrace-config:transition-audit)

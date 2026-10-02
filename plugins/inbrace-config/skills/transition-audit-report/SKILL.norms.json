@@ -46,8 +46,8 @@
     {
       "id": "N08",
       "where": "Decide",
-      "refs": { "docs": ["https://code.claude.com/docs/en/settings"], "inbrace-tech/claude-skills": [34, 41] },
-      "what": "Writing the project's model is a team decision: shared settings fix it for everyone who opens the project, and a public repository fixes it for every contributor. The proposal differs per transition, so it comes from the knowledge file. Derived from `audit-sonnet-5-5` `N48` and `audit-opus-5-5` `N48` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/settings"], "inbrace-tech/claude-skills": [34, 41, 108] },
+      "what": "Writing the project's model is a team decision: shared settings fix it for everyone who opens the project, and a public repository fixes it for every contributor. The proposal differs per transition, so it comes from the knowledge file. Derived from `audit-sonnet-5-5` `N48` and `audit-opus-5-5` `N48` at inbrace-config@0.5.0; history in git. Written for the transition-agnostic audit (#34, #41). The question used to check the repository's visibility with `gh repo view`, a network call; it now gives the warning without checking (#108)."
     },
     {
       "id": "N09",
@@ -76,8 +76,8 @@
     {
       "id": "N13",
       "where": "Report",
-      "refs": { "inbrace-tech/claude-skills": [34, 43] },
-      "what": "Added with the drift stage. A changed or vanished passage marks its trap as possibly stale in the report, so the knowledge never silently outlives the docs; the user, and the maintainers through the learning loop, see what the page says now (#34, #43)."
+      "refs": { "inbrace-tech/claude-skills": [34, 43, 107, 108] },
+      "what": "Added with the drift stage. A changed or vanished passage marks its trap as possibly stale in the report, so the knowledge never silently outlives the docs; the user, and the maintainers through the learning loop, see what the page says now (#34, #43). The section used to list the traps whose passage the run-time drift stage found changed. With drift detected in CI (#107) and no page read at run time, a run cannot know what changed since the knowledge was verified, so the report states that date and that a newer version carries newer knowledge (#108)."
     },
     {
       "id": "N14",

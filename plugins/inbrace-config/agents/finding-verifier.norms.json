@@ -4,8 +4,8 @@
     {
       "id": "N01",
       "where": "Read",
-      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [21, 28, 42] },
-      "what": "Added in 0.4.4 with the agent. A subagent starts with only its own system prompt and the prompt it is given, and this agent sets `omitClaudeMd: true`, so the brief is everything it knows about the project: the pattern table, the line format and the rules it checks each finding against. Reading it before the findings keeps a finding from being judged without them. See #21. In 0.5.0 the agent serves every inbrace-config audit skill, `audit-sonnet-5-5` as well as `audit-opus-5-5`, so it no longer names Opus: the brief carries the project's evaluation for the target model it names, which the verifier reads before the findings. See #28. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/sub-agents"], "inbrace-tech/claude-skills": [21, 28, 42, 108] },
+      "what": "Added in 0.4.4 with the agent. A subagent starts with only its own system prompt and the prompt it is given, and this agent sets `omitClaudeMd: true`, so the brief is everything it knows about the project: the pattern table, the line format and the rules it checks each finding against. Reading it before the findings keeps a finding from being judged without them. See #21. In 0.5.0 the agent serves every inbrace-config audit skill, `audit-sonnet-5-5` as well as `audit-opus-5-5`, so it no longer names Opus: the brief carries the project's evaluation for the target model it names, which the verifier reads before the findings. See #28. In 0.6.0 the per-transition audits became entry points of the transition-agnostic audit, whose brief carries a change digest and a knowledge file instead of a pattern table, and the wording followed (#42). The verifier reads the change digest and the knowledge file its brief names (#108)."
     },
     {
       "id": "N02",
@@ -64,8 +64,8 @@
     {
       "id": "N11",
       "where": "Verify",
-      "refs": { "docs": ["https://code.claude.com/docs/en/tools-reference#webfetch-tool-behavior"], "inbrace-tech/claude-skills": [34, 40] },
-      "what": "Added in the transition-agnostic audit. Discovery records a finding only with the doc passage behind it, instead of a row of a closed table (#34), so the passage is what the verifier must check: it must occur in the raw page the run cached and must support the finding. A passage recalled from memory or paraphrased is what open discovery risks, and discarding it keeps the precision the table gave. The norm applies only to lines with a doc field, so the per-transition audits keep working until they become entry points (#40)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/tools-reference#webfetch-tool-behavior"], "inbrace-tech/claude-skills": [34, 40, 108] },
+      "what": "Added in the transition-agnostic audit. Discovery records a finding only with the doc passage behind it, instead of a row of a closed table (#34), so the passage is what the verifier must check: it must occur in the raw page the run cached and must support the finding. A passage recalled from memory or paraphrased is what open discovery risks, and discarding it keeps the precision the table gave. The norm applies only to lines with a doc field, so the per-transition audits keep working until they become entry points (#40). A passage is checked against the shipped change digest or the knowledge file, where it was checked against a page the run had cached; no run caches a page now (#108)."
     },
     {
       "id": "N12",
@@ -82,14 +82,14 @@
     {
       "id": "N14",
       "where": "Verify",
-      "refs": { "docs": ["https://code.claude.com/docs/en/model-config#model-aliases", "https://platform.claude.com/docs/en/models/opus-5-5/migration-guide"], "inbrace-tech/claude-skills": [77, 86] },
-      "what": "Added in 0.6.1. In the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition the verifier turned a raw `change` raising a CI pin of Claude Code below the target's documented minimum version into `re-test`, because the project said the pin existed after a measured failure; the Claude Code docs state the minimum outright, so the pin cannot stay and the local reason is only what to check when raising it. In another run it left a cost re-baseline the migration checklist asks for as `unclear`, having looked for the deciding passage only in the page the line cited. [N05] still protects instruction text a measured failure produced; a value the target's requirement rules out is not such text (#77). In 0.6.2 (#86), the clause keeps its rule for requirements of the target but no longer covers a value the target's own passage keeps or recommends, such as the fallback variable a project documents: that is `already decided`, with the line that states the reason."
+      "refs": { "docs": ["https://code.claude.com/docs/en/model-config#model-aliases", "https://platform.claude.com/docs/en/models/opus-5-5/migration-guide"], "inbrace-tech/claude-skills": [77, 86, 108] },
+      "what": "Added in 0.6.1. In the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition the verifier turned a raw `change` raising a CI pin of Claude Code below the target's documented minimum version into `re-test`, because the project said the pin existed after a measured failure; the Claude Code docs state the minimum outright, so the pin cannot stay and the local reason is only what to check when raising it. In another run it left a cost re-baseline the migration checklist asks for as `unclear`, having looked for the deciding passage only in the page the line cited. [N05] still protects instruction text a measured failure produced; a value the target's requirement rules out is not such text (#77). In 0.6.2 (#86), the clause keeps its rule for requirements of the target but no longer covers a value the target's own passage keeps or recommends, such as the fallback variable a project documents: that is `already decided`, with the line that states the reason. The search for a deciding passage covers the whole digest and the knowledge file's traps, where it covered every cached page (#108)."
     },
     {
       "id": "N15",
       "where": "Verify",
-      "refs": { "inbrace-tech/claude-skills": [77] },
-      "what": "Added in 0.6.1. In the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition older-residue lines reached the final list with no proposed change: one with no passage at all, graded a false positive, and several whose passage the project had already weighed in a decision record, graded unsupported. The verifier now holds residue to the rule discovery records it by, and the session that started it files residue apart from the final list (#77)."
+      "refs": { "inbrace-tech/claude-skills": [77, 106, 108] },
+      "what": "Added in 0.6.1. In the 2026-09-29 capability evaluation of the Opus 5 → 5.5 transition older-residue lines reached the final list with no proposed change: one with no passage at all, graded a false positive, and several whose passage the project had already weighed in a decision record, graded unsupported. The verifier now holds residue to the rule discovery records it by, and the session that started it files residue apart from the final list (#77). The passage that keeps an older-residue line is one of the digest's `<older_residue>` (#106, #108)."
     },
     {
       "id": "N16",

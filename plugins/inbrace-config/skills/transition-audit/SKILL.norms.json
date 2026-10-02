@@ -16,20 +16,20 @@
     {
       "id": "N03",
       "where": "Start",
-      "refs": { "docs": ["https://code.claude.com/docs/en/skills#available-string-substitutions"], "inbrace-tech/claude-skills": [34, 38] },
-      "what": "A new transition is a new knowledge file, not a new skill. Resolving it beside the orchestrator with `${CLAUDE_SKILL_DIR}` works both from the plugin and in a copied install, where `${CLAUDE_PLUGIN_ROOT}` is not substituted. With no file, the audit still runs on the docs alone, so it is useful before the knowledge exists. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#available-string-substitutions"], "inbrace-tech/claude-skills": [34, 38, 105] },
+      "what": "A new transition is a new knowledge file, not a new skill. Resolving it beside the orchestrator with `${CLAUDE_SKILL_DIR}` works both from the plugin and in a copied install, where `${CLAUDE_PLUGIN_ROOT}` is not substituted. With no file, the audit still runs on the docs alone, so it is useful before the knowledge exists. Written for the transition-agnostic audit (#34, #38). A transition with no knowledge file used to run as a bootstrap, on pages found through the documentation index; it now stops with the list of transitions the installed version knows, since the change digest beside the knowledge file is the only account of the docs a run reads. Since #105 the audit reaches no network: the directory's validation flagged the run-time fetch, and what a published plugin reads has to be in the reviewed commit."
     },
     {
       "id": "N04",
       "where": "Start",
-      "refs": { "docs": ["https://code.claude.com/docs/en/skills#skill-content-lifecycle", "https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 38, 57] },
-      "what": "Each stage is its own skill, so the run's state must live on disk: the stages read the run file to know they may run, and a resume after an interruption or a compaction reads it to know where to continue. Written for the transition-agnostic audit (#34, #38). In 0.6.0 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#skill-content-lifecycle", "https://code.claude.com/docs/en/permission-modes"], "inbrace-tech/claude-skills": [34, 38, 57, 108] },
+      "what": "Each stage is its own skill, so the run's state must live on disk: the stages read the run file to know they may run, and a resume after an interruption or a compaction reads it to know where to continue. Written for the transition-agnostic audit (#34, #38). In 0.6.0 the run's files moved from `.claude/audits/` to their own folder under `.model-audits/`: Claude Code protects all of `.claude/` from writes in every permission mode but bypass, and allow rules do not pre-approve them, so a headless smoke run in `acceptEdits` stopped before the plan and every user outside auto mode got a prompt per write (#57). The run file records the change digest's path beside the knowledge file's, and no longer the word bootstrap, which no run is (#108)."
     },
     {
       "id": "N05",
       "where": "Start",
-      "refs": { "docs": ["https://code.claude.com/docs/en/skills#skill-content-lifecycle"], "inbrace-tech/claude-skills": [34, 38] },
-      "what": "The flow is split into stage skills so each stays within the size a skill keeps after compaction and loads only when reached: a run cancelled at the plan loads only the entry, this skill and the plan. The name the Skill tool lists differs between the plugin and a copied install. Written for the transition-agnostic audit (#34, #38)."
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#skill-content-lifecycle"], "inbrace-tech/claude-skills": [34, 38, 107, 108] },
+      "what": "The flow is split into stage skills so each stays within the size a skill keeps after compaction and loads only when reached: a run cancelled at the plan loads only the entry, this skill and the plan. The name the Skill tool lists differs between the plugin and a copied install. Written for the transition-agnostic audit (#34, #38). The run-time drift stage is gone: `scripts/check-doc-drift.ts` makes its comparison in CI, weekly, and opens an issue when a passage no longer matches (#107), so the stages are six and no run skips two of them for a bootstrap (#108)."
     },
     {
       "id": "N06",
@@ -112,20 +112,26 @@
     {
       "id": "N19",
       "where": "Throughout the run",
-      "refs": { "inbrace-tech/claude-skills": [34, 61] },
-      "what": "Added after a graded run left a 107 KB doc page and its normalised copy at the audited project's root: a command wrote to a path relative to the working directory, which a `cd` had moved. Every file the run writes goes by its absolute path under the run's folder, so nothing lands in the user's tree (#34, #61)."
+      "refs": { "inbrace-tech/claude-skills": [34, 61, 108] },
+      "what": "Added after a graded run left a 107 KB doc page and its normalised copy at the audited project's root: a command wrote to a path relative to the working directory, which a `cd` had moved. Every file the run writes goes by its absolute path under the run's folder, so nothing lands in the user's tree (#34, #61). The pages that run left at the project's root were a downloaded doc page and its normalised copy; no run downloads a page now, and the rule stays for every other file a run writes (#108)."
     },
     {
       "id": "N20",
       "where": "Throughout the run",
-      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#safeguard-refusals"], "inbrace-tech/claude-skills": [87] },
-      "what": "In 0.6.2 (#87), a live session-mode run on the Sonnet fixture stopped mid-discovery with `stop_reason: \"refusal\"`, category `reasoning_extraction`, after reading the lines the reasoning-in-the-reply trap (Opus P04, Sonnet P09) exists to find; the guides say such requests can be declined, and Claude Code's automatic fallback covers other categories only, so the run simply stopped. The cause is the text itself, so the fix takes it out of every context and file of the run: the plan finds those lines by number (`unquoted.md`, [transition-audit-plan#N27]) and every stage and agent cites them as `file:line` and a label, reading the lines around them. The line format's quoted-text field carries `[not quoted: <label>]` for them; the eval graders match only file, line, id and status, so they are unaffected."
+      "refs": { "docs": ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#safeguard-refusals"], "inbrace-tech/claude-skills": [87, 108] },
+      "what": "In 0.6.2 (#87), a live session-mode run on the Sonnet fixture stopped mid-discovery with `stop_reason: \"refusal\"`, category `reasoning_extraction`, after reading the lines the reasoning-in-the-reply trap (Opus P04, Sonnet P09) exists to find; the guides say such requests can be declined, and Claude Code's automatic fallback covers other categories only, so the run simply stopped. The cause is the text itself, so the fix takes it out of every context and file of the run: the plan finds those lines by number (`unquoted.md`, [transition-audit-plan#N27]) and every stage and agent cites them as `file:line` and a label, reading the lines around them. The line format's quoted-text field carries `[not quoted: <label>]` for them; the eval graders match only file, line, id and status, so they are unaffected. The run no longer writes a digest, so the list of places a line must not be quoted drops it (#108)."
     },
     {
       "id": "N21",
       "where": "Throughout the run",
       "refs": { "docs": ["https://code.claude.com/docs/en/model-config#automatic-model-fallback", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals", "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#safeguard-refusals", "https://code.claude.com/docs/en/sub-agents#what-loads-at-startup"], "inbrace-tech/claude-skills": [87, 89] },
       "what": "In 0.6.2 (#87), a live session-mode run on the Sonnet fixture stopped mid-discovery with `stop_reason: \"refusal\"`, category `reasoning_extraction`, after reading the lines the reasoning-in-the-reply trap (Opus P04, Sonnet P09) exists to find; the guides say such requests can be declined, and Claude Code's automatic fallback covers other categories only, so the run simply stopped. Two batches were open at once and both were lost, and `--resume` would have reread the same batch the same way. The norm marks each batch opened before reading, so a resume sees which one stopped; records the batch and category; retries in halves down to one file; and gives up on that file as `not audited — refusal` in the coverage account, so one instruction cannot stop the whole audit. A verifier that stops is split the same way, and a line that stops it again keeps its raw status marked `not verified — refusal`. In 0.6.2 (#89), the Opus live demo showed that an agent refused on its first request is not helped by a split: 5 of 11 `batch-auditor` agents were refused before reading any file, because a rule of the fixture with no `paths:` frontmatter, whose text is a line of that trap (Opus P04), loads in every session and every subagent of the project; the run recovered by reading those batches in the session. The norm now sends an agent's refused batches, and a verifier's pass, straight to the session where the plan marked such a line `always loaded`, and keeps the split for the other cases."
+    },
+    {
+      "id": "N22",
+      "where": "Throughout the run",
+      "refs": { "docs": ["https://support.claude.com/en/articles/13145358-anthropic-software-directory-policy", "https://claude.com/docs/plugins/pre-submission-checklist"], "inbrace-tech/claude-skills": [105, 108] },
+      "what": "Anthropic's plugin directory validated the plugin and reported `RUNTIME_FETCH_EXEC` on the discover stage: a command that downloads content the reviewed commit does not hold, which can change after review. The Software Directory Policy asks that instructional software not pull behavioural instructions from external sources (2F) and that a developer own or control what the software connects to and retrieves (3F). The pages were Anthropic's own and were read as evidence, but the cleanest answer was to need none: the change digest and the known traps ship with the plugin, drift is detected in CI, and the contribution invite gives a link instead of posting. The norm states the rule once, for every stage and agent. Written for the audit that needs nothing external (#105, #108)."
     }
   ]
 }
