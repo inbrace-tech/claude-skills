@@ -1,12 +1,12 @@
 """The one place worker jobs reach the Claude API."""
 
-import os
+# The SDK finds its API key by itself.
 
 import anthropic
 
 MODEL = "claude-sonnet-5"
 
-client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+client = anthropic.Anthropic()
 
 
 def ask(system, messages, *, effort="high", max_tokens=4096, betas=None, output_format=None, **extra):
