@@ -635,10 +635,15 @@ const unquote = (text: string): string => (/^".*"$/.test(text) ? text.slice(1, -
 
 /** The traps of a knowledge file's `<traps>` block, or null when it has none. */
 export function parseTraps(source: string): Trap[] | null {
+  return parseItems(source, "traps");
+}
+
+/** The `### <id> — Title` items of a `<block>`, each with its fields and sources, or null when the text has no such block. */
+export function parseItems(source: string, block: string): Trap[] | null {
   const lines = source.split("\n");
-  const open = lines.findIndex((line) => line.trim() === "<traps>");
+  const open = lines.findIndex((line) => line.trim() === `<${block}>`);
   if (open === -1) return null;
-  const closeAt = lines.findIndex((line, index) => index > open && line.trim() === "</traps>");
+  const closeAt = lines.findIndex((line, index) => index > open && line.trim() === `</${block}>`);
   const close = closeAt === -1 ? lines.length : closeAt;
 
   const traps: Trap[] = [];
@@ -693,11 +698,11 @@ export function trapsSidecarPathFor(path: string): string {
   return path.replace(/\.md$/, ".traps.json");
 }
 
-/** The knowledge-file slugs in a `transitions/` directory, from each `.md` and `.traps.json` so an orphan sidecar counts; sorted. */
+/** The knowledge-file slugs in a `transitions/` directory, from each `.md`, `.digest.md` and `.traps.json` so an orphan counts; sorted. */
 export function knowledgeSlugs(fileNames: string[]): string[] {
   const slugs = new Set<string>();
   for (const file of fileNames) {
-    const slug = file.match(/^(.+?)(\.traps\.json|\.md)$/)?.[1];
+    const slug = file.match(/^(.+?)(\.traps\.json|\.digest\.md|\.md)$/)?.[1];
     if (slug !== undefined) slugs.add(slug);
   }
   return [...slugs].sort();
@@ -798,4 +803,89 @@ export function checkKnowledge({ path, sidecarPath, source, sidecarText }: Knowl
 
   if (sidecarText === null) return [...errors, `${path}: has no ${baseName(sidecarPath)}`];
   return [...errors, ...trapsSidecarErrors(path, sidecarPath, sidecarText, defined)];
+}
+
+// ---------------------------------------------------------------------------
+// Change digests: `skills/<skill>/transitions/<slug>.digest.md`, one beside each knowledge file. It
+// states what changed from the source model to the target, one `### C01 — Title` item per change in a
+// `<changes>` block, each with the page that states it and a short quotation from that page.
+
+/** A change id: C followed by exactly two digits. */
+export const CHANGE_ID = /^C\d{2}$/;
+
+/** The ceiling every change digest is held to, in bytes: about 7,000 tokens at the measured 2.85 bytes per token. */
+export const DIGEST_MAX_BYTES = 20_000;
+
+/** The most words a digest passage quotes from its page. */
+export const DIGEST_PASSAGE_MAX_WORDS = 30;
+
+/** The frontmatter keys every change digest sets. */
+export const DIGEST_KEYS = ["transition", "verified"] as const;
+
+/** What `checkDigest` reads: the knowledge file's path and the digest beside it. */
+export interface DigestInput {
+  /** `…/transitions/<slug>.md`, relative to the repository root with `/`. */
+  path: string;
+  /** `…/transitions/<slug>.digest.md`. */
+  digestPath: string;
+  /** Contents, or null when the file does not exist. */
+  digestText: string | null;
+}
+
+/** The digest path for a knowledge file: `<slug>.md` → `<slug>.digest.md`. */
+export function digestPathFor(path: string): string {
+  return path.replace(/\.md$/, ".digest.md");
+}
+
+/** What is wrong with one change's fields and sources. */
+function changeErrors(digestPath: string, change: Trap): string[] {
+  const errors: string[] = [];
+  const at = `${digestPath}:${change.line}: ${change.id}`;
+  if (!change.fields.get("change")) errors.push(`${at} has no "change"`);
+  if (change.sources.length === 0) errors.push(`${at} has no source`);
+  change.sources.forEach((source, index) => {
+    const where = `${at} source ${index + 1}`;
+    if (!/^https:\/\/\S+$/.test(source.url)) errors.push(`${where} is not an https URL`);
+    if (source.passage === null || source.passage === "") {
+      errors.push(`${where} has no "passage"`);
+      return;
+    }
+    const words = source.passage.split(/\s+/).length;
+    if (words > DIGEST_PASSAGE_MAX_WORDS) errors.push(`${where} quotes ${words} words, over the ${DIGEST_PASSAGE_MAX_WORDS}-word ceiling for a passage`);
+    if (source.verified === null || !isIsoDate(source.verified)) errors.push(`${where} has a passage but no "verified" date as YYYY-MM-DD`);
+  });
+  return errors;
+}
+
+/** Checks the change digest beside a knowledge file against its format. */
+export function checkDigest({ path, digestPath, digestText }: DigestInput): string[] {
+  if (digestText === null) return [`${path}: has no ${baseName(digestPath)}`];
+
+  const errors: string[] = [];
+  const size = byteLength(digestText);
+  if (size > DIGEST_MAX_BYTES) errors.push(`${digestPath}: ${size} bytes, over the ${DIGEST_MAX_BYTES}-byte ceiling for a change digest`);
+
+  const slug = baseName(path).replace(/\.md$/, "");
+  const front = frontmatterLines(digestText);
+  if (front === null) {
+    errors.push(`${digestPath}: has no frontmatter`);
+  } else {
+    for (const key of DIGEST_KEYS) if (!frontmatterValue(front, key)) errors.push(`${digestPath}: frontmatter has no "${key}"`);
+    const transition = frontmatterValue(front, "transition");
+    if (transition && transition !== slug) errors.push(`${digestPath}: transition is "${transition}", expected "${slug}"`);
+    const verified = frontmatterValue(front, "verified");
+    if (verified && !isIsoDate(verified)) errors.push(`${digestPath}: verified "${verified}" is not a date as YYYY-MM-DD`);
+  }
+
+  const changes = parseItems(digestText, "changes");
+  if (changes === null) return [...errors, `${digestPath}: has no <changes> block`];
+  if (changes.length === 0) errors.push(`${digestPath}: its <changes> block has no change`);
+  const defined = new Set<string>();
+  for (const change of changes) {
+    if (!CHANGE_ID.test(change.id)) errors.push(`${digestPath}:${change.line}: change id ${change.id} is not C followed by two digits`);
+    else if (defined.has(change.id)) errors.push(`${digestPath}:${change.line}: change ${change.id} is defined more than once`);
+    else defined.add(change.id);
+    errors.push(...changeErrors(digestPath, change));
+  }
+  return errors;
 }
