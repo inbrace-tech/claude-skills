@@ -434,12 +434,12 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - area: api-code
 - signal: code that sends one `messages` history to Sonnet 5.5 and to another model
 - applies when: API routers and cascades
-- change: Hand off per the API hand-off rule. Sonnet 5.5 does not read thinking blocks from Opus 5, Opus 5.5, Fable or Mythos models, and no other model reads Sonnet 5.5's, so the reasoning is dropped silently.
+- change: Hand off per the API hand-off rule. Sonnet 5.5 does not read thinking blocks from Opus 5, Opus 5.5, Fable or Mythos models, and only Opus 5.5, on the Claude API and Google Cloud, reads Sonnet 5.5's, so on any other switch the reasoning is dropped silently.
 - confidence: high
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#thinking-blocks-are-tied-to-the-model-that-produced-them
-  passage: "but not from Claude Opus 5, Claude Opus 5.5, or any Claude Fable or Claude Mythos model … No other model reads Claude Sonnet 5.5 thinking blocks."
-  verified: 2026-09-29
+  passage: "but not from Claude Opus 5, Claude Opus 5.5, or any Claude Fable or Claude Mythos model … Claude Opus 5.5 reads Claude Sonnet 5.5 thinking blocks; no other model does."
+  verified: 2026-10-02
 
 ### P26 — Silent agentic turns
 

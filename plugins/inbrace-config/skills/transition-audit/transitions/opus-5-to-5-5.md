@@ -135,8 +135,8 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
   passage: "If your prompt asked the model to write out its reasoning in the response as a substitute for thinking, remove that instruction and read the reasoning from summarized thinking blocks instead"
   verified: 2026-09-29
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals
-  passage: "Requests that push the model to reproduce its internal reasoning in the response text can be declined with the `reasoning_extraction` category"
-  verified: 2026-09-29
+  passage: "Requests that push the model to reproduce its internal reasoning in the response text may be declined with the `reasoning_extraction` category"
+  verified: 2026-10-02
 
 ### P05 — Thinking-disabled mitigation
 

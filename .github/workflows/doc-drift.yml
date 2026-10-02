@@ -1,0 +1,58 @@
+# Weekly check of every passage the knowledge files quote against Anthropic's documentation as it
+# reads today (`pnpm run check-doc-drift`). It needs the network and reports through an issue.
+# Not a merge gate: a pull request cannot fix a page that changed after it was quoted.
+name: Documentation drift
+
+on:
+  # Mondays 04:00 UTC: scheduled runs can start hours late and should still land before the workday.
+  schedule:
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    name: Quoted passages against today's docs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # The one job in this repository that writes: it opens or updates the drift issue.
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      # No history needed: the check reads the working tree only.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-node-pnpm
+      - name: Compare every quoted passage with its page
+        id: drift
+        continue-on-error: true
+        env:
+          REPORT: ${{ runner.temp }}/doc-drift.md
+        run: pnpm run --silent check-doc-drift --report "$REPORT"
+      # One open issue at a time: a later run comments on it instead of opening another.
+      - name: Open or update the drift issue
+        if: steps.drift.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPORT: ${{ runner.temp }}/doc-drift.md
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TITLE: 'Documentation drift: quoted passages no longer match their pages'
+        run: |
+          set -euo pipefail
+          if [ ! -s "$REPORT" ]; then
+            printf 'The drift check failed before it wrote a report.\n' > "$REPORT"
+          fi
+          printf '\nRun: %s\n' "$RUN_URL" >> "$REPORT"
+          number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number // empty')
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --repo "$GITHUB_REPOSITORY" --body-file "$REPORT"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body-file "$REPORT"
+          fi
+      - name: Fail the run when a passage drifted
+        if: steps.drift.outcome == 'failure'
+        run: exit 1
