@@ -35,7 +35,7 @@ jobs:
       # Pinned so a CLI release never changes what CI accepts without a reviewed diff.
       - name: Install Claude Code
         env:
-          CLAUDE_CODE_VERSION: 2.1.280
+          CLAUDE_CODE_VERSION: 2.1.287
         run: npm install --global "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
       - name: Validate marketplace, plugins, skills and agents
         run: |
