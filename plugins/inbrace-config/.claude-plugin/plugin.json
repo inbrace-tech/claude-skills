@@ -9,6 +9,7 @@
   },
   "homepage": "https://github.com/inbrace-tech/claude-skills",
   "repository": "https://github.com/inbrace-tech/claude-skills",
+  "documentationUrl": "https://github.com/inbrace-tech/claude-skills#readme",
   "license": "MIT",
   "keywords": ["claude-md", "prompt-engineering", "audit", "model-transition", "opus-5-5", "sonnet-5-5"]
 }
