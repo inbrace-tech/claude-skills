@@ -110,13 +110,6 @@ What changes from Claude Sonnet 5 to Claude Sonnet 5.5 that can bear on a Claude
   passage: "You can't turn thinking off on Opus 5.5, Sonnet 5.5, or the Fable models."
   verified: 2026-10-02
 
-### C15 — Manual thinking budgets are rejected
-
-- change: `thinking` of type `enabled` with `budget_tokens` returns a 400 error.
-- source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#turn-off-up-front-thinking
-  passage: "Manual thinking budgets (`thinking: {"type": "enabled", "budget_tokens": N}`) return a 400 error."
-  verified: 2026-10-02
-
 ### C16 — Forced tool use is rejected
 
 - change: `tool_choice` of type `any` or `tool` returns a 400 error, on the token-counting endpoint too; `auto` with strict tool use or structured outputs replaces it.
@@ -279,6 +272,9 @@ Instructions and settings written for a model older than Sonnet 5, which Sonnet 
 - residue: `budget_tokens` was already removed on Sonnet 5, after being deprecated on Sonnet 4.6.
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5#calibrating-effort-and-thinking-depth
   passage: "is not supported on Claude Sonnet 5 and returns a 400 error. It was deprecated on Claude Sonnet 4.6 and is now removed."
+  verified: 2026-10-02
+- source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#turn-off-up-front-thinking
+  passage: "Manual thinking budgets (`thinking: {"type": "enabled", "budget_tokens": N}`) return a 400 error."
   verified: 2026-10-02
 
 ### R04 — Scaffolding that forces interim status messages
