@@ -4,7 +4,7 @@ title: Opus 5 → Opus 5.5
 source: { name: Claude Opus 5, id: claude-opus-5, alias: opus }
 target: { name: Claude Opus 5.5, id: claude-opus-5-5, alias: opus }
 claude-code-floor: v2.1.280
-verified: 2026-09-29
+verified: 2026-10-06
 ---
 
 # Opus 5 → Opus 5.5
@@ -82,13 +82,13 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - context: user-settings
 - source: https://code.claude.com/docs/en/model-config#adjust-effort-level
   passage: "a top-level `effortLevel` in your user settings file doesn't count for Opus 5.5 … A top-level `effortLevel` in project, local, or managed settings, or one passed with `--settings`, applies to every model."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/model-config#extended-context
   passage: "On the Anthropic API, Fable 5.1, Fable 5, Sonnet 5 and later, and Opus 4.7 and later run with the 1M window on every plan, including Pro."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#calibrate-effort
   passage: "in Anthropic's testing, Claude Opus 5.5 at `medium` matches or exceeds Claude Opus 5 at `high` on coding and knowledge-work evaluations"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P02 — Thinking disabled or budgeted
 
@@ -101,10 +101,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5#thinking-cant-be-disabled
   passage: "On Claude Opus 5.5, thinking is always on: a request that sets `thinking: {"type": "disabled"}`, or a manual budget with `thinking: {"type": "enabled", "budget_tokens": N}`, returns a 400 `invalid_request_error`."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#prompts-written-for-thinking-disabled
   passage: "Start at `low` effort and measure."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P03 — "Don't think" rules
 
@@ -117,10 +117,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5#running-with-thinking-disabled
   passage: "If your system prompt contains a rule instructing the model not to think or not to reason, remove it; that kind of instruction increases tag leakage."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#prompts-written-for-thinking-disabled
   passage: "With thinking always on, check whether you still need the instruction, and remove the no-thinking rule either way."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P04 — Reasoning written into the response
 
@@ -133,10 +133,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#prompts-written-for-thinking-disabled
   passage: "If your prompt asked the model to write out its reasoning in the response as a substitute for thinking, remove that instruction and read the reasoning from summarized thinking blocks instead"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#safeguard-refusals
   passage: "Requests that push the model to reproduce its internal reasoning in the response text may be declined with the `reasoning_extraction` category"
-  verified: 2026-10-02
+  verified: 2026-10-06
 
 ### P05 — Thinking-disabled mitigation
 
@@ -149,7 +149,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#prompts-written-for-thinking-disabled
   passage: "Both address artifacts that appear on Claude Opus 5 only when thinking is disabled. With thinking always on, check whether you still need the instruction"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P06 — "Think carefully" in chat prompts
 
@@ -162,7 +162,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#thinking-instructions-in-chat-system-prompts
   passage: "consider removing them for Claude Opus 5.5 … removing such a line made replies start sooner, with no clear decline in the quality of the reply"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P07 — Opus 5 tuning instructions
 
@@ -175,13 +175,13 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#capability-improvements
   passage: "It also sustains long-running autonomous work better than Claude Opus 5 … Early testers also reported stronger code review, with more bugs caught than on Claude Opus 5 and fewer false alarms"
-  verified: 2026-09-30
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5
   passage: "Existing Claude Opus 5 prompts should perform well without changes, and the patterns in Prompting Claude Opus 5 remain a reasonable starting point."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/models/opus-5-5/migration-guide#recommended-changes
   passage: "Instructions tuned for Claude Opus 5's behavior may no longer be needed"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P08 — Silent agentic turns
 
@@ -194,10 +194,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#user-facing-progress-updates
   passage: "their text is empty at the default `thinking.display`, so a client that renders only `text` blocks can look silent during a long agentic turn"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/models/opus-5-5/migration-guide#text-between-tool-calls
   passage: "`"updates"` (beta, `thinking-display-updates-2026-08-18` header) returns the progress updates while reasoning stays hidden"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P09 — No update cadence
 
@@ -210,7 +210,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#user-facing-progress-updates
   passage: "a one-line statement of intent before the first tool call and a short recap at the end, say so in the system prompt … This helps most in human-in-the-loop work."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P10 — Unattended runs without a continuation plan
 
@@ -223,16 +223,16 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#unattended-agentic-runs
   passage: "some of those updates end the turn with text rather than a tool call"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#unattended-agentic-runs
   passage: "Keep the task's parts in a checklist the model updates, such as a to-do tool or a file. If a turn ends with items still open and no blocker stated, send a short user message naming them"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#unattended-agentic-runs
   passage: "stop after two or three automatic continuations on the same task rather than repeating them indefinitely"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#unattended-agentic-runs
   passage: "An unattended agent loop that treats such a turn as the end of the task stops running there."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P11 — Multi-app agents that act without looking
 
@@ -245,7 +245,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#explore-context-in-multi-app-workflows
   passage: "Claude Opus 5.5 tends to get to work quickly, and on loosely specified tasks it helps to tell the model to look through the relevant sources before acting."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P12 — Multi-agent runs without time signals
 
@@ -258,7 +258,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#time-signals-for-multi-agent-harnesses
   passage: "have your harness add a short line at the end of each message it sends back to the model giving the elapsed time against that budget, in seconds"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P13 — Chat that re-examines settled answers
 
@@ -271,7 +271,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#thinking-instructions-in-chat-system-prompts
   passage: "If you would rather the model treat earlier answers as settled, add two sentences at the end of the system prompt"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P14 — Unmarked pasted content
 
@@ -284,7 +284,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#mark-pasted-text-in-user-messages
   passage: "Wrap each pasted block in an opening and a closing tag that both carry the same short random ID, generated by your application … Then add this note to your system prompt"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P15 — Visual-input scaffolding
 
@@ -297,7 +297,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#tools-for-complex-visual-inputs
   passage: "re-test whether you still need scaffolding you built for visual inputs on earlier models … a cropping tool alone still helps"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P16 — Vague design direction
 
@@ -310,7 +310,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#frontend-design-defaults
   passage: "a general instruction such as "avoid a generic AI look" mostly swaps one default for another. It responds well to instructions that name specific patterns to avoid"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P17 — Forced tool use
 
@@ -323,10 +323,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5#forced-tool-use-is-not-supported
   passage: "`tool_choice` set to `{"type": "any"}` or `{"type": "tool", "name": "..."}` returns a 400 `invalid_request_error`"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5#forced-tool-use-is-not-supported
   passage: "keep `tool_choice: {"type": "auto"}` and set `strict: true` with strict tool use, or move the schema to structured outputs"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P18 — Old computer-use tool
 
@@ -339,13 +339,13 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5#computer-20251124-is-not-supported
   passage: "On the Claude API and Google Cloud, Claude Opus 5.5 supports only the toolset: a request that declares a `computer_20251124` tool returns a 400 `invalid_request_error`."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5#computer-20251124-is-not-supported
   passage: "On Amazon Bedrock, the earlier `computer_20251124` tool continues to work on Claude Opus 5.5 as it does on Claude Opus 5, so no change is needed there."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/models/opus-5-5/migration-guide#computer-use-toolset
   passage: "In your agent loop, handle member `tool_use` blocks (the action is the block's `name`, not `input.action`), several of them per turn, and echo `toolset_name` on every result."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P19 — History edited between requests
 
@@ -358,10 +358,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/models/opus-5-5/migration-guide#thinking-blocks
   passage: "Keep the conversation append-only (no edits to the `system` prompt, `tools`, or earlier messages mid-conversation) so the blocks stay valid"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/models/opus-5-5/migration-guide#thinking-blocks
   passage: "for accounts created on or after August 31, 2026, 00:00 UTC, replaying a thinking block after such an edit returns a 400 error by default"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P20 — Agent still pinned to Opus 5
 
@@ -374,13 +374,13 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://code.claude.com/docs/en/model-config#adjust-effort-level
   passage: "The model's default effort: `high` on every model that supports effort, except that Opus 5.5 and Sonnet 5.5 default to `medium`"
-  verified: 2026-09-30
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/sub-agents#choose-a-model
   passage: "Full model ID: use a full model ID such as `claude-opus-5-5` or `claude-sonnet-5`."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/sub-agents#supported-frontmatter-fields
   passage: "Effort level when this subagent is active. Overrides the session effort level. Default: inherits from session."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P21 — Agent or skill on Opus 5.5 carrying an effort left from Opus 5
 
@@ -393,7 +393,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#calibrate-effort
   passage: "test several levels against your own evals rather than carrying over the setting you used on Claude Opus 5 … Claude Opus 5.5 at `medium` matches or exceeds Claude Opus 5 at `high`"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P22 — Opus 5 prompting delivered to Opus 5.5 by prefix
 
@@ -408,7 +408,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
   basis: inference: the id `claude-opus-5-5` begins with `claude-opus-5`, so any prefix selector for Opus 5 also matches it.
 - source: https://platform.claude.com/docs/en/models/opus-5-5/migration-guide#recommended-changes
   passage: "Instructions tuned for Claude Opus 5's behavior may no longer be needed"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P23 — Opus 5 skill preloaded into an agent moving to Opus 5.5
 
@@ -421,10 +421,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/opus-5-5/migration-guide#recommended-changes
   passage: "Re-evaluate model-specific prompt instructions. Instructions tuned for Claude Opus 5's behavior may no longer be needed"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents
   passage: "The full content of each listed skill is injected into the subagent's context at startup."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P24 — No Claude Code version floor for Opus 5.5
 
@@ -437,7 +437,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://code.claude.com/docs/en/model-config#model-aliases
   passage: "Sonnet 5.5 requires Claude Code v2.1.284 or later, and Opus 5.5 requires v2.1.280 or later."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P25 — Content-based fallback left unaccounted for
 
@@ -450,7 +450,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://code.claude.com/docs/en/model-config#automatic-model-fallback
   passage: "Fable 5.1, Fable 5, and Opus 5.5: biology-flagged requests re-run on Opus 5, and cybersecurity-flagged requests re-run on Opus 4.8. … After a fallback, the session continues on the fallback model."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P26 — Price table without an Opus 5.5 entry
 
@@ -463,7 +463,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5#pricing
   passage: "Claude Opus 5.5 costs $4 USD per million input tokens and $20 USD per million output tokens, below Claude Opus 5's $5 and $25"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P27 — Model docs that miss the Opus 5.5 guide
 
@@ -476,10 +476,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/opus-5-5/migration-guide#recommended-changes
   passage: "Re-evaluate model-specific prompt instructions. Instructions tuned for Claude Opus 5's behavior may no longer be needed"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/model-config#extended-thinking
   passage: "You can't turn thinking off on Opus 5.5, Sonnet 5.5, or the Fable models."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P28 — Transcript or output parser that reads only text blocks
 
@@ -492,7 +492,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5#text-between-tool-calls
   passage: "The short notes the model writes between tool calls arrive as progress-update `thinking` blocks rather than `text` blocks"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/model-config#extended-thinking
   basis: inference: the Claude Code docs do not say how a session transcript records progress-update thinking blocks.
 
@@ -507,7 +507,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5#calibrate-effort
   passage: "Thinking counts toward `max_tokens` even when thinking content isn't returned to you, so a limit sized for Claude Opus 5 with thinking off can cut replies off."
-  verified: 2026-09-30
+  verified: 2026-10-06
 
 ### P30 — Requests that pass no effort
 
@@ -520,6 +520,6 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5#behavior-differences
   passage: "A request that omits `effort` runs at `medium`; on Claude Opus 5 it ran at `high`. Set `effort` explicitly and re-run your sweep"
-  verified: 2026-09-30
+  verified: 2026-10-06
 
 </traps>
