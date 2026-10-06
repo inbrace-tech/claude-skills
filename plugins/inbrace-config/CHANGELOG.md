@@ -6,19 +6,19 @@ The plugin was named `claude-config` before 0.4.0.
 
 ### Minor Changes
 
-- The audit reaches no network: it reads the change digest shipped with each transition, drops the drift stage and the docs-only mode, and the contribution invite only gives a link. ([#111](https://github.com/inbrace-tech/claude-skills/pull/111) by [@ropdias](https://github.com/ropdias))
+- The audit reaches no network: it reads the change digest shipped with each transition, drops the drift stage and the docs-only mode, and the contribution invite only gives a link. ([#114](https://github.com/inbrace-tech/claude-skills/pull/114) by [@ropdias](https://github.com/ropdias))
 
 ### Patch Changes
 
 - The Sonnet eval fixture's sample clients no longer read `ANTHROPIC_API_KEY` themselves and leave it to the SDK; the plugin directory's validation held that read for review. ([#103](https://github.com/inbrace-tech/claude-skills/pull/103) by [@ropdias](https://github.com/ropdias))
 
-- Two known traps follow the docs as they read today: Opus P04's passage is re-recorded, and Sonnet P25 now says Opus 5.5 reads Sonnet 5.5 thinking blocks on the Claude API and Google Cloud. ([#111](https://github.com/inbrace-tech/claude-skills/pull/111) by [@ropdias](https://github.com/ropdias))
+- Two known traps follow the docs as they read today: Opus P04's passage is re-recorded, and Sonnet P25 now says Opus 5.5 reads Sonnet 5.5 thinking blocks on the Claude API and Google Cloud. ([#112](https://github.com/inbrace-tech/claude-skills/pull/112) by [@ropdias](https://github.com/ropdias))
 
 - Every passage the knowledge files quote was re-checked against Anthropic's docs on 2026-10-06 and still holds, so each `verified` date now reads 2026-10-06. ([#123](https://github.com/inbrace-tech/claude-skills/pull/123) by [@ropdias](https://github.com/ropdias))
 
 - Each transition now ships a change digest beside its known traps: what changed between the two models, each item with its page and a short quoted passage. No skill reads it yet. ([#111](https://github.com/inbrace-tech/claude-skills/pull/111) by [@ropdias](https://github.com/ropdias))
 
-- The README and descriptions say what the audit now does: it reads the docs as recorded and dated in the plugin, and fetches and sends nothing. The eval suite fails a run that reaches the network. ([#111](https://github.com/inbrace-tech/claude-skills/pull/111) by [@ropdias](https://github.com/ropdias))
+- The README and descriptions say what the audit now does: it reads the docs as recorded and dated in the plugin, and fetches and sends nothing. The eval suite fails a run that reaches the network. ([#115](https://github.com/inbrace-tech/claude-skills/pull/115) by [@ropdias](https://github.com/ropdias))
 
 ## 0.6.3
 
