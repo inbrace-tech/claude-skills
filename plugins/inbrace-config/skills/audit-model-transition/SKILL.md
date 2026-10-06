@@ -1,6 +1,6 @@
 ---
 name: audit-model-transition
-description: Audit a project's Claude Code setup (CLAUDE.md, rules, agents, skills, settings, hooks, CI and Claude API code) for what changes when moving from one Claude model to another. Reads today's Anthropic docs, explores the project, checks the transition's known traps, asks before each costly stage with its estimated cost, reports in the chat, and applies only what was approved.
+description: Audit a project's Claude Code setup (CLAUDE.md, rules, agents, skills, settings, hooks, CI and Claude API code) for what changes when moving from one Claude model to another. Explores the project against what Anthropic's documentation says changed, as recorded and dated in the plugin, checks the transition's known traps, asks before each costly stage with its estimated cost, reports in the chat, and applies only what was approved.
 argument-hint: "<source> <target> [path] [--scope full|reduced|quick] [--mode session|agents] [--stop-at-report]"
 disable-model-invocation: true
 allowed-tools: Skill(inbrace-config:transition-audit)
@@ -22,7 +22,7 @@ $ARGUMENTS
 
 </arguments>
 
-- [N02] Form the transition's slug by removing `claude-` from both models and writing `<source>-to-<target>`, dropping the target's family when both share it — `sonnet-5` and `sonnet-5-5` give `sonnet-5-to-5-5` — and say in one line whether `${CLAUDE_SKILL_DIR}/../transition-audit/transitions/<slug>.md` exists, and when it does not, that the audit will run on the docs alone, with no known traps.
+- [N02] Form the transition's slug by removing `claude-` from both models and writing `<source>-to-<target>`, dropping the target's family when both share it — `sonnet-5` and `sonnet-5-5` give `sonnet-5-to-5-5` — and say in one line that the audit runs only for a transition whose knowledge ships with it, which `transition-audit` checks, stopping with the transitions it knows when this one is not among them.
 - [N03] Invoke `transition-audit` through the Skill tool — `inbrace-config:transition-audit` from the plugin, `transition-audit` when copied — with `--transition <slug>` followed by the rest of the arguments, and follow it.
 
 **Every `[N<NN>]` above is one norm, and why it exists lives in [`SKILL.norms.json`](SKILL.norms.json), which nothing loads automatically.** Open it when a step is doubted.

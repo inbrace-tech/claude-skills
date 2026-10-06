@@ -2,14 +2,14 @@
 name: transition-audit
 description: Runs the stages of a model-transition audit. Use only when an inbrace-config audit command starts it, or to resume one.
 user-invocable: false
-allowed-tools: Skill(inbrace-config:transition-audit-plan) Skill(inbrace-config:transition-audit-discover) Skill(inbrace-config:transition-audit-drift) Skill(inbrace-config:transition-audit-traps) Skill(inbrace-config:transition-audit-report) Skill(inbrace-config:transition-audit-apply)
+allowed-tools: Skill(inbrace-config:transition-audit-plan) Skill(inbrace-config:transition-audit-discover) Skill(inbrace-config:transition-audit-traps) Skill(inbrace-config:transition-audit-report) Skill(inbrace-config:transition-audit-apply)
 metadata:
   max-bytes: 14000
 ---
 
 # Run a model-transition audit
 
-**This skill runs an audit of a project's Claude Code setup for one model transition, named by its knowledge file, and hands each stage to its own skill.** The knowledge file, `transitions/<slug>.md` beside this skill, holds everything that belongs to the transition — its models, docs and known traps — so nothing below names a model.
+**This skill runs an audit of a project's Claude Code setup for one model transition, named by its knowledge file, and hands each stage to its own skill.** The knowledge file, `transitions/<slug>.md` beside this skill, holds everything that belongs to the transition — its models and known traps — and the change digest beside it, `<slug>.digest.md`, holds what the documentation says changed, so nothing below names a model and no stage reaches the network.
 
 **The audit has three jobs.** Be transparent before spending anything. Explain what it found plainly enough that the user needs no file to understand it. Change nothing the user did not approve.
 
@@ -26,21 +26,20 @@ $ARGUMENTS
 
 </arguments>
 
-- [N03] Take the knowledge file as `${CLAUDE_SKILL_DIR}/transitions/<slug>.md`; where none exists, run a bootstrap, which the plan states: its docs come from the index at `https://platform.claude.com/llms.txt`, confirmed by the user at the first gate, and it has no known-traps stage.
-- [N04] Keep every file of the run in its own folder, `.model-audits/<target>-<YYYY-MM-DD>/` under the audit root, where `<target>` is the target model id without `claude-`, and `-2`, `-3`, … added when that folder holds another run — never under `.claude/`, which Claude Code protects from writes in every permission mode but bypass; when creating `.model-audits/` for the first time, write in it a `.gitignore` holding the single line `*`, so nothing of the audit shows in `git status`, and never edit the project's own `.gitignore` or `.git/info/exclude`. Keep the run file, `run.md` in that folder: write it before the plan with the slug, the knowledge file's absolute path or "bootstrap", the root and the arguments, and after every stage record the stage finished, the stage next and each gate answered, since each stage reads it to know it may run.
-- [N05] Run the stages in the order of `<stages>`, invoking each through the Skill tool by the name it lists — `inbrace-config:transition-audit-plan` from the plugin, `transition-audit-plan` when copied — after setting it as next in the run file; a quick sweep skips discover, a bootstrap skips drift and known traps, and a run cancelled at the plan, stopped at the report or headless goes straight to apply for its close.
+- [N03] Take the knowledge file as `${CLAUDE_SKILL_DIR}/transitions/<slug>.md` and the change digest as `<slug>.digest.md` beside it; where either is missing, stop before any other tool call, saying that this version of the audit does not know that transition and listing the slugs of the knowledge files in that directory, since the audit reads only what ships with it.
+- [N04] Keep every file of the run in its own folder, `.model-audits/<target>-<YYYY-MM-DD>/` under the audit root, where `<target>` is the target model id without `claude-`, and `-2`, `-3`, … added when that folder holds another run — never under `.claude/`, which Claude Code protects from writes in every permission mode but bypass; when creating `.model-audits/` for the first time, write in it a `.gitignore` holding the single line `*`, so nothing of the audit shows in `git status`, and never edit the project's own `.gitignore` or `.git/info/exclude`. Keep the run file, `run.md` in that folder: write it before the plan with the slug, the absolute paths of the knowledge file and the change digest, the root and the arguments, and after every stage record the stage finished, the stage next and each gate answered, since each stage reads it to know it may run.
+- [N05] Run the stages in the order of `<stages>`, invoking each through the Skill tool by the name it lists — `inbrace-config:transition-audit-plan` from the plugin, `transition-audit-plan` when copied — after setting it as next in the run file; a quick sweep skips discover, and a run cancelled at the plan, stopped at the report or headless goes straight to apply for its close.
 
 <stages>
 
 | # | Stage | Skill, or agent |
 |---|---|---|
-| 1 | Plan: list, measure, check the docs, confirm | `transition-audit-plan` |
-| 2 | Discover: read the docs and the files | `transition-audit-discover` |
-| 3 | Drift: check the known traps against today's docs | `transition-audit-drift` |
-| 4 | Known traps: add what discovery missed | `transition-audit-traps` |
-| 5 | Verify: an agent tries to refute every finding | `finding-verifier`, per [N17] |
-| 6 | Report and decide | `transition-audit-report` |
-| 7 | Apply, verify, close | `transition-audit-apply` |
+| 1 | Plan: list, measure, confirm | `transition-audit-plan` |
+| 2 | Discover: read the change digest and the files | `transition-audit-discover` |
+| 3 | Known traps: add what discovery missed | `transition-audit-traps` |
+| 4 | Verify: an agent tries to refute every finding | `finding-verifier`, per [N17] |
+| 5 | Report and decide | `transition-audit-report` |
+| 6 | Apply, verify, close | `transition-audit-apply` |
 
 </stages>
 
@@ -49,7 +48,8 @@ $ARGUMENTS
 
 ## Throughout the run
 
-- [N19] Write every file of the run by its absolute path under the run's folder — a `curl -o` or `>` target included — never by a path relative to the working directory, which a `cd` moves: a run once left a 107 KB doc page and its normalised copy at the audited project's root.
+- [N19] Write every file of the run by its absolute path under the run's folder — a `>` target included — never by a path relative to the working directory, which a `cd` moves: a run once left two working files at the audited project's root.
+- [N22] Reach no network at any stage: read only the audited project and the files that ship with this audit, and never run a command or use a tool that fetches a page, calls an API or posts anything, since the audit is reviewed as what it contains and everything it reads has to be in it.
 
 - [N08] Before the first tool call and at the start of every stage, show the checklist as plain text, titled `<title> audit` from the knowledge file, one line per row of `<stages>`, each marked `[x]` done, `[>]` current, `[ ]` pending or `[-]` skipped, never depending on a task-list tool.
 - [N09] Ask every question through `AskUserQuestion`, recommended option first, at most four options per question, splitting a larger choice into several questions of one call; where the tool is not available, or a call to it is denied, follow [N15] and never write the questions as a list.
@@ -59,7 +59,7 @@ $ARGUMENTS
 - [N13] Record every approved gate in the report file with the estimate of each option offered, marking a gate the arguments answered as "pre-approved by argument", and put the gates approved after the report into its decision section.
 - [N14] Offer at every gate only the options the stages define, never improvising another.
 - [N15] Treat the run as headless where `AskUserQuestion` is not available or a call to it is denied, since no one can answer: change nothing, run through the report when the arguments gave the scope and the run mode it needs, and otherwise stop at the plan and close there, naming the `--scope` and `--mode` arguments that would have reached the report.
-- [N20] Never read, search in content mode or quote a line the run's `unquoted.md` lists — in the chat, the digest, the brief, the findings, the report or a diff — citing it only as `file:line` with its label, and reading its file in line ranges that skip it, since those lines ask the model to reveal its reasoning and a live run stopped on a `reasoning_extraction` refusal after reading them.
+- [N20] Never read, search in content mode or quote a line the run's `unquoted.md` lists — in the chat, the brief, the findings, the report or a diff — citing it only as `file:line` with its label, and reading its file in line ranges that skip it, since those lines ask the model to reveal its reasoning and a live run stopped on a `reasoning_extraction` refusal after reading them.
 - [N21] Before reading a batch — in this session, or through an agent — write `opened: <batch>` in the run file; when a response stops on a refusal, or a resume finds a batch opened and never written, record in the run file the batch, its files and the refusal's category or `unknown`; where an agent was refused and `unquoted.md` marks a line `always loaded`, read that agent's batches, or make its verifier pass, in this session at once and never split them, since the agent carries that line from its first request and no split removes it; otherwise retry it split in halves, one file at a time at the smallest, citing any line that stopped it per [N20]; when one file stops the run again, write it in the coverage account as `not audited — refusal`, and go on with the next batch, never rereading it the same way; split a verifier's lines the same way, keeping a line that stops it again with its raw status and the note `not verified — refusal`.
 
 ## Findings file

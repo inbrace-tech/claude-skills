@@ -33,4 +33,4 @@ A skill is a set of instructions that Claude follows on the user's machine, with
 - **Every pull request is scanned for leaked secrets** with gitleaks. The binary is downloaded from its official release and checked against the published checksum before it runs.
 - **Every manifest and skill is validated** with `claude plugin validate --strict` in CI.
 - **Every GitHub Action is pinned to a full commit SHA**, so a compromised or retagged action cannot silently enter a workflow run. Dependabot proposes updates after a 7-day cooldown.
-- **Workflow checkouts drop their credentials** (`persist-credentials: false`), and every workflow runs with read-only permissions.
+- **Workflow checkouts drop their credentials** (`persist-credentials: false`), and every workflow runs with read-only permissions. One job adds a single write permission: the weekly documentation drift check may open or comment on an issue.

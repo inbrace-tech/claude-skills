@@ -3,7 +3,7 @@
 // agents/<name>.md) agrees with its `.norms.json` sidecar, that every sidecar is in the canonical layout
 // of sidecar-layout.logic.ts, that every surface fits its size ceiling,
 // and that every knowledge file (`skills/<skill>/transitions/<slug>.md`) agrees with its format and
-// its `.traps.json` sidecar. The rules live in check-norms.logic.ts; this file finds the files and
+// its `.traps.json` sidecar, and has a change digest (`<slug>.digest.md`) in its format. The rules live in check-norms.logic.ts; this file finds the files and
 // reports. Run from the repository root: `pnpm run check-norms`.
 // Exit codes: 0 consistent, 1 inconsistent, 2 not run from the repository root.
 
@@ -12,8 +12,10 @@ import { join, relative, sep } from "node:path";
 import {
   agentNames,
   checkCorpus,
+  checkDigest,
   checkKnowledge,
   checkSurface,
+  digestPathFor,
   knowledgeSlugs,
   positionalArgumentErrors,
   sidecarLayoutErrors,
@@ -62,7 +64,7 @@ function surfaces(): Surface[] {
   return found;
 }
 
-/** Every knowledge file under a skill's `transitions/`, found by its `.md` or its `.traps.json`. */
+/** Every knowledge file under a skill's `transitions/`, found by its `.md`, its `.digest.md` or its `.traps.json`. */
 function knowledgeFiles(): string[] {
   const found: string[] = [];
   for (const plugin of readdirSync(plugins, { withFileTypes: true })) {
@@ -133,6 +135,16 @@ for (const path of knowledge) {
       sidecarText: readIfPresent(trapsSidecarPathFor(path)),
     }),
   );
+  // An orphan digest is reported by checkKnowledge, as a knowledge file that does not exist.
+  if (existsSync(path)) {
+    errors.push(
+      ...checkDigest({
+        path: toRepoPath(relative(root, path), sep),
+        digestPath: toRepoPath(relative(root, digestPathFor(path)), sep),
+        digestText: readIfPresent(digestPathFor(path)),
+      }),
+    );
+  }
 }
 
 const corpus = checkCorpus({ surfaces: inputs, markdown: markdownFiles() });

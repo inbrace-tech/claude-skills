@@ -2,15 +2,18 @@
 
 import {
   AGENT_MAX_BYTES,
+  DIGEST_MAX_BYTES,
   KNOWLEDGE_MAX_BYTES,
   agentNames,
   blankCodeRegions,
   byteLength,
   checkCorpus,
+  checkDigest,
   checkKnowledge,
   checkSurface,
   declaredMaxBytes,
   definedNorms,
+  digestPathFor,
   isIsoDate,
   knowledgeSlugs,
   parseTraps,
@@ -616,14 +619,88 @@ describe("knowledge files", () => {
     expect(check(`${file()}${"x".repeat(KNOWLEDGE_MAX_BYTES)}`)[0]).toMatch(/over the 57000-byte ceiling for a knowledge file/);
   });
 
-  it("knowledgeSlugs pairs files by slug, keeping an orphan sidecar", () => {
-    expect(knowledgeSlugs(["a.md", "a.traps.json", "b.traps.json", "notes.txt"])).toStrictEqual(["a", "b"]);
+  it("knowledgeSlugs pairs files by slug, keeping an orphan sidecar or digest", () => {
+    expect(knowledgeSlugs(["a.md", "a.traps.json", "a.digest.md", "b.traps.json", "c.digest.md", "notes.txt"])).toStrictEqual(["a", "b", "c"]);
     expect(trapsSidecarPathFor("x/a.md")).toBe("x/a.traps.json");
+    expect(digestPathFor("x/a.md")).toBe("x/a.digest.md");
   });
 
   it("isIsoDate accepts only real calendar dates", () => {
     expect(isIsoDate("2026-09-29")).toBe(true);
     expect(isIsoDate("2026-13-01")).toBe(false);
     expect(isIsoDate("29/09/2026")).toBe(false);
+  });
+});
+
+describe("change digests", () => {
+  const PATH = "plugins/p/skills/t/transitions/a-to-b.md";
+  const DIGEST = "plugins/p/skills/t/transitions/a-to-b.digest.md";
+
+  const CHANGE = [
+    "### C01 — A change",
+    "",
+    "- change: B does y where A did x.",
+    "- source: https://example.com/doc#a",
+    '  passage: "the doc says `{"type": "y"}` is so"',
+    "  verified: 2026-10-02",
+  ].join("\n");
+
+  const FRONT = "---\ntransition: a-to-b\nverified: 2026-10-02\n---\n";
+
+  const digest = (changes: string = CHANGE, front: string = FRONT): string => `${front}\n# A → B: change digest\n\n<changes>\n\n${changes}\n\n</changes>\n`;
+  const check = (digestText: string | null = digest()): string[] => checkDigest({ path: PATH, digestPath: DIGEST, digestText });
+
+  it("a consistent digest passes, with several sources under one change", () => {
+    expect(check()).toStrictEqual([]);
+    expect(check(digest(`${CHANGE}\n- source: https://example.com/b\n  passage: "and here"\n  verified: 2026-10-02`))).toStrictEqual([]);
+  });
+
+  it("a knowledge file with no digest fails", () => {
+    expect(check(null)).toStrictEqual([`${PATH}: has no a-to-b.digest.md`]);
+  });
+
+  it("a transition that differs from the file name, a missing key, or a verified that is not a date, fails", () => {
+    expect(check(digest(CHANGE, FRONT.replace("transition: a-to-b", "transition: a-to-c")))).toStrictEqual([`${DIGEST}: transition is "a-to-c", expected "a-to-b"`]);
+    expect(check(digest(CHANGE, FRONT.replace("verified: 2026-10-02\n", "")))).toStrictEqual([`${DIGEST}: frontmatter has no "verified"`]);
+    expect(check(digest(CHANGE, FRONT.replace("verified: 2026-10-02", "verified: 2026-02-30")))).toStrictEqual([`${DIGEST}: verified "2026-02-30" is not a date as YYYY-MM-DD`]);
+    expect(check("# No frontmatter\n\n<changes>\n\n</changes>\n")).toContain(`${DIGEST}: has no frontmatter`);
+  });
+
+  it("a digest with no <changes> block, or an empty one, fails", () => {
+    expect(check(`${FRONT}\nNothing.\n`)).toStrictEqual([`${DIGEST}: has no <changes> block`]);
+    expect(check(digest(""))).toStrictEqual([`${DIGEST}: its <changes> block has no change`]);
+  });
+
+  it("a malformed or duplicated change id fails", () => {
+    expect(check(digest(CHANGE.replace("C01", "P01")))).toStrictEqual([`${DIGEST}:10: change id P01 is not C followed by two digits`]);
+    expect(check(digest(`${CHANGE}\n\n${CHANGE}`))).toStrictEqual([`${DIGEST}:17: change C01 is defined more than once`]);
+  });
+
+  it("a change with no change line, no source, a non-https source, or a source with no passage fails", () => {
+    expect(check(digest(CHANGE.replace("- change: B does y where A did x.\n", "")))).toStrictEqual([`${DIGEST}:10: C01 has no "change"`]);
+    const [head] = CHANGE.split("\n- source:");
+    expect(check(digest(head))).toStrictEqual([`${DIGEST}:10: C01 has no source`]);
+    expect(check(digest(CHANGE.replace("https://example.com/doc#a", "http://example.com")))).toStrictEqual([`${DIGEST}:10: C01 source 1 is not an https URL`]);
+    expect(check(digest(`${head}\n- source: https://example.com\n  basis: inference`))).toStrictEqual([`${DIGEST}:10: C01 source 1 has no "passage"`]);
+  });
+
+  it("a passage without a verified date, or over the word ceiling, fails", () => {
+    expect(check(digest(CHANGE.replace("\n  verified: 2026-10-02", "")))).toStrictEqual([`${DIGEST}:10: C01 source 1 has a passage but no "verified" date as YYYY-MM-DD`]);
+    const long = Array.from({ length: 31 }, () => "word").join(" ");
+    expect(check(digest(CHANGE.replace(/passage: ".*"/, `passage: "${long}"`)))).toStrictEqual([`${DIGEST}:10: C01 source 1 quotes 31 words, over the 30-word ceiling for a passage`]);
+  });
+
+  it("a digest over its ceiling fails", () => {
+    expect(check(`${digest()}${"x".repeat(DIGEST_MAX_BYTES)}`)[0]).toMatch(/over the 24000-byte ceiling for a change digest/);
+  });
+
+  it("an older-residue block is optional, and its items are held to the same rules under R ids", () => {
+    const RESIDUE = ["### R01 — An old instruction", "", "- residue: A already made it unnecessary.", "- source: https://example.com/old", '  passage: "A does this on its own"', "  verified: 2026-10-02"].join("\n");
+    const withResidue = (residue: string): string => `${digest()}\n<older_residue>\n\n${residue}\n\n</older_residue>\n`;
+    expect(check(withResidue(RESIDUE))).toStrictEqual([]);
+    expect(check(withResidue(RESIDUE.replace("R01", "C02")))).toStrictEqual([`${DIGEST}:21: older-residue id C02 is not R followed by two digits`]);
+    expect(check(withResidue(`${RESIDUE}\n\n${RESIDUE}`))).toStrictEqual([`${DIGEST}:28: older residue R01 is defined more than once`]);
+    expect(check(withResidue(RESIDUE.replace("- residue: A already made it unnecessary.\n", "")))).toStrictEqual([`${DIGEST}:21: R01 has no "residue"`]);
+    expect(check(withResidue(RESIDUE.replace("\n  verified: 2026-10-02", "")))).toStrictEqual([`${DIGEST}:21: R01 source 1 has a passage but no "verified" date as YYYY-MM-DD`]);
   });
 });

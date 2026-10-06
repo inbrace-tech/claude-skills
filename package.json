@@ -20,7 +20,8 @@
     "release:notes": "node scripts/release-notes.ts",
     "release:verify-tag": "node scripts/verify-tag-signature.ts",
     "audit:lockfile": "node scripts/check-lockfile-release-age.ts",
-    "audit:lockfile:all": "node scripts/check-lockfile-release-age.ts --all"
+    "audit:lockfile:all": "node scripts/check-lockfile-release-age.ts --all",
+    "check-doc-drift": "node scripts/check-doc-drift.ts"
   },
   "devDependencies": {
     "@changesets/changelog-github": "1.0.1",

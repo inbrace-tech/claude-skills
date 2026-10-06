@@ -94,7 +94,7 @@ describe("check-norms, end to end", () => {
     expect(result.stdout).toBe("");
   });
 
-  it("end to end: a knowledge file is found and checked with its sidecar, and an orphan sidecar fails", ({ onTestFinished }) => {
+  it("end to end: a knowledge file is found and checked with its sidecar and its digest, and an orphan sidecar fails", ({ onTestFinished }) => {
     const root = mkdtempSync(join(tmpdir(), "check-norms-"));
     onTestFinished(() => rmSync(root, { recursive: true, force: true }));
     const dir = join(root, "plugins", "p", "skills", "t", "transitions");
@@ -103,6 +103,13 @@ describe("check-norms, end to end", () => {
     const trap = "### P01 — A trap\n\n- kind: change\n- area: settings\n- signal: x\n- applies when: always\n- change: y\n- confidence: high\n- sweep: no\n- source: https://example.com\n  basis: inference: a reason\n";
     writeFileSync(join(dir, "a-to-b.md"), `${front}\n<traps>\n\n${trap}\n</traps>\n`);
     writeFileSync(join(dir, "a-to-b.traps.json"), serialiseSidecar({ transition: "plugins/p/skills/t/transitions/a-to-b.md", traps: [{ id: "P01", learned: "Why.", refs: {} }] }));
+
+    const withoutDigest = run(root);
+    expect(withoutDigest.status).toBe(1);
+    expect(withoutDigest.stderr).toMatch(/transitions\/a-to-b\.md: has no a-to-b\.digest\.md/);
+
+    const change = '### C01 — A change\n\n- change: y\n- source: https://example.com\n  passage: "the doc says so"\n  verified: 2026-10-02\n';
+    writeFileSync(join(dir, "a-to-b.digest.md"), `---\ntransition: a-to-b\nverified: 2026-10-02\n---\n\n<changes>\n\n${change}\n</changes>\n`);
 
     const passing = run(root);
     expect(passing.stderr).toBe("");
