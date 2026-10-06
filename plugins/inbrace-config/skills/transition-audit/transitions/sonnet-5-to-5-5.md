@@ -4,7 +4,7 @@ title: Sonnet 5 → Sonnet 5.5
 source: { name: Claude Sonnet 5, id: claude-sonnet-5, alias: sonnet }
 target: { name: Claude Sonnet 5.5, id: claude-sonnet-5-5, bedrock: anthropic.claude-sonnet-5-5, alias: sonnet }
 claude-code-floor: v2.1.284
-verified: 2026-09-29
+verified: 2026-10-06
 ---
 
 # Sonnet 5 → Sonnet 5.5
@@ -88,13 +88,13 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - context: user-settings
 - source: https://code.claude.com/docs/en/model-config#sonnet-5-5-and-sonnet-5-context-window
   passage: "On the Anthropic API, Sonnet 5.5 and Sonnet 5 always run with the 1M context window."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/model-config#enable-fallback-on-bedrock-agent-platform-and-foundry
   passage: "From Sonnet 5.5, cybersecurity-flagged requests re-run on the model you set in `ANTHROPIC_DEFAULT_SONNET_MODEL`"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/model-config#adjust-effort-level
   passage: "except that Opus 5.5 and Sonnet 5.5 default to `medium` … Opus 5.5 and models released after it start at their own default until you choose a level for them"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P02 — Agent, skill or launch still pinned to Sonnet 5
 
@@ -108,7 +108,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - context: user-settings
 - source: https://code.claude.com/docs/en/model-config#adjust-effort-level
   passage: "The model's default effort: `high` on every model that supports effort, except that Opus 5.5 and Sonnet 5.5 default to `medium`"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P03 — Effort level carried over from Sonnet 5
 
@@ -122,10 +122,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - context: user-settings
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#calibrate-effort
   passage: "Run a fresh sweep against your own evals rather than carrying over the setting you used on Claude Sonnet 5 … Start at `high`, the default on the Claude API"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/model-config#adjust-effort-level
   passage: "A top-level `effortLevel` in project, local, or managed settings, or one passed with `--settings`, applies to every model."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P04 — Thinking turned off by a setting Sonnet 5.5 ignores
 
@@ -138,10 +138,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://code.claude.com/docs/en/model-config#extended-thinking
   passage: "You can't turn thinking off on Opus 5.5, Sonnet 5.5, or the Fable models … a saved `alwaysThinkingEnabled: false` or `MAX_THINKING_TOKENS=0` has no effect there"
-  verified: 2026-09-30
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/model-config#extended-thinking
   passage: "which turns thinking off on the Anthropic API except on Opus 5.5, Sonnet 5.5, and Fable models"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P05 — Sonnet 5 prompting delivered to Sonnet 5.5 by prefix
 
@@ -167,13 +167,13 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - context: user-settings
 - source: https://code.claude.com/docs/en/model-config#version-history
   passage: "`sonnet` resolves to Sonnet 5.5 on the Anthropic API"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/sub-agents#supported-frontmatter-fields
   passage: "Effort level when this subagent is active. Overrides the session effort level. Default: inherits from session."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/model-config#model-aliases
   passage: "The version that the `opus` and `sonnet` aliases resolve to depends on the provider"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P07 — Sonnet 5 behavior claim a Sonnet 5.5 source contradicts
 
@@ -186,13 +186,13 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#steer-initiative-and-scope
   passage: "It does this at every effort level, and more at higher effort … it can start its own rounds of review and verification"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#calibrate-effort
   passage: "a level doesn't produce the same amount of thinking as the same level on Claude Sonnet 5 … Reserve `xhigh` and `max` for work where you've measured a quality gain"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#recommended-changes
   passage: "Then re-evaluate model-specific prompt instructions against Prompting Claude Sonnet 5.5."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P08 — Instructions to think less or not to think
 
@@ -205,10 +205,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#calibrate-effort
   passage: "Asking it in the system prompt to think less doesn't reliably reduce its thinking."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#running-without-up-front-thinking
   passage: "Such instructions make it more likely that the model writes internal XML tags in its visible output."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P09 — Reasoning written into the response
 
@@ -221,7 +221,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#safeguard-refusals
   passage: "It doesn't retry `bio`, `reasoning_extraction`, or `general_harms` declines … remove those instructions, because they invite `reasoning_extraction` declines"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P10 — Updates held until the end
 
@@ -234,7 +234,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#user-facing-progress-updates
   passage: "Between tool calls, Claude Sonnet 5.5 writes user-facing notes … remove older instructions such as "hold all findings for the final response""
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P11 — Language that discourages tool use
 
@@ -247,7 +247,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#tool-use-in-chat-and-knowledge-work
   passage: "Claude Sonnet 5.5 sometimes answers from its training knowledge when a web search would catch details that have changed."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P12 — Search tool without the check-current-facts instruction
 
@@ -260,7 +260,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#tool-use-in-chat-and-knowledge-work
   passage: "Use the search tool to check specifics that may have changed since your training, such as what is allowed, required or charged, even when you feel confident."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P13 — No update cadence
 
@@ -273,7 +273,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#user-facing-progress-updates
   passage: "for example a line on what the model is about to do before its first tool call and a short recap at the end, say so in the system prompt."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P14 — Agent that may check in before the work is done
 
@@ -286,10 +286,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#steer-initiative-and-scope
   passage: "On agentic coding tasks at `low` and `medium` effort, the model sometimes checks in before the work is done … sessions at those levels run longer and cost more"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/model-config#adjust-effort-level
   passage: "except that Opus 5.5 and Sonnet 5.5 default to `medium`"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P15 — Unrequested additions in a project that wants minimal changes
 
@@ -302,7 +302,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#steer-initiative-and-scope
   passage: "If you prefer changes limited to what was explicitly requested, add only the second paragraph of that prompt"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P16 — Self-started review rounds at `xhigh` or `max`
 
@@ -315,7 +315,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#steer-initiative-and-scope
   passage: "it can start its own rounds of review and verification, sometimes with subagents if your harness provides them … run routine work at `high` or below, where it's rare"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P17 — Open-ended requests that start building
 
@@ -328,7 +328,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#steer-initiative-and-scope
   passage: "the model can start building a presentation, report, or video when you only wanted ideas"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P18 — Coding at `low` effort with no verification rule
 
@@ -341,7 +341,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#verification-on-coding-tasks
   passage: "At `low` effort, though, it sometimes reports a change as done without running a check that exercises it."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P19 — Harness text after every tool result
 
@@ -354,13 +354,13 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets
   passage: "A token countdown that your harness adds after every tool result can cause this … having your harness add instructions or context after the tool results on every step"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets
   passage: "If you see this reaction to a reminder of your own, send the reminder less often. … In interactive sessions where users can type mid-turn, don't add your own token or budget countdown after tool results."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/hooks#posttooluse-decision-control
   passage: "String added to Claude's context alongside the tool result."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P20 — Blanket authorization
 
@@ -397,10 +397,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#turn-off-up-front-thinking
   passage: "a request that sends `thinking: {"type": "disabled"}` returns a 400 … At `xhigh` or `max` effort, a request with `between_tools` returns a 400 error."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#turn-off-up-front-thinking
   passage: "`between_tools` takes no other field: `display`, `budget_tokens`, or `block_binding` sent with it returns a 400 error."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P23 — Forced tool use
 
@@ -413,7 +413,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#forced-tool-use
   passage: "Claude Sonnet 5.5 rejects both with a 400 error, including on the token counting endpoint … On Amazon Bedrock, structured outputs, which include strict tool use, aren't available for Claude Sonnet 5.5."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P24 — History edited between requests
 
@@ -426,7 +426,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#thinking-blocks
   passage: "Each Claude Sonnet 5.5 thinking block is also signed over the conversation before it … Keep conversations append-only, and change instructions or tools with mid-conversation system messages"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P25 — Model switched mid-conversation
 
@@ -439,7 +439,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#thinking-blocks-are-tied-to-the-model-that-produced-them
   passage: "but not from Claude Opus 5, Claude Opus 5.5, or any Claude Fable or Claude Mythos model … Claude Opus 5.5 reads Claude Sonnet 5.5 thinking blocks; no other model does."
-  verified: 2026-10-02
+  verified: 2026-10-06
 
 ### P26 — Silent agentic turns
 
@@ -452,7 +452,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#text-between-tool-calls
   passage: "come back as progress-update `thinking` blocks, empty at the default `display` … With `between_tools`, the text comes back without `display`."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P27 — User text placed with tool results
 
@@ -465,7 +465,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets
   passage: "Sometimes it treats a genuine user message as a possible injection. … Never put user text inside a `tool_result` block."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P28 — Old computer-use tool
 
@@ -478,16 +478,16 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#computer-use-toolset
   passage: "`computer_20251124` returns a 400 error … Claude Sonnet 5.5 doesn't accept `computer_20250124` on any platform"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#computer-use-toolset
   passage: "Set `eager_input_streaming: true` on each tool that needs it instead."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#computer-20251124-is-not-supported
   passage: "On Amazon Bedrock, Claude Sonnet 5.5 accepts the earlier `computer_20251124` tool."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#computer-20251124-is-not-supported
   passage: "Drop the beta header, replace the `tools` entry with `{"type": "computer_toolset_20260801"}`, and update your agent loop for member `tool_use` blocks, batch actions, and `toolset_name` on results."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P29 — Advisor the executor rejects
 
@@ -500,7 +500,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#advisor-tool
   passage: "Claude Opus 4.8, Claude Opus 4.7, Claude Opus 4.6, Claude Sonnet 5, and Claude Sonnet 4.6 advisors return a 400 error."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P30 — Refusals not handled
 
@@ -513,7 +513,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#safety-classifiers-and-fallback
   passage: "Claude Sonnet 5.5 declines in more categories than Claude Sonnet 5 … retries `"cyber"` and `"frontier_llm"` declines on Claude Sonnet 5"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P31 — JSON answers that skip the working-out
 
@@ -526,7 +526,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#reasoning-tasks-with-json-output
   passage: "Treat any response whose `stop_reason` is `"max_tokens"` as failed, even if its text holds valid JSON, and retry. … Don't take everything from the first `{` to the last `}`."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P32 — `max_tokens` sized without thinking
 
@@ -539,7 +539,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#calibrate-effort
   passage: "Thinking counts toward `max_tokens` even when thinking content isn't returned to you. … For agentic coding, set `max_tokens` to 128,000, the model's maximum, and stream the response."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P33 — Tool dispatch that fails on a near-miss name
 
@@ -552,7 +552,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#tolerant-tool-call-handling
   passage: "Claude Sonnet 5.5 occasionally calls a declared tool by a name that differs only in letter case … Return a `tool_result` with `is_error: true` that states the exact expected name."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P34 — Dense images with no image tools
 
@@ -565,7 +565,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#tools-for-complex-visual-inputs
   passage: "On charts, the tools help at every effort level … they help only from `high` effort up"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P35 — Effort changed between requests
 
@@ -578,7 +578,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#calibrate-effort
   passage: "Changing the top-level `effort` value between requests invalidates the prompt cache."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P36 — Caching gated at 1,024 tokens
 
@@ -591,7 +591,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: yes
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#other-changes-from-claude-sonnet-5
   passage: "The minimum cacheable prompt is 512 tokens, down from 1,024 on Claude Sonnet 5"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P37 — Sonnet 5 skill preloaded into an agent moving to Sonnet 5.5
 
@@ -604,7 +604,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#recommended-changes
   passage: "Then re-evaluate model-specific prompt instructions against Prompting Claude Sonnet 5.5."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P38 — No Claude Code version floor for Sonnet 5.5
 
@@ -617,7 +617,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://code.claude.com/docs/en/model-config#model-aliases
   passage: "Sonnet 5.5 requires Claude Code v2.1.284 or later"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P39 — Content-based fallback left unaccounted for
 
@@ -630,7 +630,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://code.claude.com/docs/en/model-config#automatic-model-fallback
   passage: "Sonnet 5.5: cybersecurity-flagged requests re-run on Sonnet 5 … After a fallback, the session continues on the fallback model."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P40 — Price table without a Sonnet 5.5 entry
 
@@ -643,7 +643,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#pricing
   passage: "Claude Sonnet 5.5 has the same prices as Claude Sonnet 5, including prompt caching and batch processing rates"
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P41 — Model docs that miss the Sonnet 5.5 guide
 
@@ -656,10 +656,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#recommended-changes
   passage: "Then re-evaluate model-specific prompt instructions against Prompting Claude Sonnet 5.5."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/model-config#extended-thinking
   passage: "You can't turn thinking off on Opus 5.5, Sonnet 5.5, or the Fable models."
-  verified: 2026-09-29
+  verified: 2026-10-06
 
 ### P42 — Transcript or output parser that reads only text blocks
 
@@ -672,7 +672,7 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#text-between-tool-calls
   passage: "notes longer than a sentence or two that the model writes between tool calls come back as progress-update `thinking` blocks, empty at the default `display`"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#text-between-tool-calls
   basis: inference: how Claude Code records those blocks in a session transcript is not documented.
 
@@ -687,10 +687,10 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#mid-turn-user-messages-and-task-budgets
   passage: "Sometimes it treats a genuine user message as a possible injection. … So can letting users send messages while the model is partway through a multistep turn"
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/sub-agents#resume-subagents
   passage: "When Claude sends a completed subagent a message with the `SendMessage` tool, the subagent resumes in the background without a new `Agent` invocation."
-  verified: 2026-09-29
+  verified: 2026-10-06
 - source: https://code.claude.com/docs/en/agent-teams#context-and-communication
   basis: inference: where Claude Code places a message that reaches a working agent, relative to its tool results, is not documented; the page says only that messages between teammates are delivered automatically.
 
@@ -705,6 +705,6 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide#migrating-from-claude-sonnet-5
   passage: "Replace your model ID with `claude-sonnet-5-5`, which has no date suffix. On other platforms, use the ID listed under"
-  verified: 2026-09-30
+  verified: 2026-10-06
 
 </traps>
