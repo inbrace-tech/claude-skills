@@ -3,7 +3,7 @@
   "traps": [
     {
       "id": "P01",
-      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P01; `ANTHROPIC_DEFAULT_HAIKU_MODEL` and `CLAUDE_CODE_SUBAGENT_MODEL` join the signal because the model-config page says the first also picks Claude Code's background model, and the second names the subagent default.",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P01; `ANTHROPIC_DEFAULT_HAIKU_MODEL` and `CLAUDE_CODE_SUBAGENT_MODEL` join the signal because the model-config page says the first also picks Claude Code's background model, and the second names the subagent default. Before release, the first paid run of the Haiku regression suite (3 runs of 0.8.0-pre on the seeded fixture, 2026-10-07) missed `CLAUDE_CODE_SUBAGENT_MODEL` on every run: the trap said to record it once per file, so each run folded that line into the `ANTHROPIC_DEFAULT_HAIKU_MODEL` finding, and two runs said an agent's pinned `model:` had no effect while the variable stayed. The model-config page says a definition's `model` field takes precedence over it, so the trap now records one finding per setting and states that precedence with the passage.",
       "refs": { "inbrace-tech/claude-skills": [135] }
     },
     {

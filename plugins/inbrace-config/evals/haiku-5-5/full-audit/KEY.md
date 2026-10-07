@@ -2,7 +2,10 @@
 
 Each grader below reads the "Final list" of the audit's `findings.md`, through the `.eval-findings.md` link the scaffold makes. A positive passes when a line names the file, a line within ±2 of the key's, and the expected status; the finding's id is not checked, since discovery numbers its own findings `D01`, `D02`, …. Where another row with the same status sits within two lines in the same file, the line must be exact, and where the trap can sit on more than one line, every line it may take is listed. A residue row passes when no line on that exact location proposes a change. A negative passes when no line on that exact location proposes a change.
 
-The fixture was written in 0.8.0 from the transition's own known traps, so it is a regression check, not a held-out evaluation. It has not yet been calibrated against a hand-graded run; the first run's report is where a row that the audit's documented rules contradict gets adjusted, with the reason stated here.
+The fixture was written in 0.8.0 from the transition's own known traps, so it is a regression check, not a held-out evaluation. Two rows were adjusted after the first paid run (3 runs, 2026-10-07, scores 0.98, 0.98 and 0.96), each for a stated reason:
+
+- `pos-02-settings-json-6-change` is unchanged; the trap was fixed instead. P01 said to record Haiku 4.5 once per settings file, so every run folded `CLAUDE_CODE_SUBAGENT_MODEL` into the `ANTHROPIC_DEFAULT_HAIKU_MODEL` finding, and two runs misread its precedence over an agent's `model:`. P01 now records one finding per setting and states that precedence.
+- `pos-18-model-routing-md-8-re-test` also accepts `.claude/agents/faq-researcher.md:4`: P06 records the `haiku` alias once per dispatch convention, one line naming every file it covers, and one run recorded it on the agent, naming the routing rows.
 
 | Grader | Location (±2 lines unless exact) | Expected | Why |
 |---|---|---|---|
@@ -23,7 +26,7 @@ The fixture was written in 0.8.0 from the transition's own known traps, so it is
 | `pos-15-support-bot-md-4-change` | `.claude/agents/support-bot.md:4` | change | P02: chatbot pinned to `claude-haiku-4-5` |
 | `pos-16-support-bot-md-any-optional` | `.claude/agents/support-bot.md` (any line) | optional | P13: chatbot rules with no rules-hold line |
 | `pos-17-batch-reporter-md-4-already-decided` | `.claude/agents/batch-reporter.md:4` | already decided | P02: an ADR keeps this pin on Haiku 4.5 |
-| `pos-18-model-routing-md-8-re-test` | `.claude/rules/model-routing.md:8,9` | re-test (exact line) | P06: `haiku` alias in the routing table |
+| `pos-18-model-routing-md-8-re-test` | `.claude/rules/model-routing.md:8,9`, `.claude/agents/faq-researcher.md:4` | re-test (exact line) | P06: `haiku` alias in the routing table, recorded once per convention, so on the table row or on the agent that shares it |
 | `pos-19-model-routing-md-10-re-test` | `.claude/rules/model-routing.md:10` | re-test (exact line) | P07 or P22: claims Haiku never refuses |
 | `pos-20-model-routing-md-12-re-test-or-change` | `.claude/rules/model-routing.md:12` | re-test or change (exact line) | P07 or P18: Haiku 4.5's price stated as Haiku's |
 | `pos-21-claude-md-13-re-test` | `CLAUDE.md:13` | re-test (exact line) | P07: claims Haiku does not think unless asked |

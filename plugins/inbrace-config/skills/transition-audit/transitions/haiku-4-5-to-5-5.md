@@ -79,7 +79,7 @@ None for this transition: Haiku 5.5's safety classifiers have no `reasoning_extr
 - kind: setting
 - area: settings
 - signal: `model` or `env.ANTHROPIC_MODEL` set to `claude-haiku-4-5`, its dated form or its provider ID; `env.ANTHROPIC_DEFAULT_HAIKU_MODEL` or `env.CLAUDE_CODE_SUBAGENT_MODEL` set to Haiku 4.5; in the project, local or managed settings
-- applies when: a settings file names Haiku 4.5 for the session, the `haiku` alias, background work or subagents; resolve aliases as the Claude Code docs do: `haiku` is Haiku 5.5 on the Anthropic API from Claude Code v2.1.293, and Haiku 4.5 on Claude Platform on AWS, Amazon Bedrock, Google Cloud's Agent Platform and Microsoft Foundry, where the project moves only by naming Haiku 5.5 itself; record it once per file that names Haiku 4.5
+- applies when: a settings file names Haiku 4.5 for the session, the `haiku` alias, background work or subagents; resolve aliases as the Claude Code docs do: `haiku` is Haiku 5.5 on the Anthropic API from Claude Code v2.1.293, and Haiku 4.5 on Claude Platform on AWS, Amazon Bedrock, Google Cloud's Agent Platform and Microsoft Foundry, where the project moves only by naming Haiku 5.5 itself; record one finding per setting that names Haiku 4.5, since each is its own edit; `CLAUDE_CODE_SUBAGENT_MODEL` is only the default for subagents that set no model, so an agent's own `model:` or a per-invocation model wins over it, and it neither holds nor moves an agent pinned in its frontmatter
 - change: Set the value to `claude-haiku-5-5` — `anthropic.claude-haiku-5-5` on Amazon Bedrock — in the file the user picks per the report stage's settings question, with no `[1m]` suffix, and say in one line that on the Anthropic API Haiku 5.5 always runs with the 1M window. Where Haiku 4.5 comes from `ANTHROPIC_DEFAULT_HAIKU_MODEL`, say that the variable also picks the model of Claude Code's background functionality, so the move reaches it too. Write no effort level: P03 covers effort. Explain, from the user's settings read as context, that in Claude Code Haiku 5.5 starts at `medium` unless a level is set for it, and that Haiku 5.5 needs Claude Code v2.1.293 or later. Type setting.
 - confidence: high
 - sweep: yes
@@ -89,6 +89,9 @@ None for this transition: Haiku 5.5's safety classifiers have no `reasoning_extr
   verified: 2026-10-07
 - source: https://code.claude.com/docs/en/model-config#environment-variables
   passage: "The model to use for `haiku`, or background functionality"
+  verified: 2026-10-07
+- source: https://code.claude.com/docs/en/model-config#environment-variables
+  passage: "agents that aren't assigned a model another way. … A per-invocation model or a definition's `model` field, including `inherit`, takes precedence."
   verified: 2026-10-07
 - source: https://code.claude.com/docs/en/model-config#model-aliases
   passage: "Use v2.1.293 or later with Haiku 5.5."
