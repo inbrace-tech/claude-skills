@@ -1,0 +1,205 @@
+{
+  "transition": "plugins/inbrace-config/skills/transition-audit/transitions/haiku-4-5-to-5-5.md",
+  "traps": [
+    {
+      "id": "P01",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P01; `ANTHROPIC_DEFAULT_HAIKU_MODEL` and `CLAUDE_CODE_SUBAGENT_MODEL` join the signal because the model-config page says the first also picks Claude Code's background model, and the second names the subagent default.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P02",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P02, its note saying that Haiku 4.5 had no effort level, so the move adds thinking rather than changing a level.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P03",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P03, recast because there is no Haiku 4.5 effort to carry over: the finding is a level chosen by default or inherited from a setting written for other models.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P04",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P04; the fixed-budget variables join it because the model-config page says the fixed thinking budget mode does not apply to Haiku 5.5.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P05",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P05; unlike `claude-sonnet-5`, `claude-haiku-4-5` is not a prefix of the target id, so the trap also covers an exact Haiku 4.5 entry that leaves Haiku 5.5 with no entry.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P06",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P06, with the alias change of Claude Code v2.1.293.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P07",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P07, its claims drawn from the Haiku 5.5 what's new page: thinking, effort, window, price and refusals.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P08",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P08; medium confidence because the Claude Code page says the model responds to prompt guidance on how often to think, while the Haiku 5.5 guide says telling it to answer directly did not stop its thinking.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P09",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition, from the Haiku 5.5 guide's section on accurate search results.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P10",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition, from the same section's warning against blanket search instructions.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P11",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P14, with the Haiku 5.5 guide's text and its measured cost of moving to `medium`.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P12",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P18; on Haiku 5.5 the guide names `medium` as well as `low`, and Claude Code starts Haiku 5.5 at `medium`.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P13",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition, from the Haiku 5.5 guide's section on keeping chatbots to their system prompt.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P14",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P43.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P15",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition, from the Haiku 5.5 guide's section on reasoning in user-facing text; low confidence because Claude Code always runs Haiku 5.5 with adaptive thinking, leaving only the `low` effort case.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P16",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P38, with Claude Code v2.1.293.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P17",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition: Haiku 5.5's tokenizer counts about 30% more tokens than Haiku 4.5's, where the Sonnet and Opus transitions kept the tokenizer.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P18",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P40, reversed: Sonnet 5.5 kept Sonnet 5's prices, while Haiku 5.5 has its own two rate cards split at a 100,000-token prompt, so a fallback to the Haiku 4.5 price is wrong.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P19",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P41.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P20",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P42; on Haiku 5.5 a response can begin with thinking blocks because adaptive thinking is on by default.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P21",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition: a project that keeps per-model prompting guidance has none for the Haiku tier when Haiku 4.5 needed none; the guide expects Haiku 4.5 prompts to carry over, so the trap is optional and low confidence.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P22",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P39; Haiku 5.5's refusals are new for the tier and it has no fallback, server-side or, per the model-config page's list, in Claude Code.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P23",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition: manual thinking budgets were older residue on the Sonnet transition, while Haiku 4.5 still accepts them.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P24",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition: sampling parameters were older residue on the Sonnet transition, while Haiku 4.5 still accepts them.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P25",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition: assistant prefill was older residue on the Sonnet transition, while Haiku 4.5 still accepts it when thinking is off.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P26",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P28, with `computer_20250124`, the tool Haiku 4.5 used.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P27",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P24.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P28",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition, from the migration guide's section on replaying thinking blocks through the producing account.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P29",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition: adaptive thinking is on by default on Haiku 5.5 where Haiku 4.5 thought only when asked, so first-block reads and small `max_tokens` values break.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P30",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P22: Haiku 5.5 accepts `disabled` up to `high`, and `between_tools` is Sonnet 5.5's alone.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P31",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P30; Haiku 5.5 has no server-side fallback and a list of fallback models returns a 400.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P32",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition, from the Haiku 5.5 guide's section on JSON output with the caller's own tools.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P33",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P35.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P34",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P27, with the Haiku 5.5 guide's section on mid-turn user messages.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P35",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition: Haiku 5.5 accepts forced tool use, unlike Opus 5.5 and Sonnet 5.5, so the trap is the missing thinking, never a 400.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P36",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition: Haiku 4.5 returned summarized thinking, Haiku 5.5 returns it empty by default.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P37",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition, from the Haiku 5.5 guide's note on empty replies at `xhigh`.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P38",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P36, with Haiku 4.5's 4,096-token minimum.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P39",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; new for this transition, from the migration guide's note on Priority Tier.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    },
+    {
+      "id": "P40",
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P44, with the platform ids of the migration guide's table.",
+      "refs": { "inbrace-tech/claude-skills": [135] }
+    }
+  ]
+}

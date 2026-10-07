@@ -1,0 +1,11 @@
+{
+  "surface": "plugins/inbrace-config/skills/audit-haiku-5-5/SKILL.md",
+  "norms": [
+    {
+      "id": "N01",
+      "where": "Start",
+      "refs": { "docs": ["https://code.claude.com/docs/en/skills#control-who-invokes-a-skill", "https://platform.claude.com/docs/en/models/haiku-5-5/migration-guide"], "inbrace-tech/claude-skills": [135] },
+      "what": "Written in 0.8.0 as the third per-transition command, the shape of `audit-opus-5-5` and `audit-sonnet-5-5`: it only starts the transition-agnostic audit with its slug, so a user can name the move without knowing the general command's argument form. The slug is `haiku-4-5-to-5-5` because the migration guide moves code from Claude Haiku 4.5 to Claude Haiku 5.5, and there is no Claude Haiku 5; the command says so because the request that started this transition named a Haiku 5 that does not exist (#135)."
+    }
+  ]
+}
