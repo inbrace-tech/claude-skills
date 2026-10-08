@@ -44,7 +44,7 @@ What changes from Claude Haiku 4.5 to Claude Haiku 5.5 that can bear on a Claude
 
 - change: Haiku 5.5 decides when and how much to think, with no request asking for it; Haiku 4.5 thought only when a request set a budget.
 - source: https://platform.claude.com/docs/en/models/haiku-5-5/whats-new-haiku-5-5#adaptive-thinking-and-effort
-  passage: "With adaptive thinking, Claude Haiku 5.5 decides when and how much to think. Adaptive thinking is on by default."
+  passage: "With adaptive thinking, Claude Haiku 5.5 determines when and how much to think. Adaptive thinking is on by default."
   verified: 2026-10-07
 
 ### C06 — Claude Code cannot turn its thinking off

@@ -88,8 +88,8 @@
     },
     {
       "id": "P18",
-      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P40, reversed: Sonnet 5.5 kept Sonnet 5's prices, while Haiku 5.5 has its own two rate cards split at a 100,000-token prompt, so a fallback to the Haiku 4.5 price is wrong.",
-      "refs": { "inbrace-tech/claude-skills": [135] }
+      "learned": "Written in 0.8.0 for the Haiku 4.5 → 5.5 audit (#135) from the Haiku 5.5 migration guide, what's new and prompting guide and the Claude Code documentation, read on 2026-10-07; modelled on the Sonnet transition's P40, reversed: Sonnet 5.5 kept Sonnet 5's prices, while Haiku 5.5 has its own two rate cards split at a 100,000-token prompt, so a fallback to the Haiku 4.5 price is wrong. The Sonnet 5.5 pricing section later priced cache reads at half Sonnet 5's rate, and the Sonnet P40 changed with it (#137).",
+      "refs": { "inbrace-tech/claude-skills": [135, 137] }
     },
     {
       "id": "P19",

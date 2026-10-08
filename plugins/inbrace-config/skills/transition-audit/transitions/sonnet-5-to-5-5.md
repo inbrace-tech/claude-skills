@@ -636,14 +636,14 @@ Traps whose matching lines in a project ask the model to reveal its reasoning, w
 
 - kind: change
 - area: model-dependent
-- signal: a per-model price table or rate lookup naming `claude-sonnet-5` with no `claude-sonnet-5-5` entry
+- signal: a per-model price table or rate lookup naming `claude-sonnet-5` with no `claude-sonnet-5-5` entry, or a `claude-sonnet-5-5` entry or cache-read multiplier copied from Sonnet 5
 - applies when: model-dependent code and docs
-- change: Add an explicit `claude-sonnet-5-5` entry at Sonnet 5's prices, since "Claude Sonnet 5.5 has the same prices as Claude Sonnet 5, including prompt caching and batch processing rates"; a lookup that falls back to the `claude-sonnet-5` stem is right today only by that coincidence.
-- confidence: medium
+- change: Give `claude-sonnet-5-5` its own entry at Sonnet 5's prices except the cache read, which is USD 0.10 per million tokens, half Sonnet 5's USD 0.20; a lookup that falls back to the `claude-sonnet-5` stem, or an entry copied from Sonnet 5, prices every Sonnet 5.5 cache read at twice its rate.
+- confidence: high
 - sweep: no
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#pricing
-  passage: "Claude Sonnet 5.5 has the same prices as Claude Sonnet 5, including prompt caching and batch processing rates"
-  verified: 2026-10-06
+  passage: "Claude Sonnet 5.5 has the same prices as Claude Sonnet 5, except for prompt cache reads, which cost $0.10 USD per million tokens, half the Claude Sonnet 5 rate."
+  verified: 2026-10-07
 
 ### P41 — Model docs that miss the Sonnet 5.5 guide
 
