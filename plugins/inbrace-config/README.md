@@ -2,7 +2,7 @@
 
 Inbrace's tools for keeping the configuration of a Claude Code setup current: what Claude Code reads as instructions — `CLAUDE.md`, rules, agents, skills, settings and hooks — and the project's model-dependent code, CI and docs.
 
-Today it ships the **model-transition audit**, for a project moving from one Claude model to another. You start it with one of three commands, shown under [Use it](#use-it). The audit explores the project against what Anthropic's documentation says changed between the two models, checks a list of known traps, the edge cases earlier audits learned, reports what it would change and why, and applies only what you approve. It knows two transitions, Claude Opus 5 → Opus 5.5 and Claude Sonnet 5 → Sonnet 5.5, and stops for any other pair.
+Today it ships the **model-transition audit**, for a project moving from one Claude model to another. You start it with one of four commands, shown under [Use it](#use-it). The audit explores the project against what Anthropic's documentation says changed between the two models, checks a list of known traps, the edge cases earlier audits learned, reports what it would change and why, and applies only what you approve. It knows three transitions, Claude Opus 5 → Opus 5.5, Claude Sonnet 5 → Sonnet 5.5 and Claude Haiku 4.5 → Haiku 5.5, and stops for any other pair.
 
 What the documentation says ships with the plugin: for each transition, a digest of the changes and the known traps, every item with its page and a short quoted passage, and the date it was last checked. The audit reads no page when it runs. The maintainers compare every passage with the pages weekly and release a new version when one changes, so update the plugin before an audit, and read the date the report gives.
 

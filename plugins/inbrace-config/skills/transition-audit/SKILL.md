@@ -15,7 +15,7 @@ metadata:
 
 ## Start
 
-- [N01] Start only when the arguments below begin with `--transition <slug>` or are `--resume`, and otherwise stop at once with one line saying this skill runs only from `/inbrace-config:audit-model-transition`, `/inbrace-config:audit-opus-5-5` or `/inbrace-config:audit-sonnet-5-5`, since Claude can invoke it unasked.
+- [N01] Start only when the arguments below begin with `--transition <slug>` or are `--resume`, and otherwise stop at once with one line saying this skill runs only from `/inbrace-config:audit-model-transition`, `/inbrace-config:audit-opus-5-5`, `/inbrace-config:audit-sonnet-5-5` or `/inbrace-config:audit-haiku-5-5`, since Claude can invoke it unasked.
 - [N02] Before the first tool call, read the arguments after `--transition <slug>`, in any order and each flag once, as `--flag value` or `--flag=value`: the first token that is not a flag is the audit root; `--scope` takes `full`, `reduced` or `quick`; `--mode` takes `session` or `agents`; `--stop-at-report` stops the run at the report. No argument approves applying changes. Where a second token is not a flag, a flag is unknown, a value is outside these, or a flag repeats with another value, stop before any tool call and show `<source> <target> [path] [--scope full|reduced|quick] [--mode session|agents] [--stop-at-report]` with the token at fault:
 
 <arguments>

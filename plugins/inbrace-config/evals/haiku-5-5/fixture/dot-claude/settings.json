@@ -1,0 +1,20 @@
+{
+  "model": "claude-opus-5-5",
+  "effortLevel": "high",
+  "env": {
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-haiku-4-5",
+    "MAX_THINKING_TOKENS": "4000"
+  },
+  "permissions": {
+    "allow": ["Bash(pnpm test:*)", "Bash(pnpm lint:*)", "Read", "Grep", "Glob"],
+    "deny": ["Read(.env)", "Bash(git push:*)"]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [{ "type": "command", "command": "node scripts/claude-hooks/model-skill.mjs" }]
+      }
+    ]
+  }
+}
