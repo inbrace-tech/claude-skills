@@ -234,12 +234,12 @@ What changes from Claude Sonnet 5 to Claude Sonnet 5.5 that can bear on a Claude
   passage: "Sonnet 5.5 requires Claude Code v2.1.284 or later"
   verified: 2026-10-06
 
-### C32 — Prices, tokenizer and context window do not change
+### C32 — Cache reads cost half; other prices, tokenizer and context window do not change
 
-- change: Sonnet 5.5 costs the same as Sonnet 5, counts tokens the same way and keeps the 1M window with no `[1m]` suffix, so a price table or a token budget needs a new row, not new numbers.
+- change: Sonnet 5.5 costs the same as Sonnet 5 except for cache reads, which cost half, counts tokens the same way and keeps the 1M window with no `[1m]` suffix, so a price table needs a new row with its own cache-read rate and a token budget needs no new numbers.
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#pricing
-  passage: "Claude Sonnet 5.5 has the same prices as Claude Sonnet 5, including prompt caching and batch processing rates."
-  verified: 2026-10-06
+  passage: "Claude Sonnet 5.5 has the same prices as Claude Sonnet 5, except for prompt cache reads, which cost $0.10 USD per million tokens, half the Claude Sonnet 5 rate."
+  verified: 2026-10-07
 - source: https://platform.claude.com/docs/en/models/sonnet-5-5/whats-new-sonnet-5-5#new-model
   passage: "The tokenizer is the same as Claude Sonnet 5's, so the same text produces the same token counts."
   verified: 2026-10-06

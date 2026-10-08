@@ -198,8 +198,8 @@
     },
     {
       "id": "P40",
-      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28).",
-      "refs": { "inbrace-tech/claude-skills": [28] }
+      "learned": "Added in 0.5.0 after a capability evaluation found items outside the table that a plain session reading the docs found; derived from the Opus row of the same name (#28). In 0.8.0 the Sonnet 5.5 pricing section changed to price cache reads at half Sonnet 5's rate, and the documentation drift check reported the quoted passage changed: the change now gives the entry its own cache-read rate instead of Sonnet 5's prices, the signal also catches an entry or a cache-read multiplier copied from Sonnet 5, and the confidence rose to high because a fallback to Sonnet 5 is now a wrong price rather than a coincidence (#137).",
+      "refs": { "inbrace-tech/claude-skills": [28, 137] }
     },
     {
       "id": "P41",

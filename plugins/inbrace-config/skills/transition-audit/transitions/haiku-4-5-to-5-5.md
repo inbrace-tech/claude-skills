@@ -195,7 +195,7 @@ None for this transition: Haiku 5.5's safety classifiers have no `reasoning_extr
   passage: "Claude Haiku 5.5 has a 1M token context window and returns up to 128k output tokens, up from 200k and 64k on Claude Haiku 4.5."
   verified: 2026-10-07
 - source: https://platform.claude.com/docs/en/models/haiku-5-5/whats-new-haiku-5-5#adaptive-thinking-and-effort
-  passage: "With adaptive thinking, Claude Haiku 5.5 decides when and how much to think. Adaptive thinking is on by default."
+  passage: "With adaptive thinking, Claude Haiku 5.5 determines when and how much to think. Adaptive thinking is on by default."
   verified: 2026-10-07
 - source: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-haiku-5-5#safeguard-refusals
   passage: "If you're moving from Claude Haiku 4.5, these refusals are new."
