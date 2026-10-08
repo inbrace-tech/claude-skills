@@ -3,3 +3,5 @@ node_modules/
 release-notes.md
 # `claude plugin eval` writes each run's report and JSON here; results are summarised in docs/evaluations/.
 plugins/*/evals/results/
+# Claude Code creates worktrees here; https://code.claude.com/docs/en/worktrees: "Add `.claude/worktrees/` to your `.gitignore` so worktree contents don't appear as untracked files in your main checkout."
+.claude/worktrees/
