@@ -2,6 +2,16 @@
 
 The plugin was named `claude-config` before 0.4.0.
 
+## 0.8.0
+
+### Minor Changes
+
+- Add the Claude Haiku 4.5 → Haiku 5.5 transition audit, started with `/inbrace-config:audit-haiku-5-5`, with its known traps, change digest and regression cases. ([#136](https://github.com/inbrace-tech/claude-skills/pull/136) by [@ropdias](https://github.com/ropdias))
+
+### Patch Changes
+
+- Sonnet 5 → 5.5 audit: price Claude Sonnet 5.5 cache reads at USD 0.10 per million tokens, half Sonnet 5's, and flag a price entry copied from Sonnet 5. ([#138](https://github.com/inbrace-tech/claude-skills/pull/138) by [@ropdias](https://github.com/ropdias))
+
 ## 0.7.0
 
 ### Minor Changes

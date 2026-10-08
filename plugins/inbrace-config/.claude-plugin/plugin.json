@@ -2,7 +2,7 @@
   "name": "inbrace-config",
   "displayName": "Inbrace Config",
   "description": "Tools for keeping a Claude Code setup current. Today: a model-transition audit (Opus 5 to 5.5, Sonnet 5 to 5.5, Haiku 4.5 to 5.5) that explores the project against what Anthropic's docs say changed, checks the known traps, reports, asks, then applies only what you approve. It reaches no network.",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "author": {
     "name": "Inbrace",
     "url": "https://github.com/inbrace-tech"
